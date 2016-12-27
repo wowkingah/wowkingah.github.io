@@ -3,10 +3,10 @@ title: Wowking
 subtitle: 个人站
 description: 欢迎来到我的个人站~
 # 头像里面的标题
-avatarTitle: test
+avatarTitle: Wowking
 # 头像里面的描述
 avatarDesc: test
-url: "wowkingah.github.io"
+url: "https://wowkingah.github.io"
 
 # Comment
 comment:
@@ -28,7 +28,7 @@ social:
 # Google Analytics
 # 使用博客模板请去掉或者更换 id
 ga:
-    id: 
+    id: : UA-62308466-1
     host: auto
 
 
