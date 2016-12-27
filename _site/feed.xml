@@ -3,10 +3,10 @@
   <channel>
     <title>Wowking</title>
     <description>欢迎来到我的个人站~</description>
-    <link>wowkingah.github.io/</link>
-    <atom:link href="wowkingah.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 27 Dec 2016 17:37:39 +0800</pubDate>
-    <lastBuildDate>Tue, 27 Dec 2016 17:37:39 +0800</lastBuildDate>
+    <link>https://wowkingah.github.io/</link>
+    <atom:link href="https://wowkingah.github.io/feed.xml" rel="self" type="application/rss+xml"/>
+    <pubDate>Tue, 27 Dec 2016 18:06:04 +0800</pubDate>
+    <lastBuildDate>Tue, 27 Dec 2016 18:06:04 +0800</lastBuildDate>
     <generator>Jekyll v3.1.1</generator>
     
       <item>
@@ -15,11 +15,11 @@
 This is my first blog for Jekyll.&lt;/p&gt;
 </description>
         <pubDate>Mon, 26 Dec 2016 00:00:00 +0800</pubDate>
-        <link>wowkingah.github.io/2016/12/my_first_blog/</link>
-        <guid isPermaLink="true">wowkingah.github.io/2016/12/my_first_blog/</guid>
+        <link>https://wowkingah.github.io/2016/12/my_first_blog/</link>
+        <guid isPermaLink="true">https://wowkingah.github.io/2016/12/my_first_blog/</guid>
         
         
-        <category>随笔</category>
+        <category>personal</category>
         
       </item>
     
