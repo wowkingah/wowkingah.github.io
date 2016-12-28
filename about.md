@@ -1,6 +1,6 @@
 ---
 layout: page
-title: about me
+title: About Me
 ---
 
 this is a blog...
