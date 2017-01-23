@@ -8,7 +8,7 @@
 
   <title>Wowking</title>
   <meta name="description" content="I don't really know where I'm going, but I hope I go far.">
-  <meta name="author" content="Wowking">
+  <meta name="author" content="wowkingah">
 
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="Wowking">
@@ -158,6 +158,27 @@
   <ol class="post-list">
     
     <li>
+      <h2 class="post-list__post-title post-title"><a href="/2017/01/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%A4%A7%E5%B0%8F%E5%86%99%E6%95%8F%E6%84%9F%E9%97%AE%E9%A2%98/" title="访问 数据库大小写敏感问题">数据库大小写敏感问题</a></h2>
+      <p class="excerpt">Oracle默认大小写不敏感，表名、字段名等不区分大小写。小写字母会自动转换为大写字母，需要用小写字母时需要使用双引号，或借助函数upper()和lower()。SQLServer默认大小写不敏感。可以通过修改排序规则改变：右击数据库 -&gt; 属性 -&gt; 选项 -&gt; 排序规则：Chinese_PRC_CS_AS（区分大小写）、Chinese_PRC_CI_AS（不区分大小写）。MySQL#### Windows  都不区分大小写。Linux数据库名、表名、列名、别名大小写规...&hellip;</p>
+      <div class="post-list__meta">        
+        <time datetime="2017-01-23 14:08:05 +0800" class="post-list__meta--date date">
+          <img src="/images/calendar.png" width="20px" /> 
+          2017-01-23</time> 
+        <div class = "tag-img-icon">
+          <img src="/images/tag-icon.svg" width="20px" /> 
+        </div>
+        <a href="/tags">
+          <div class = "post-list-icon-mate">
+            <span class="post-list__meta--tags-right">databases</span>
+          </div>
+          <div class = "post-list-small-mate">
+          <a class="btn-border-small" href=/2017/01/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%A4%A7%E5%B0%8F%E5%86%99%E6%95%8F%E6%84%9F%E9%97%AE%E9%A2%98/>阅读全文 » </a>
+          </div>
+      </div>
+      <hr class="post-list__divider" />
+    </li>
+    
+    <li>
       <h2 class="post-list__post-title post-title"><a href="/2016/12/my_first_blog/" title="访问 My first blog for Jekyll~">My first blog for Jekyll~</a></h2>
       <p class="excerpt">Welcome ~This is my first blog for Jekyll.&hellip;</p>
       <div class="post-list__meta">        
@@ -173,6 +194,27 @@
           </div>
           <div class = "post-list-small-mate">
           <a class="btn-border-small" href=/2016/12/my_first_blog/>阅读全文 » </a>
+          </div>
+      </div>
+      <hr class="post-list__divider" />
+    </li>
+    
+    <li>
+      <h2 class="post-list__post-title post-title"><a href="/2016/12/MySQL%E7%89%88%E6%9C%AC%E5%8D%87%E7%BA%A7/" title="访问 MySQL版本升级">MySQL版本升级</a></h2>
+      <p class="excerpt">小版本升级从MySQL 5.6.1升级到MySQL5.6.x，升级未跨越5.6.x称为小版本升级。YUM升级      不可少的备份；        查看YUM可升级的目标版本： [root@ZTEST-206 ~]# yum list mysql-community-server Installed Packages mysql-community-server.x86_64 5.6.28-2.el6 @mysql56-community Available Packages mysql...&hellip;</p>
+      <div class="post-list__meta">        
+        <time datetime="2016-12-06 00:00:00 +0800" class="post-list__meta--date date">
+          <img src="/images/calendar.png" width="20px" /> 
+          2016-12-06</time> 
+        <div class = "tag-img-icon">
+          <img src="/images/tag-icon.svg" width="20px" /> 
+        </div>
+        <a href="/tags">
+          <div class = "post-list-icon-mate">
+            <span class="post-list__meta--tags-right">MySQL</span>
+          </div>
+          <div class = "post-list-small-mate">
+          <a class="btn-border-small" href=/2016/12/MySQL%E7%89%88%E6%9C%AC%E5%8D%87%E7%BA%A7/>阅读全文 » </a>
           </div>
       </div>
       <hr class="post-list__divider" />
@@ -235,7 +277,7 @@
 
         <div class = "footer_div">  
            <p class="copyright text-muted">
-            Copyright &copy; Wowking 2016 Theme by <a href="https://wowkingah.github.io">Wowking</a> |
+            Copyright &copy; Wowking 2017 Theme by <a href="https://github.com/wowkingah/wowkingah.github.io">Wowkingah</a> |
             <iframe
                 style="margin-left: 2px; margin-bottom:-5px;"
                 frameborder="0" scrolling="0" width="91px" height="20px"
@@ -243,7 +285,7 @@
             </iframe>
             </p>
         	<div align="right">
-   			<link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+    			<link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
 
           <!-- 访问统计 -->
           <span id="busuanzi_container_site_pv">
@@ -261,6 +303,10 @@
     
     <script type="text/javascript" src="//code.jquery.com/jquery-1.11.3.min.js"></script>
 <script type="text/javascript" src="/js/main.js"></script>
+
+<script type="text/javascript" src="/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
 
 
 
