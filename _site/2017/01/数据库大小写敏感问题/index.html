@@ -173,7 +173,7 @@
 <p>默认大小写不敏感。可以通过修改排序规则改变：右击数据库 -&gt; 属性 -&gt; 选项 -&gt; 排序规则：Chinese_PRC_CS_AS（区分大小写）、Chinese_PRC_CI_AS（不区分大小写）。</p>
 
 <h3 id="mysql">MySQL</h3>
-<p>#### Windows  <br />
+<p>#### Windows    <br />
 都不区分大小写。</p>
 
 <h4 id="linux">Linux</h4>
@@ -184,7 +184,7 @@
 4. 列名与列的别名在所有的情况下均忽略大小写。</p>
 
 <h5 id="section">解决办法：</h5>
-<p>###### 关于库名、表名、表别名的大小写敏感问题
+<p><strong>关于库名、表名、表别名的大小写敏感问题</strong><br />
 可通过lower_case_table_names参数来控制数据库名、表名、表别名的大小写敏感。</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>mysql&gt; show variables like 'lower%';
@@ -206,8 +206,8 @@
 4. 在unix系统上，如果你准备把lower_case_table_names从0改成1，那么你的先把有大写的表名都改成小写(RENAME TABLE T1 TO t1;)，否则你访问之前有大写字母的表会报如下错误：desc sysNumLimit_0408; ERROR 1146 (42S02): Table ‘kopc.sysnumlimit_0408’doesn’t exist.<br />
 当然也可以在修改参数之前把库做导出，然后删除所有数据库(drop database)，然后修改参数，最后重新导入。</p>
 
-<h6 id="section-1">关于字段值内容的大小写敏感问题</h6>
-<p>字段值的大小写敏感性由MySQL的校对规则(collate)来控制。提到校对规则，就不得不说字符集。字符集是一套符号和编码，collate指定了字符集中数据的排序和比对规则则，比如定义’A’&lt;’B’这样的关系的规则。每种字符集都会对应一定数据库的collate，一般而言，collate是以其相关的字符集名开始，通常包括一个语言名，并且以_ci（ci是case insensitive的缩写）、_cs（cs是case sensitive的缩写）或_bin（二元）结束 。比如 latin1字符集的collate有latin1_general_ci(这个是utf8字符集默认的校对规则)，latin1_general_cs，latin1_bin表示二进制比较(区分大小写)。可以通过show collation命令来查看字符集支持的校对规则有哪些。</p>
+<p><strong>关于字段值内容的大小写敏感问题</strong><br />
+字段值的大小写敏感性由MySQL的校对规则(collate)来控制。提到校对规则，就不得不说字符集。字符集是一套符号和编码，collate指定了字符集中数据的排序和比对规则则，比如定义’A’&lt;’B’这样的关系的规则。每种字符集都会对应一定数据库的collate，一般而言，collate是以其相关的字符集名开始，通常包括一个语言名，并且以_ci（ci是case insensitive的缩写）、_cs（cs是case sensitive的缩写）或_bin（二元）结束 。比如 latin1字符集的collate有latin1_general_ci(这个是utf8字符集默认的校对规则)，latin1_general_cs，latin1_bin表示二进制比较(区分大小写)。可以通过show collation命令来查看字符集支持的校对规则有哪些。</p>
 
 <p>校对规则通过关键字collate指定，可以在数据库、表、列几个层面指定字符集和校对规，越往后优字符集和校对规则生效的优先级越高，如果没有为列或者表指定字符集和校对规则，那么它会继承上级的字符集和校对规则。比如创建数据库test1，指定字符集为utf8，校对规则为utf8_bin。</p>
 
