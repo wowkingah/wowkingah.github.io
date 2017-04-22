@@ -175,7 +175,7 @@
 [root@db_node01 ~]# mysqldump --opt -uxxx -pxxx test t1 &gt; /tmp/t1.sql
 </code>
 <strong><em>tips</em></strong>
-&gt; 适合整库或整表导出。
+&gt; 适合整库或整表导出。<br />
 &gt; –opt：默认包含–add-drop-table –add-locks –create-options –disable-keys –extended-insert –lock-tables –quick –set-charset</p>
 
 <h3 id="into-outfile">INTO OUTFILE</h3>
@@ -183,8 +183,8 @@
 mysql&gt;  SELECT xxx FROM t1 WHERE xx INTO OUTFILE '/tmp/t1.sql';
 </code>
 <strong><em>tips</em></strong>
-&gt; 适合按指定条件导出表。
-&gt; 可以通过FIELDS TERMINATED BY ‘字符串’ 来指定字段之间的分隔符，可以为单个或多个字符。默认为’\t’。
+&gt; 适合按指定条件导出表。 
+&gt; 可以通过FIELDS TERMINATED BY ‘字符串’ 来指定字段之间的分隔符，可以为单个或多个字符。默认为’\t’。<br />
 &gt; 可以通过FIELDS ENCLOSED BY ‘字符’ 来指定括住字段的值，只能为单个字符。默认情况下不使用任何符号，即当表中值为 TEST 时，导出后为 字符TEST符。</p>
 
 <h2 id="section">根据以上导出方式，有两种快速导入方式：</h2>

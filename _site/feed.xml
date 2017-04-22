@@ -5,8 +5,8 @@
     <description>I don&#39;t really know where I&#39;m going, but I hope I go far.</description>
     <link>https://wowkingah.github.io/</link>
     <atom:link href="https://wowkingah.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sat, 22 Apr 2017 18:51:34 +0800</pubDate>
-    <lastBuildDate>Sat, 22 Apr 2017 18:51:34 +0800</lastBuildDate>
+    <pubDate>Sat, 22 Apr 2017 18:55:04 +0800</pubDate>
+    <lastBuildDate>Sat, 22 Apr 2017 18:55:04 +0800</lastBuildDate>
     <generator>Jekyll v3.1.1</generator>
     
       <item>
@@ -832,7 +832,7 @@ http://www.cnblogs.com/yxzfscg/p/5330136.html&lt;/p&gt;
 [root@db_node01 ~]# mysqldump --opt -uxxx -pxxx test t1 &amp;gt; /tmp/t1.sql
 &lt;/code&gt;
 &lt;strong&gt;&lt;em&gt;tips&lt;/em&gt;&lt;/strong&gt;
-&amp;gt; 适合整库或整表导出。
+&amp;gt; 适合整库或整表导出。&lt;br /&gt;
 &amp;gt; –opt：默认包含–add-drop-table –add-locks –create-options –disable-keys –extended-insert –lock-tables –quick –set-charset&lt;/p&gt;
 
 &lt;h3 id=&quot;into-outfile&quot;&gt;INTO OUTFILE&lt;/h3&gt;
@@ -840,8 +840,8 @@ http://www.cnblogs.com/yxzfscg/p/5330136.html&lt;/p&gt;
 mysql&amp;gt;  SELECT xxx FROM t1 WHERE xx INTO OUTFILE &#39;/tmp/t1.sql&#39;;
 &lt;/code&gt;
 &lt;strong&gt;&lt;em&gt;tips&lt;/em&gt;&lt;/strong&gt;
-&amp;gt; 适合按指定条件导出表。
-&amp;gt; 可以通过FIELDS TERMINATED BY ‘字符串’ 来指定字段之间的分隔符，可以为单个或多个字符。默认为’\t’。
+&amp;gt; 适合按指定条件导出表。 
+&amp;gt; 可以通过FIELDS TERMINATED BY ‘字符串’ 来指定字段之间的分隔符，可以为单个或多个字符。默认为’\t’。&lt;br /&gt;
 &amp;gt; 可以通过FIELDS ENCLOSED BY ‘字符’ 来指定括住字段的值，只能为单个字符。默认情况下不使用任何符号，即当表中值为 TEST 时，导出后为 字符TEST符。&lt;/p&gt;
 
 &lt;h2 id=&quot;section&quot;&gt;根据以上导出方式，有两种快速导入方式：&lt;/h2&gt;
