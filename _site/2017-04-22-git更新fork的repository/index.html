@@ -6,17 +6,17 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-  <title>MySQL版本升级</title>
-  <meta name="description" content="小版本升级从MySQL 5.6.1升级到MySQL5.6.x，升级未跨越5.6.x称为小版本升级。YUM升级      不可少的备份；    查看YUM可升级的目标版本：bash  [root@ZTEST-206 ~]# yum list mysql-community-server Installed Pack...">
+  <title>Linux下使用github</title>
+  <meta name="description" content="I don't really know where I'm going, but I hope I go far.">
   <meta name="author" content="Wowking">
 
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="MySQL版本升级">
-  <meta name="twitter:description" content="小版本升级从MySQL 5.6.1升级到MySQL5.6.x，升级未跨越5.6.x称为小版本升级。YUM升级      不可少的备份；    查看YUM可升级的目标版本：bash  [root@ZTEST-206 ~]# yum list mysql-community-server Installed Pack...">
+  <meta name="twitter:title" content="Linux下使用github">
+  <meta name="twitter:description" content="I don't really know where I'm going, but I hope I go far.">
   
   <meta property="og:type" content="article">
-  <meta property="og:title" content="MySQL版本升级">
-  <meta property="og:description" content="小版本升级从MySQL 5.6.1升级到MySQL5.6.x，升级未跨越5.6.x称为小版本升级。YUM升级      不可少的备份；    查看YUM可升级的目标版本：bash  [root@ZTEST-206 ~]# yum list mysql-community-server Installed Pack...">
+  <meta property="og:title" content="Linux下使用github">
+  <meta property="og:description" content="I don't really know where I'm going, but I hope I go far.">
   
   <link rel="icon" type="image/png" href="/images/favicon.png" />
   <link href="/images/favicon.png" rel="shortcut icon" type="image/png">
@@ -24,7 +24,7 @@
   <link rel="stylesheet" href="/css/main.css">
   <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
 
-  <link rel="canonical" href="https://wowkingah.github.io/2016/12/MySQL%E7%89%88%E6%9C%AC%E5%8D%87%E7%BA%A7/">
+  <link rel="canonical" href="https://wowkingah.github.io/2017-04-22-git%E6%9B%B4%E6%96%B0fork%E7%9A%84repository/">
   <link rel="alternate" type="application/rss+xml" title="Wowking" href="https://wowkingah.github.io/feed.xml">
   
   <meta name="google-site-verification" content="1-1ZlHoRvM0T2FqPbW2S-qLgYXN6rsn52kErlMPd_gw" />
@@ -155,10 +155,10 @@
         <div class="content-wrapper__inner">
             <article class="post-container post-container--single" itemscope itemtype="http://schema.org/BlogPosting">
   <header class="post-header">
-    <h1 class="post-title">MySQL版本升级</h1>
+    <h1 class="post-title">Linux下使用github</h1>
     <div class="post-meta">
       <img src="/images/calendar.png" width="20px"/> 
-      <time datetime="2016-12-06 00:00:00 +0800" itemprop="datePublished" class="post-meta__date date">2016-12-06</time>  
+      <time datetime="2017-04-22" itemprop="datePublished" class="post-meta__date date">2017-04-22</time>  
          
       <span id="busuanzi_container_page_pv"> | 阅读：<span id="busuanzi_value_page_pv"></span>次</span>
     </p>
@@ -166,64 +166,78 @@
   </header>
 
   <section class="post">
-    <h3 id="section">小版本升级</h3>
-<p>从MySQL 5.6.1升级到MySQL5.6.x，升级未跨越5.6.x称为小版本升级。</p>
+    <p>Fork一个别人的repository，做了一些改动，想提交pull request的时候，发现原先别人的repository已经又有了一些更新了，这个时候想使得自己fork出的repository也得到这些更新，即和原repository同步，该怎么做呢？这个问题应该被问烂了，stackoverflow上也有解答，基本上是指向的GitHub上的官方文档。最主要的是这2篇：
+https://help.github.com/articles/configuring-a-remote-for-a-fork/
+https://help.github.com/articles/syncing-a-fork/
+本文略作翻译，以中文解答这个问题。
+——</p>
 
-<h3 id="yum">YUM升级</h3>
-
-<blockquote>
-  <ol>
-    <li>不可少的备份；</li>
-    <li>查看YUM可升级的目标版本：
-<code class="highlighter-rouge">bash 
- [root@ZTEST-206 ~]# yum list mysql-community-server
- Installed Packages
- mysql-community-server.x86_64 5.6.28-2.el6 @mysql56-community
- Available Packages
- mysql-community-server.x86_64 5.6.34-2.el6 mysql56-community
-</code></li>
-  </ol>
-</blockquote>
-
-<blockquote>
-  <ol>
-    <li>升级： 
-<code class="highlighter-rouge">bash 
- [root@ZTEST-206 ~]# yum update mysql-community-server
-</code></li>
-  </ol>
-</blockquote>
-
-<blockquote>
-  <ol>
-    <li>执行mysql_upgrade检查：
+<h3 id="section">查看当前配置</h3>
+<p>首先，检查一下当前的配置，看看当前有没有已经设置了上游，这要使用git remote -v 命令。如下：
 <code class="highlighter-rouge">bash
- [root@ZTEST-206 ~]# mysql_upgrade -uroot -p123456
-</code></li>
-  </ol>
-</blockquote>
+$git remote -v  
+origin  https://github.com/YOUR_USERNAME/YOUR_FORK.git (fetch)  
+origin  https://github.com/YOUR_USERNAME/YOUR_FORK.git (push) 
+</code> 
+以上表明，origin这个repository对应的是远端的https开头的这个链接指向的repository，即自己fork出的repository。</p>
 
-<blockquote>
-  <ol>
-    <li>查看升级后版本：<br />
-<code class="highlighter-rouge">bash 
- mysql&gt; select @@version;  
- +------------+  
- | @@version |  
- +------------+  
- | 5.6.34-log |   
- +------------+  
- 1 row in set (0.00 sec)    
-</code></li>
-  </ol>
-</blockquote>
+<h3 id="section-1">设置上游</h3>
+<p>第二步，将原repository设置为自己fork出的repository的上游（upstream）。运用如下的命令：
+<code class="highlighter-rouge">bash
+$git remote add upstream https://github.com/ORIGINAL_OWNER/ORIGINAL_REPOSITORY.git
+</code></p>
 
-<h3 id="tips">tips:</h3>
-<p>如果数据库是主从环境，遵循先升级从库，再升级主备原则；<br />
-一般YUM更新后会重启MySQL。</p>
+<p>运用第一步中提到的git remove -v命令再次检查一下，结果如下：
+<code class="highlighter-rouge">bash
+$git remote -v  
+origin    https://github.com/YOUR_USERNAME/YOUR_FORK.git (fetch)  
+origin    https://github.com/YOUR_USERNAME/YOUR_FORK.git (push)  
+upstream  https://github.com/ORIGINAL_OWNER/ORIGINAL_REPOSITORY.git (fetch)  
+upstream  https://github.com/ORIGINAL_OWNER/ORIGINAL_REPOSITORY.git (push)  
+</code></p>
 
-<h3 id="reference">reference:</h3>
-<p>http://dev.mysql.com/doc/refman/5.6/en/updating-yum-repo.html</p>
+<h3 id="section-2">获取上游更新</h3>
+<p>第三步，运行 git fetch upstream 命令，如下：
+<code class="highlighter-rouge">bash
+$git fetch upstream  
+remote: Counting objects: 75, done.  
+remote: Compressing objects: 100% (53/53), done.  
+remote: Total 62 (delta 27), reused 44 (delta 9)  
+Unpacking objects: 100% (62/62), done.  
+From https://github.com/ORIGINAL_OWNER/ORIGINAL_REPOSITORY  
+ * [new branch]      master     -&gt; upstream/master
+</code><br />
+以上表明，远程的原repository上确实有一些更新，现在它们已经被download到本地的.git文件夹下了，但是还没有合并到本地的代码中。</p>
+
+<h3 id="checkoutrepo">checkout本地repo</h3>
+<p>第四步，git checkout master，这是保证切换到本地的repository的master上，如果本来就在，那么这一步不是必须的。
+<code class="highlighter-rouge">bash
+$git fetch upstream 
+</code></p>
+
+<h3 id="merge">merge上游更新</h3>
+<p>第五步，运行 git merge upstream/master 命令，将upstream/master上的更新合并到本地的master上，其实就是将第三步中download到.git文件夹下的那些change合并到本地的master中。如下：
+<code class="highlighter-rouge">bash
+$git merge upstream/master  
+Updating a422352..5fdff0f  
+Fast-forward  
+ README                    |    9 -------  
+ README.md                 |    7 ++++++  
+ 2 files changed, 7 insertions(+), 9 deletions(-)  
+ delete mode 100644 README  
+ create mode 100644 README.md  
+</code>
+如果本地没有什么自己独立的更新的话，那么将执行”fast-forward”的合并。如果本地有自己独立的更新，而又会引起冲突的话，则要解决冲突，再commit。</p>
+
+<p>关于解决冲突，如果明确所有冲突都是使用upstream/master上的来override自己的，那么可以直接运行如下命令，则无需解决冲突了：
+<code class="highlighter-rouge">bash
+git merge -X theirs upstream/master  
+</code></p>
+
+<p>注意，以上步骤结束后，仅仅是本地的fork出的repository和原repository取得了同步，如果想让远程的fork出的repository也同样取得同步，必须再git push上去。</p>
+
+<h3 id="reference">reference</h3>
+<p>http://blog.csdn.net/nirendao/article/details/51464191</p>
 
 
   </section>
@@ -292,16 +306,6 @@
 
        <ul class="pager">
         
-        <li class="previous">
-            <a href="/2016/11/MySQL%E5%A4%A7%E8%A1%A8%E5%BF%AB%E9%80%9F%E5%AF%BC%E5%85%A5%E5%AF%BC%E5%87%BA/" data-toggle="tooltip" data-placement="top" title="MySQL大表快速导入导出">上一篇：  <span>MySQL大表快速导入导出</span>
-            </a>
-        </li>
-        
-        
-        <li class="next">
-            <a href="/2016/12/SHELL%E5%AE%9E%E7%8E%B0%E5%A4%9A%E7%BA%BF%E7%A8%8B%E5%B9%B6%E5%8F%91/" data-toggle="tooltip" data-placement="top" title="SHELL实现多线程并发">下一篇：  <span>SHELL实现多线程并发</span>
-            </a>
-        </li>
         
     </ul>
 </section>
@@ -309,7 +313,7 @@
 <section class="post-comments">
 
   
-    <div class="ds-thread" data-thread-key="/2016/12/MySQL%E7%89%88%E6%9C%AC%E5%8D%87%E7%BA%A7/" data-title="MySQL版本升级" data-url="https://wowkingah.github.io/2016/12/MySQL%E7%89%88%E6%9C%AC%E5%8D%87%E7%BA%A7/"></div>
+    <div class="ds-thread" data-thread-key="/2017-04-22-git%E6%9B%B4%E6%96%B0fork%E7%9A%84repository/" data-title="Linux下使用github" data-url="https://wowkingah.github.io/2017-04-22-git%E6%9B%B4%E6%96%B0fork%E7%9A%84repository/"></div>
 
     <script type="text/javascript">
         var duoshuoQuery = {short_name:"Wowking"};
