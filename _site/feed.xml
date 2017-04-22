@@ -5,9 +5,49 @@
     <description>I don&#39;t really know where I&#39;m going, but I hope I go far.</description>
     <link>https://wowkingah.github.io/</link>
     <atom:link href="https://wowkingah.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sat, 22 Apr 2017 19:09:57 +0800</pubDate>
-    <lastBuildDate>Sat, 22 Apr 2017 19:09:57 +0800</lastBuildDate>
+    <pubDate>Sun, 23 Apr 2017 01:21:39 +0800</pubDate>
+    <lastBuildDate>Sun, 23 Apr 2017 01:21:39 +0800</lastBuildDate>
     <generator>Jekyll v3.1.1</generator>
+    
+      <item>
+        <title>Markdown常用语法</title>
+        <description>&lt;h3 id=&quot;section&quot;&gt;标题&lt;/h3&gt;
+&lt;p&gt;H1：# Header 1          &lt;br /&gt;
+H2：## Header 2         &lt;br /&gt;
+H3：### Header 3         &lt;br /&gt;
+H4：#### Header 4         &lt;br /&gt;
+H5：##### Header 5          &lt;br /&gt;
+H6：###### Header 6&lt;/p&gt;
+
+&lt;h3 id=&quot;section-1&quot;&gt;字体&lt;/h3&gt;
+&lt;p&gt;斜体：&lt;code class=&quot;highlighter-rouge&quot;&gt;*斜体*&lt;/code&gt;&lt;br /&gt;
+粗体：&lt;code class=&quot;highlighter-rouge&quot;&gt;**粗体**&lt;/code&gt;&lt;br /&gt;
+粗斜体：&lt;code class=&quot;highlighter-rouge&quot;&gt;***粗斜体***&lt;/code&gt;&lt;br /&gt;
+删除线：&lt;code class=&quot;highlighter-rouge&quot;&gt;~~删除线~~&lt;/code&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;section-2&quot;&gt;其它&lt;/h3&gt;
+&lt;p&gt;段落：段落之间空一行&lt;br /&gt;
+换行：一行结束时输入两个空格    &lt;br /&gt;
+列表：&lt;code class=&quot;highlighter-rouge&quot;&gt;* 一个列表项&lt;/code&gt;&lt;br /&gt;
+引用：&lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;gt; 引用内容&lt;/code&gt;&lt;br /&gt;
+链接：&lt;code class=&quot;highlighter-rouge&quot;&gt;[Title](URL)&lt;/code&gt;&lt;br /&gt;
+图片：&lt;code class=&quot;highlighter-rouge&quot;&gt;![](/images/image.jpg)&lt;/code&gt;&lt;br /&gt;
+列表1：&lt;code class=&quot;highlighter-rouge&quot;&gt;[ ] 列表功能1&lt;/code&gt;&lt;br /&gt;
+列表2：&lt;code class=&quot;highlighter-rouge&quot;&gt;[x] 列表功能2&lt;/code&gt;&lt;br /&gt;
+代码高亮：
+&lt;code class=&quot;highlighter-rouge&quot;&gt;python
+    print &#39;3个`(反引号)+python+代码+3个`(反引号)结尾&#39;
+&lt;/code&gt;&lt;br /&gt;
+画水平线 (HR)：&lt;code class=&quot;highlighter-rouge&quot;&gt;--------&lt;/code&gt;&lt;/p&gt;
+</description>
+        <pubDate>Sun, 23 Apr 2017 00:00:00 +0800</pubDate>
+        <link>https://wowkingah.github.io/2017/04/Markdown_Syntax/</link>
+        <guid isPermaLink="true">https://wowkingah.github.io/2017/04/Markdown_Syntax/</guid>
+        
+        <category>markdown</category>
+        
+        
+      </item>
     
       <item>
         <title>git更新fork的repository</title>
@@ -895,63 +935,6 @@ mysql&amp;gt; SET AUTOCOMMIT=0;
         <pubDate>Wed, 30 Nov 2016 00:00:00 +0800</pubDate>
         <link>https://wowkingah.github.io/2016/11/MySQL%E5%A4%A7%E8%A1%A8%E5%BF%AB%E9%80%9F%E5%AF%BC%E5%85%A5%E5%AF%BC%E5%87%BA/</link>
         <guid isPermaLink="true">https://wowkingah.github.io/2016/11/MySQL%E5%A4%A7%E8%A1%A8%E5%BF%AB%E9%80%9F%E5%AF%BC%E5%85%A5%E5%AF%BC%E5%87%BA/</guid>
-        
-        <category>MySQL</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>加密脚本中MySQL用户密码</title>
-        <description>&lt;p&gt;MySQL 5.6.6开始支持mysql_config_editor小工具。该工具将创建一个login-path，用于存储数据库的身份认证信息（仅仅只是存储数据库的用户密码等信息，实际的用户密码还是数据库创建）。
-  当脚本等一些地方需连接数据库时，可避免暴露用户明文密码，以增强数据库安全。&lt;/p&gt;
-
-&lt;h2 id=&quot;section&quot;&gt;语法&lt;/h2&gt;
-&lt;p&gt;### 创建login-path
-&lt;strong&gt;&lt;em&gt;数据库中已有backup用户&lt;/em&gt;&lt;/strong&gt;
-&lt;code class=&quot;highlighter-rouge&quot;&gt;bash
-[root@ZTEST-218 ~]# mysql_config_editor set --login-path=backup_db --user=backup --password --host=localhost --port=3306
-Enter password:
-&lt;/code&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;login-path&quot;&gt;查看login-path&lt;/h3&gt;
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;bash
-[root@ZTEST-218 ~]# mysql_config_editor print --all
-[db_backup]
-user = backup
-password = *****
-host = localhost
-port = 3306
-&lt;/code&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;login-path-1&quot;&gt;查看login-path存储路径及格式&lt;/h3&gt;
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;bash
-[root@ZTEST-218 ~]# file ~/.mylogin.cnf
-/root/.mylogin.cnf: data
-&lt;/code&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;login-path-2&quot;&gt;删除login-path&lt;/h3&gt;
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;bash
-[root@ZTEST-218 ~]# mysql_config_editor remove --login-path=backup_db
-[root@ZTEST-218 ~]# mysql_config_editor print --all
-[root@ZTEST-218 ~]# mysqldump --login-path=backup_db test &amp;gt; test.sql
-mysqldump: Got error: 1045: Access denied for user &#39;root&#39;@&#39;localhost&#39; (using password: NO) when trying to connect
-&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;&lt;em&gt;tips&lt;/em&gt;&lt;/strong&gt;
-mysqldump在脚本中使用login-path备份，将不再提示Warning: Using a password on the command line interface can be insecure.
-&lt;code class=&quot;highlighter-rouge&quot;&gt;bash
-[root@ZTEST-218 ~]# mysqldump --login-path=db_backup test &amp;gt; test.sql
-[root@ZTEST-218 ~]# ll test.sql
--rw-r--r-- 1 root root 169259 Oct 28 14:11 test.sql
-&lt;/code&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;reference&quot;&gt;reference&lt;/h3&gt;
-&lt;p&gt;http://dev.mysql.com/doc/refman/5.6/en/mysql-config-editor.html&lt;/p&gt;
-</description>
-        <pubDate>Fri, 28 Oct 2016 00:00:00 +0800</pubDate>
-        <link>https://wowkingah.github.io/2016/10/%E5%8A%A0%E5%AF%86%E8%84%9A%E6%9C%AC%E4%B8%ADMySQL%E7%94%A8%E6%88%B7%E5%AF%86%E7%A0%81/</link>
-        <guid isPermaLink="true">https://wowkingah.github.io/2016/10/%E5%8A%A0%E5%AF%86%E8%84%9A%E6%9C%AC%E4%B8%ADMySQL%E7%94%A8%E6%88%B7%E5%AF%86%E7%A0%81/</guid>
         
         <category>MySQL</category>
         
