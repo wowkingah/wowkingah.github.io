@@ -5,8 +5,8 @@
     <description>I don&#39;t really know where I&#39;m going, but I hope I go far.</description>
     <link>https://wowkingah.github.io/</link>
     <atom:link href="https://wowkingah.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sat, 22 Apr 2017 19:02:29 +0800</pubDate>
-    <lastBuildDate>Sat, 22 Apr 2017 19:02:29 +0800</lastBuildDate>
+    <pubDate>Sat, 22 Apr 2017 19:09:57 +0800</pubDate>
+    <lastBuildDate>Sat, 22 Apr 2017 19:09:57 +0800</lastBuildDate>
     <generator>Jekyll v3.1.1</generator>
     
       <item>
@@ -168,7 +168,11 @@ git merge -X theirs upstream/master
         <link>https://wowkingah.github.io/2017/04/Subline%E7%BC%96%E8%BE%91markdown%E6%96%87%E6%9C%AC/</link>
         <guid isPermaLink="true">https://wowkingah.github.io/2017/04/Subline%E7%BC%96%E8%BE%91markdown%E6%96%87%E6%9C%AC/</guid>
         
-        <category>tools subline</category>
+        <category>tools</category>
+        
+        <category>subline</category>
+        
+        <category>markdown</category>
         
         
       </item>
@@ -499,6 +503,12 @@ https://bbs.aliyun.com/read/243931.html&lt;/p&gt;
         <guid isPermaLink="true">https://wowkingah.github.io/2017/01/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%A4%A7%E5%B0%8F%E5%86%99%E6%95%8F%E6%84%9F%E9%97%AE%E9%A2%98/</guid>
         
         <category>databases</category>
+        
+        <category>mysql</category>
+        
+        <category>oracle</category>
+        
+        <category>mssql</category>
         
         
       </item>
