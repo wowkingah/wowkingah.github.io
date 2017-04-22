@@ -5,8 +5,8 @@
     <description>I don&#39;t really know where I&#39;m going, but I hope I go far.</description>
     <link>https://wowkingah.github.io/</link>
     <atom:link href="https://wowkingah.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sat, 22 Apr 2017 14:38:45 +0800</pubDate>
-    <lastBuildDate>Sat, 22 Apr 2017 14:38:45 +0800</lastBuildDate>
+    <pubDate>Sat, 22 Apr 2017 14:46:40 +0800</pubDate>
+    <lastBuildDate>Sat, 22 Apr 2017 14:46:40 +0800</lastBuildDate>
     <generator>Jekyll v3.1.1</generator>
     
       <item>
@@ -375,8 +375,9 @@ do
 done&lt;/p&gt;
 
 &lt;p&gt;STOP_TIME=&lt;code class=&quot;highlighter-rouge&quot;&gt;date +%s&lt;/code&gt;
-echo “TIME: $(expr ${STOP_TIME} - ${START_TIME})”
-[root@ZTEST-218 ~]# sh task.s
+echo “TIME: $(expr ${STOP_TIME} - ${START_TIME})”&lt;/p&gt;
+
+&lt;p&gt;[root@ZTEST-218 ~]# sh task.s
 1: success
 2: success
 3: success
@@ -408,8 +409,9 @@ done
 wait&lt;/p&gt;
 
 &lt;p&gt;STOP_TIME=&lt;code class=&quot;highlighter-rouge&quot;&gt;date +%s&lt;/code&gt;
-echo “TIME: $(expr ${STOP_TIME} - ${START_TIME})”
-[root@ZTEST-218 ~]# sh d_task.sh
+echo “TIME: $(expr ${STOP_TIME} - ${START_TIME})”&lt;/p&gt;
+
+&lt;p&gt;[root@ZTEST-218 ~]# sh d_task.sh
 7: success
 9: success
 3: success
@@ -422,7 +424,7 @@ echo “TIME: $(expr ${STOP_TIME} - ${START_TIME})”
 8: success
 TIME: 2
 ```
-&amp;gt; tips:
+&amp;gt; &lt;strong&gt;&lt;em&gt;tips:&lt;/em&gt;&lt;/strong&gt;
 &amp;gt; 本次执行时间为2s.
 &amp;gt; 使用“{}”将执行程序变为一个块，然后用“&amp;amp;”将放入后台。10次执行全部放入后台后，需要用wait来等待所有后台进程执行结束，否则操作系统不会等待，而直接继续执行后续指令，直到整个程序结束。
 &amp;gt; 缺陷：该方法不能控制运行在后台的进程数，任务较多时会拖垮操作系统。&lt;/p&gt;
@@ -476,10 +478,10 @@ exec 6&amp;lt;&amp;amp;-&lt;/p&gt;
 10: success
 TIME: 4
 ```
-&amp;gt; tips:
+&amp;gt; &lt;strong&gt;&lt;em&gt;tips:&lt;/em&gt;&lt;/strong&gt;
 &amp;gt; 本次执行时间为4s.&lt;/p&gt;
 
-&lt;h4 id=&quot;reference&quot;&gt;reference&lt;/h4&gt;
+&lt;h3 id=&quot;reference&quot;&gt;reference&lt;/h3&gt;
 &lt;p&gt;http://www.jianshu.com/p/2d60e6513fdd
 http://www.cnblogs.com/yxzfscg/p/5330136.html&lt;/p&gt;
 </description>
