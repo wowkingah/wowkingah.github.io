@@ -7,16 +7,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
   <title>MySQL版本升级</title>
-  <meta name="description" content="小版本升级从MySQL 5.6.1升级到MySQL5.6.x，升级未跨越5.6.x称为小版本升级。YUM升级      不可少的备份；        查看YUM可升级的目标版本： [root@ZTEST-206 ~]# yum list mysql-community-server Installed Packa...">
+  <meta name="description" content="小版本升级从MySQL 5.6.1升级到MySQL5.6.x，升级未跨越5.6.x称为小版本升级。YUM升级      不可少的备份；    查看YUM可升级的目标版本：bash  [root@ZTEST-206 ~]# yum list mysql-community-server Installed Pack...">
   <meta name="author" content="Wowking">
 
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="MySQL版本升级">
-  <meta name="twitter:description" content="小版本升级从MySQL 5.6.1升级到MySQL5.6.x，升级未跨越5.6.x称为小版本升级。YUM升级      不可少的备份；        查看YUM可升级的目标版本： [root@ZTEST-206 ~]# yum list mysql-community-server Installed Packa...">
+  <meta name="twitter:description" content="小版本升级从MySQL 5.6.1升级到MySQL5.6.x，升级未跨越5.6.x称为小版本升级。YUM升级      不可少的备份；    查看YUM可升级的目标版本：bash  [root@ZTEST-206 ~]# yum list mysql-community-server Installed Pack...">
   
   <meta property="og:type" content="article">
   <meta property="og:title" content="MySQL版本升级">
-  <meta property="og:description" content="小版本升级从MySQL 5.6.1升级到MySQL5.6.x，升级未跨越5.6.x称为小版本升级。YUM升级      不可少的备份；        查看YUM可升级的目标版本： [root@ZTEST-206 ~]# yum list mysql-community-server Installed Packa...">
+  <meta property="og:description" content="小版本升级从MySQL 5.6.1升级到MySQL5.6.x，升级未跨越5.6.x称为小版本升级。YUM升级      不可少的备份；    查看YUM可升级的目标版本：bash  [root@ZTEST-206 ~]# yum list mysql-community-server Installed Pack...">
   
   <link rel="icon" type="image/png" href="/images/favicon.png" />
   <link href="/images/favicon.png" rel="shortcut icon" type="image/png">
@@ -171,43 +171,58 @@
 
 <h3 id="yum">YUM升级</h3>
 
-<ol>
-  <li>
-    <p>不可少的备份；</p>
-  </li>
-  <li>
-    <p>查看YUM可升级的目标版本：<br />
+<blockquote>
+  <ol>
+    <li>不可少的备份；</li>
+    <li>查看YUM可升级的目标版本：
+<code class="highlighter-rouge">bash 
  [root@ZTEST-206 ~]# yum list mysql-community-server
  Installed Packages
  mysql-community-server.x86_64 5.6.28-2.el6 @mysql56-community
  Available Packages
- mysql-community-server.x86_64 5.6.34-2.el6 mysql56-community</p>
-  </li>
-  <li>
-    <p>升级：<br />
- [root@ZTEST-206 ~]# yum update mysql-community-server</p>
-  </li>
-  <li>
-    <p>执行mysql_upgrade检查：<br />
- [root@ZTEST-206 ~]# mysql_upgrade -uroot -p123456</p>
-  </li>
-  <li>
-    <p>查看升级后版本：<br />
- mysql&gt; select @@version;<br />
- +————+<br />
- | @@version |<br />
- +————+<br />
- | 5.6.34-log | <br />
- +————+<br />
- 1 row in set (0.00 sec)</p>
-  </li>
-</ol>
+ mysql-community-server.x86_64 5.6.34-2.el6 mysql56-community
+</code></li>
+  </ol>
+</blockquote>
 
-<h6 id="tips">tips:</h6>
+<blockquote>
+  <ol>
+    <li>升级： 
+<code class="highlighter-rouge">bash 
+ [root@ZTEST-206 ~]# yum update mysql-community-server
+</code></li>
+  </ol>
+</blockquote>
+
+<blockquote>
+  <ol>
+    <li>执行mysql_upgrade检查：
+<code class="highlighter-rouge">bash
+ [root@ZTEST-206 ~]# mysql_upgrade -uroot -p123456
+</code></li>
+  </ol>
+</blockquote>
+
+<blockquote>
+  <ol>
+    <li>查看升级后版本：<br />
+<code class="highlighter-rouge">bash 
+ mysql&gt; select @@version;  
+ +------------+  
+ | @@version |  
+ +------------+  
+ | 5.6.34-log |   
+ +------------+  
+ 1 row in set (0.00 sec)    
+</code></li>
+  </ol>
+</blockquote>
+
+<h3 id="tips">tips:</h3>
 <p>如果数据库是主从环境，遵循先升级从库，再升级主备原则；<br />
 一般YUM更新后会重启MySQL。</p>
 
-<h6 id="reference">reference:</h6>
+<h3 id="reference">reference:</h3>
 <p>http://dev.mysql.com/doc/refman/5.6/en/updating-yum-repo.html</p>
 
 
