@@ -2,7 +2,7 @@
 layout: post
 title: Subline Text3编辑markdown文本
 date: 2017-04-22 
-tag: tools subline markdown md
+tag: tools subline
 ---
 
 之前一直使用notepad++写SHELL、SQL，有一天想玩玩markdown的时候，觉得不是那么方便。于是，就有了subline的出现。  
