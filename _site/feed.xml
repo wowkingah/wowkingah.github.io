@@ -5,8 +5,8 @@
     <description>I don&#39;t really know where I&#39;m going, but I hope I go far.</description>
     <link>https://wowkingah.github.io/</link>
     <atom:link href="https://wowkingah.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sat, 22 Apr 2017 13:01:33 +0800</pubDate>
-    <lastBuildDate>Sat, 22 Apr 2017 13:01:33 +0800</lastBuildDate>
+    <pubDate>Sat, 22 Apr 2017 14:38:45 +0800</pubDate>
+    <lastBuildDate>Sat, 22 Apr 2017 14:38:45 +0800</lastBuildDate>
     <generator>Jekyll v3.1.1</generator>
     
       <item>
@@ -354,6 +354,140 @@ This is my first blog for Jekyll.&lt;/p&gt;
         <guid isPermaLink="true">https://wowkingah.github.io/2016/12/my_first_blog/</guid>
         
         <category>personal</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>SHELL实现多线程并发</title>
+        <description>&lt;p&gt;SHELL本身是按顺序执行，并没有并发概念，但可以通过几种常见方式来模拟实现多线程并发。&lt;/p&gt;
+
+&lt;h3 id=&quot;section&quot;&gt;原始脚本&lt;/h3&gt;
+&lt;p&gt;```bash
+[root@ZTEST-218 ~]# cat task.sh
+#!/bin/bash&lt;/p&gt;
+
+&lt;p&gt;START_TIME=&lt;code class=&quot;highlighter-rouge&quot;&gt;date +%s&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;for ((I=1;I&amp;lt;=10;I++))   #模拟10个任务
+do
+    echo “${I}: success” ; sleep 2
+done&lt;/p&gt;
+
+&lt;p&gt;STOP_TIME=&lt;code class=&quot;highlighter-rouge&quot;&gt;date +%s&lt;/code&gt;
+echo “TIME: $(expr ${STOP_TIME} - ${START_TIME})”
+[root@ZTEST-218 ~]# sh task.s
+1: success
+2: success
+3: success
+4: success
+5: success
+6: success
+7: success
+8: success
+9: success
+10: success
+TIME: 20
+```
+&amp;gt; tips:
+&amp;gt; 顺序执行需要20s.&lt;/p&gt;
+
+&lt;h3 id=&quot;section-1&quot;&gt;方式一：后台执行&lt;/h3&gt;
+&lt;p&gt;```bash
+[root@ZTEST-218 ~]# cat d_task.sh
+#!/bin/bash&lt;/p&gt;
+
+&lt;p&gt;START_TIME=&lt;code class=&quot;highlighter-rouge&quot;&gt;date +%s&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;for ((I=1;I&amp;lt;=10;I++))
+do
+    {
+        echo “${I}: success” ; sleep 2
+    }&amp;amp;
+done
+wait&lt;/p&gt;
+
+&lt;p&gt;STOP_TIME=&lt;code class=&quot;highlighter-rouge&quot;&gt;date +%s&lt;/code&gt;
+echo “TIME: $(expr ${STOP_TIME} - ${START_TIME})”
+[root@ZTEST-218 ~]# sh d_task.sh
+7: success
+9: success
+3: success
+10: success
+5: success
+6: success
+1: success
+2: success
+4: success
+8: success
+TIME: 2
+```
+&amp;gt; tips:
+&amp;gt; 本次执行时间为2s.
+&amp;gt; 使用“{}”将执行程序变为一个块，然后用“&amp;amp;”将放入后台。10次执行全部放入后台后，需要用wait来等待所有后台进程执行结束，否则操作系统不会等待，而直接继续执行后续指令，直到整个程序结束。
+&amp;gt; 缺陷：该方法不能控制运行在后台的进程数，任务较多时会拖垮操作系统。&lt;/p&gt;
+
+&lt;h3 id=&quot;section-2&quot;&gt;方式二：管道+文件描述符&lt;/h3&gt;
+&lt;p&gt;```bash
+[root@ZTEST-218 ~]# cat p_task.sh
+#!/bin/bash
+THREAD_NUM=5
+TMP_FILE=”/tmp/$$.fifo”&lt;/p&gt;
+
+&lt;p&gt;trap “exec 6&amp;gt;&amp;amp;-;exec 6&amp;lt;&amp;amp;-;exit 0” 2     #脚本运行过程中，如果接收到信号2(Ctrl+C)中断命令，则关闭文件描述符6的读写，并正常退出&lt;/p&gt;
+
+&lt;p&gt;mkfifo ${TMP_FILE}  #创建有名管道
+exec 6&amp;lt;&amp;gt;${TMP_FILE} #创建文件描述符，文件描述符可使用3-(n-1)，n取值范围：ulimit -n。以读写(&amp;lt;,读；&amp;gt;,写)方式绑定TMP_FILE管道文件。标识对文件描述符6的所有操作等同于对管道文件TMP_FILE的操作
+rm -rf ${TMP_FILE}  #为什么不直接使用管道文件？因为管道的一个重要特性：读写必须同时存在，缺失某个操作，另一个操作就会滞留。绑定文件描述符（读、写绑定）正好解决了这个问题&lt;/p&gt;
+
+&lt;p&gt;for ((J=1;J&amp;lt;=${THREAD_NUM};J++)) #向管道中中输入THREAD_NUM个并发数量的空行。为什么写入空行而不是字符？那是因为管道文件的读取是以行为单位。
+do
+    echo &amp;gt;&amp;amp;6
+done&lt;/p&gt;
+
+&lt;p&gt;START_TIME=&lt;code class=&quot;highlighter-rouge&quot;&gt;date +%s&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;for ((I=1;I&amp;lt;=10;I++))
+do 
+    read -u6 #从管道中读取行，每次读一行。每读一次就会减少一个空行，直到管道中没有回车符，所有行读取完毕后执行挂起，实现线程数量控制。
+    {
+        echo “${I}: success” ; sleep 2
+        echo &amp;gt;&amp;amp;6    #任务在后台执行结束后，向文件描述符中写入一个空行。如果不在向描述符中写入空行，当后台放入THREAD_NUM个任务之后，由于描述符中没有可读取的空行，会导致read -u6停顿。
+    }&amp;amp;
+done
+wait&lt;/p&gt;
+
+&lt;p&gt;STOP_TIME=&lt;code class=&quot;highlighter-rouge&quot;&gt;date +%s&lt;/code&gt;
+echo “TIME: $(expr ${STOP_TIME} - ${START_TIME})”&lt;/p&gt;
+
+&lt;p&gt;exec 6&amp;gt;&amp;amp;-
+exec 6&amp;lt;&amp;amp;-&lt;/p&gt;
+
+&lt;p&gt;[root@ZTEST-218 ~]# sh p_task.sh
+1: success
+2: success
+3: success
+5: success
+4: success
+6: success
+7: success
+9: success
+8: success
+10: success
+TIME: 4
+```
+&amp;gt; tips:
+&amp;gt; 本次执行时间为4s.&lt;/p&gt;
+
+&lt;h4 id=&quot;reference&quot;&gt;reference&lt;/h4&gt;
+&lt;p&gt;http://www.jianshu.com/p/2d60e6513fdd
+http://www.cnblogs.com/yxzfscg/p/5330136.html&lt;/p&gt;
+</description>
+        <pubDate>Tue, 06 Dec 2016 00:00:00 +0800</pubDate>
+        <link>https://wowkingah.github.io/2016/12/SHELL%E5%AE%9E%E7%8E%B0%E5%A4%9A%E7%BA%BF%E7%A8%8B%E5%B9%B6%E5%8F%91/</link>
+        <guid isPermaLink="true">https://wowkingah.github.io/2016/12/SHELL%E5%AE%9E%E7%8E%B0%E5%A4%9A%E7%BA%BF%E7%A8%8B%E5%B9%B6%E5%8F%91/</guid>
+        
+        <category>SHELL</category>
         
         
       </item>
