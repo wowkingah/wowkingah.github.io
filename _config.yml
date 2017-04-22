@@ -15,21 +15,21 @@ comment:
 
 # Social
 social:
-    # weibo:  
+#    weibo: 
     github: wowkingah
     # twitter: 
-    # mail: 
+#    mail: 
 
 # 百度统计 
 # 使用博客模板请去掉或者更换 id 
 #baidu:
-#    id:   
+#    id: 1  
 
 # Google Analytics
 # 使用博客模板请去掉或者更换 id
 ga:
-    id: UA-62308466-1
-    host: auto
+    id: UA-62308466-1   
+    host: auto  
 
 
 # 《----------------- 上面的信息修改成你自己的 ---------------------------》
@@ -38,12 +38,14 @@ ga:
 #  _post/ 下的文章更换成你自己的文章
 #
 #
-# 《--------------- 下面的信息可以自行选择是否修改 -----------------------》
+# 《--------------- 下面的信息可以自行选择是否修改 ------------------------》
 
 
 permalink: /:year/:month/:title/
 # Format
 highlighter: rouge
+
+textColor: #FF0000
 
 # supported colors: blue, green, purple, red, orange or slate. If you need clear, leave it empty.
 cover_color: clear
@@ -54,13 +56,12 @@ blog_button:
 
 # Navigation buttons in the front page.s
 nav:
-    - {title: 所有文章, description: archive, url: '/archive'}
-    - {title: 标签, description: tags, url: '/tags'}  
-    - {title: 关于我, description: about, url: '/about'}
-
+    - {title: 所有文章, description: archive, url: '/archive'}   
+    - {title: 标签, description: tags, url: '/tags'}      
+    - {title: 关于我, description: about, url: '/about'}      
+    
 
 # Pagination
-#gems: [jekyll-paginate,jekyll-sitemap]
 gems: [jekyll-paginate]
 paginate: 20
 paginate_path: "page/:num/"
