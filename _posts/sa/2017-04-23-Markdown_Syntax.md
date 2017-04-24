@@ -67,7 +67,7 @@ Markdown 是一种方便记忆、书写的纯文本标记语言，用户可以�
     ```python
     print 'hello world~'
      ```
-
+  
 ![代码](/images/posts/markdown_syntax/code.jpg)
 
 ### 水平线
