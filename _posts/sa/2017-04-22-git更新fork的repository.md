@@ -51,7 +51,7 @@ From https://github.com/ORIGINAL_OWNER/ORIGINAL_REPOSITORY
 ### checkout本地repo
 第四步，git checkout master，这是保证切换到本地的repository的master上，如果本来就在，那么这一步不是必须的。
 ```bash
-$git fetch upstream 
+$git checkout master
 ```
 
 ### merge上游更新
