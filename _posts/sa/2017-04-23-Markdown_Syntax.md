@@ -55,6 +55,7 @@ Markdown 是一种方便记忆、书写的纯文本标记语言，用户可以�
     | 计算机 | 8000 | 10 |
     | 手机 | 6000 | 5 |
     | 电视 | 3000 | 1 |
+
 ![表格](/images/posts/markdown_syntax/table.jpg)
 
 ### 链接与图片
@@ -66,6 +67,7 @@ Markdown 是一种方便记忆、书写的纯文本标记语言，用户可以�
     ```python
     print 'hello world~'
      ```
+
 ![代码](/images/posts/markdown_syntax/code.jpg)
 
 ### 水平线
