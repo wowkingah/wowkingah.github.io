@@ -5,40 +5,145 @@
     <description>I don&#39;t really know where I&#39;m going, but I hope I go far.</description>
     <link>https://wowkingah.github.io/</link>
     <atom:link href="https://wowkingah.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 23 Apr 2017 01:25:17 +0800</pubDate>
-    <lastBuildDate>Sun, 23 Apr 2017 01:25:17 +0800</lastBuildDate>
+    <pubDate>Mon, 24 Apr 2017 12:04:23 +0800</pubDate>
+    <lastBuildDate>Mon, 24 Apr 2017 12:04:23 +0800</lastBuildDate>
     <generator>Jekyll v3.1.1</generator>
     
       <item>
         <title>Markdown常用语法</title>
-        <description>&lt;h3 id=&quot;section&quot;&gt;标题&lt;/h3&gt;
-&lt;p&gt;H1：# Header 1          &lt;br /&gt;
-H2：## Header 2         &lt;br /&gt;
-H3：### Header 3         &lt;br /&gt;
-H4：#### Header 4         &lt;br /&gt;
-H5：##### Header 5          &lt;br /&gt;
-H6：###### Header 6&lt;/p&gt;
+        <description>&lt;p&gt;[TOC]&lt;/p&gt;
+
+&lt;h3 id=&quot;markdown&quot;&gt;什么是 Markdown&lt;/h3&gt;
+&lt;p&gt;Markdown 是一种方便记忆、书写的纯文本标记语言，用户可以使用这些标记符号以最小的输入代价生成极富表现力的文档。&lt;/p&gt;
+
+&lt;h3 id=&quot;section&quot;&gt;标题&lt;/h3&gt;
+&lt;p&gt;一级标题：&lt;code class=&quot;highlighter-rouge&quot;&gt;# Header 1&lt;/code&gt;&lt;br /&gt;
+二级标题：&lt;code class=&quot;highlighter-rouge&quot;&gt;## Header 2&lt;/code&gt;         &lt;br /&gt;
+三级标题：&lt;code class=&quot;highlighter-rouge&quot;&gt;### Header 3&lt;/code&gt;         &lt;br /&gt;
+四级标题：&lt;code class=&quot;highlighter-rouge&quot;&gt;#### Header 4&lt;/code&gt;         &lt;br /&gt;
+五级标题：&lt;code class=&quot;highlighter-rouge&quot;&gt;##### Header 5&lt;/code&gt;          &lt;br /&gt;
+六级标题：&lt;code class=&quot;highlighter-rouge&quot;&gt;###### Header 6&lt;/code&gt;&lt;/p&gt;
+&lt;left&gt;![标题](/images/posts/markdown_syntax/header.jpg)&lt;/left&gt;
 
 &lt;h3 id=&quot;section-1&quot;&gt;字体&lt;/h3&gt;
 &lt;p&gt;斜体：&lt;code class=&quot;highlighter-rouge&quot;&gt;*斜体*&lt;/code&gt;&lt;br /&gt;
 粗体：&lt;code class=&quot;highlighter-rouge&quot;&gt;**粗体**&lt;/code&gt;&lt;br /&gt;
 粗斜体：&lt;code class=&quot;highlighter-rouge&quot;&gt;***粗斜体***&lt;/code&gt;&lt;br /&gt;
 删除线：&lt;code class=&quot;highlighter-rouge&quot;&gt;~~删除线~~&lt;/code&gt;&lt;/p&gt;
+&lt;left&gt;![字体](/images/posts/markdown_syntax/font.jpg)&lt;/left&gt;
 
-&lt;h3 id=&quot;section-2&quot;&gt;其它&lt;/h3&gt;
-&lt;p&gt;段落：段落之间空一行&lt;br /&gt;
-换行：一行结束时输入两个空格    &lt;br /&gt;
-列表：&lt;code class=&quot;highlighter-rouge&quot;&gt;* 一个列表项&lt;/code&gt;&lt;br /&gt;
-引用：&lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;gt; 引用内容&lt;/code&gt;&lt;br /&gt;
-链接：&lt;code class=&quot;highlighter-rouge&quot;&gt;[Title](URL)&lt;/code&gt;&lt;br /&gt;
-图片：&lt;code class=&quot;highlighter-rouge&quot;&gt;![](/images/image.jpg)&lt;/code&gt;&lt;br /&gt;
-列表1：&lt;code class=&quot;highlighter-rouge&quot;&gt;[ ] 列表功能1&lt;/code&gt;&lt;br /&gt;
-列表2：&lt;code class=&quot;highlighter-rouge&quot;&gt;[x] 列表功能2&lt;/code&gt;&lt;br /&gt;
-代码高亮：
-&lt;code class=&quot;highlighter-rouge&quot;&gt;python
-    print &#39;3个`(反引号)+python+代码+3个`(反引号)结尾&#39;
-&lt;/code&gt;&lt;br /&gt;
-画水平线 (HR)：&lt;code class=&quot;highlighter-rouge&quot;&gt;--------&lt;/code&gt;&lt;/p&gt;
+&lt;h3 id=&quot;section-2&quot;&gt;目录&lt;/h3&gt;
+&lt;p&gt;在段落中填写 &lt;code class=&quot;highlighter-rouge&quot;&gt;[TOC]&lt;/code&gt; 以显示全文内容的目录结构。&lt;/p&gt;
+&lt;left&gt;![目录](/images/posts/markdown_syntax/catalogue.jpg)&lt;/left&gt;
+
+&lt;h3 id=&quot;section-3&quot;&gt;段与行&lt;/h3&gt;
+&lt;p&gt;段落：&lt;code class=&quot;highlighter-rouge&quot;&gt;段落之间空一行&lt;/code&gt;&lt;br /&gt;
+换行：&lt;code class=&quot;highlighter-rouge&quot;&gt;一行结束时输入两个空格&lt;/code&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;section-4&quot;&gt;列表项&lt;/h3&gt;
+&lt;p&gt;列表项1：&lt;code class=&quot;highlighter-rouge&quot;&gt;* 列表项1&lt;/code&gt;&lt;br /&gt;
+列表项2：&lt;code class=&quot;highlighter-rouge&quot;&gt;* 列表项2&lt;/code&gt;&lt;br /&gt;
+列表项3：&lt;code class=&quot;highlighter-rouge&quot;&gt;+ 列表项3&lt;/code&gt;&lt;br /&gt;
+列表项4：&lt;code class=&quot;highlighter-rouge&quot;&gt;+ 列表项4&lt;/code&gt;&lt;br /&gt;
+列表项5：&lt;code class=&quot;highlighter-rouge&quot;&gt;+ 列表项5&lt;/code&gt;&lt;br /&gt;
+列表项6：&lt;code class=&quot;highlighter-rouge&quot;&gt;+ 列表项6&lt;/code&gt;&lt;br /&gt;
+列表项7：&lt;code class=&quot;highlighter-rouge&quot;&gt;1. 列表项7&lt;/code&gt;&lt;br /&gt;
+列表项8：&lt;code class=&quot;highlighter-rouge&quot;&gt;2. 列表项8&lt;/code&gt;&lt;br /&gt;
+列表项9：&lt;code class=&quot;highlighter-rouge&quot;&gt;- [ ] 列表项9&lt;/code&gt;&lt;br /&gt;
+列表项10：&lt;code class=&quot;highlighter-rouge&quot;&gt;- [x] 列表项10&lt;/code&gt;&lt;/p&gt;
+&lt;left&gt;![列表项](/images/posts/markdown_syntax/list.jpg)&lt;/left&gt;
+
+&lt;h3 id=&quot;section-5&quot;&gt;引用&lt;/h3&gt;
+&lt;p&gt;引用：&lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;gt; 引用内容，可结合列表项一起使用&lt;/code&gt;&lt;/p&gt;
+&lt;left&gt;![引用](/images/posts/markdown_syntax/reference.jpg)&lt;/left&gt;
+
+&lt;h3 id=&quot;section-6&quot;&gt;表格&lt;/h3&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;| 项目 | 价格 | 数量 |
+| -------- | -----: | :----: |
+| 计算机 | 8000 | 10 |
+| 手机 | 6000 | 5 |
+| 电视 | 3000 | 1 |
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;left&gt;![表格](/images/posts/markdown_syntax/table.jpg)&lt;/left&gt;
+
+&lt;h3 id=&quot;section-7&quot;&gt;链接与图片&lt;/h3&gt;
+&lt;p&gt;链接：&lt;code class=&quot;highlighter-rouge&quot;&gt;[Title](URL)&lt;/code&gt;&lt;br /&gt;
+图片：&lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;lt;left&amp;gt;![](/images/image.jpg)&lt;/code&gt;&lt;/p&gt;
+&lt;left&gt;![链接](/images/posts/markdown_syntax/link.jpg)&lt;/left&gt;
+
+&lt;h3 id=&quot;section-8&quot;&gt;代码高亮&lt;/h3&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;```python
+print &#39;hello world~&#39;
+ ```
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;left&gt;![代码](/images/posts/markdown_syntax/code.jpg)&lt;/left&gt;
+
+&lt;h3 id=&quot;section-9&quot;&gt;水平线&lt;/h3&gt;
+&lt;p&gt;水平线：&lt;code class=&quot;highlighter-rouge&quot;&gt;---&lt;/code&gt;&lt;/p&gt;
+&lt;left&gt;![水平线](/images/posts/markdown_syntax/horizontal_rules.jpg)&lt;/left&gt;
+
+&lt;h3 id=&quot;section-10&quot;&gt;注脚&lt;/h3&gt;
+&lt;p&gt;使用 [^keyword] 表示注脚。
+这是一个&lt;em&gt;注脚&lt;/em&gt;&lt;sup id=&quot;fnref:footnote&quot;&gt;&lt;a href=&quot;#fn:footnote&quot; class=&quot;footnote&quot;&gt;1&lt;/a&gt;&lt;/sup&gt;的样例。&lt;/p&gt;
+
+&lt;h3 id=&quot;section-11&quot;&gt;定义型列表&lt;/h3&gt;
+&lt;dl&gt;
+  &lt;dt&gt;名词 1&lt;/dt&gt;
+  &lt;dd&gt;定义 1（左侧有一个可见的冒号和四个不可见的空格）&lt;/dd&gt;
+  &lt;dt&gt;代码块 2&lt;/dt&gt;
+  &lt;dd&gt;这是代码块的定义（左侧有一个可见的冒号和四个不可见的空格）
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;代码块（左侧有八个不可见的空格）
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/dd&gt;
+&lt;/dl&gt;
+
+&lt;h3 id=&quot;html&quot;&gt;HTML标签&lt;/h3&gt;
+&lt;p&gt;支持在 Markdown 语法中嵌套 Html 标签，譬如，你可以用 Html 写一个纵跨两行的表格：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;table&amp;gt;
+    &amp;lt;tr&amp;gt;
+        &amp;lt;th rowspan=&quot;2&quot;&amp;gt;值班人员&amp;lt;/th&amp;gt;
+        &amp;lt;th&amp;gt;星期一&amp;lt;/th&amp;gt;
+        &amp;lt;th&amp;gt;星期二&amp;lt;/th&amp;gt;
+        &amp;lt;th&amp;gt;星期三&amp;lt;/th&amp;gt;
+    &amp;lt;/tr&amp;gt;
+    &amp;lt;tr&amp;gt;
+        &amp;lt;td&amp;gt;李强&amp;lt;/td&amp;gt;
+        &amp;lt;td&amp;gt;张明&amp;lt;/td&amp;gt;
+        &amp;lt;td&amp;gt;王平&amp;lt;/td&amp;gt;
+    &amp;lt;/tr&amp;gt;
+&amp;lt;/table&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;table&gt;
+    &lt;tr&gt;
+        &lt;th rowspan=&quot;2&quot;&gt;值班人员&lt;/th&gt;
+        &lt;th&gt;星期一&lt;/th&gt;
+        &lt;th&gt;星期二&lt;/th&gt;
+        &lt;th&gt;星期三&lt;/th&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+        &lt;td&gt;李强&lt;/td&gt;
+        &lt;td&gt;张明&lt;/td&gt;
+        &lt;td&gt;王平&lt;/td&gt;
+    &lt;/tr&gt;
+&lt;/table&gt;
+
+&lt;h3 id=&quot;reference&quot;&gt;reference&lt;/h3&gt;
+&lt;p&gt;https://www.zybuluo.com/mdeditor?url=https://www.zybuluo.com/static/editor/md-help.markdown&lt;/p&gt;
+
+&lt;div class=&quot;footnotes&quot;&gt;
+  &lt;ol&gt;
+    &lt;li id=&quot;fn:footnote&quot;&gt;
+      &lt;p&gt;这是一个 &lt;em&gt;注脚&lt;/em&gt; 的文本。 &lt;a href=&quot;#fnref:footnote&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+  &lt;/ol&gt;
+&lt;/div&gt;
 </description>
         <pubDate>Sun, 23 Apr 2017 00:00:00 +0800</pubDate>
         <link>https://wowkingah.github.io/2017/04/Markdown_Syntax/</link>

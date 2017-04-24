@@ -7,16 +7,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
   <title>Markdown常用语法</title>
-  <meta name="description" content="标题H1：# Header 1          H2：## Header 2         H3：### Header 3         H4：#### Header 4         H5：##### Header 5          H6：###### Header 6">
+  <meta name="description" content="[TOC]">
   <meta name="author" content="Wowking">
 
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="Markdown常用语法">
-  <meta name="twitter:description" content="标题H1：# Header 1          H2：## Header 2         H3：### Header 3         H4：#### Header 4         H5：##### Header 5          H6：###### Header 6">
+  <meta name="twitter:description" content="[TOC]">
   
   <meta property="og:type" content="article">
   <meta property="og:title" content="Markdown常用语法">
-  <meta property="og:description" content="标题H1：# Header 1          H2：## Header 2         H3：### Header 3         H4：#### Header 4         H5：##### Header 5          H6：###### Header 6">
+  <meta property="og:description" content="[TOC]">
   
   <link rel="icon" type="image/png" href="/images/favicon.png" />
   <link href="/images/favicon.png" rel="shortcut icon" type="image/png">
@@ -166,34 +166,139 @@
   </header>
 
   <section class="post">
-    <h3 id="section">标题</h3>
-<p>H1：# Header 1          <br />
-H2：## Header 2         <br />
-H3：### Header 3         <br />
-H4：#### Header 4         <br />
-H5：##### Header 5          <br />
-H6：###### Header 6</p>
+    <p>[TOC]</p>
+
+<h3 id="markdown">什么是 Markdown</h3>
+<p>Markdown 是一种方便记忆、书写的纯文本标记语言，用户可以使用这些标记符号以最小的输入代价生成极富表现力的文档。</p>
+
+<h3 id="section">标题</h3>
+<p>一级标题：<code class="highlighter-rouge"># Header 1</code><br />
+二级标题：<code class="highlighter-rouge">## Header 2</code>         <br />
+三级标题：<code class="highlighter-rouge">### Header 3</code>         <br />
+四级标题：<code class="highlighter-rouge">#### Header 4</code>         <br />
+五级标题：<code class="highlighter-rouge">##### Header 5</code>          <br />
+六级标题：<code class="highlighter-rouge">###### Header 6</code></p>
+<left>![标题](/images/posts/markdown_syntax/header.jpg)</left>
 
 <h3 id="section-1">字体</h3>
 <p>斜体：<code class="highlighter-rouge">*斜体*</code><br />
 粗体：<code class="highlighter-rouge">**粗体**</code><br />
 粗斜体：<code class="highlighter-rouge">***粗斜体***</code><br />
 删除线：<code class="highlighter-rouge">~~删除线~~</code></p>
+<left>![字体](/images/posts/markdown_syntax/font.jpg)</left>
 
-<h3 id="section-2">其它</h3>
-<p>段落：段落之间空一行<br />
-换行：一行结束时输入两个空格    <br />
-列表：<code class="highlighter-rouge">* 一个列表项</code><br />
-引用：<code class="highlighter-rouge">&gt; 引用内容</code><br />
-链接：<code class="highlighter-rouge">[Title](URL)</code><br />
-图片：<code class="highlighter-rouge">![](/images/image.jpg)</code><br />
-列表1：<code class="highlighter-rouge">[ ] 列表功能1</code><br />
-列表2：<code class="highlighter-rouge">[x] 列表功能2</code><br />
-代码高亮：
-<code class="highlighter-rouge">python
-    print '3个`(反引号)+python+代码+3个`(反引号)结尾'
-</code><br />
-画水平线 (HR)：<code class="highlighter-rouge">--------</code></p>
+<h3 id="section-2">目录</h3>
+<p>在段落中填写 <code class="highlighter-rouge">[TOC]</code> 以显示全文内容的目录结构。</p>
+<left>![目录](/images/posts/markdown_syntax/catalogue.jpg)</left>
+
+<h3 id="section-3">段与行</h3>
+<p>段落：<code class="highlighter-rouge">段落之间空一行</code><br />
+换行：<code class="highlighter-rouge">一行结束时输入两个空格</code></p>
+
+<h3 id="section-4">列表项</h3>
+<p>列表项1：<code class="highlighter-rouge">* 列表项1</code><br />
+列表项2：<code class="highlighter-rouge">* 列表项2</code><br />
+列表项3：<code class="highlighter-rouge">+ 列表项3</code><br />
+列表项4：<code class="highlighter-rouge">+ 列表项4</code><br />
+列表项5：<code class="highlighter-rouge">+ 列表项5</code><br />
+列表项6：<code class="highlighter-rouge">+ 列表项6</code><br />
+列表项7：<code class="highlighter-rouge">1. 列表项7</code><br />
+列表项8：<code class="highlighter-rouge">2. 列表项8</code><br />
+列表项9：<code class="highlighter-rouge">- [ ] 列表项9</code><br />
+列表项10：<code class="highlighter-rouge">- [x] 列表项10</code></p>
+<left>![列表项](/images/posts/markdown_syntax/list.jpg)</left>
+
+<h3 id="section-5">引用</h3>
+<p>引用：<code class="highlighter-rouge">&gt; 引用内容，可结合列表项一起使用</code></p>
+<left>![引用](/images/posts/markdown_syntax/reference.jpg)</left>
+
+<h3 id="section-6">表格</h3>
+<div class="highlighter-rouge"><pre class="highlight"><code>| 项目 | 价格 | 数量 |
+| -------- | -----: | :----: |
+| 计算机 | 8000 | 10 |
+| 手机 | 6000 | 5 |
+| 电视 | 3000 | 1 |
+</code></pre>
+</div>
+<left>![表格](/images/posts/markdown_syntax/table.jpg)</left>
+
+<h3 id="section-7">链接与图片</h3>
+<p>链接：<code class="highlighter-rouge">[Title](URL)</code><br />
+图片：<code class="highlighter-rouge">&lt;left&gt;![](/images/image.jpg)</code></p>
+<left>![链接](/images/posts/markdown_syntax/link.jpg)</left>
+
+<h3 id="section-8">代码高亮</h3>
+<div class="highlighter-rouge"><pre class="highlight"><code>```python
+print 'hello world~'
+ ```
+</code></pre>
+</div>
+<left>![代码](/images/posts/markdown_syntax/code.jpg)</left>
+
+<h3 id="section-9">水平线</h3>
+<p>水平线：<code class="highlighter-rouge">---</code></p>
+<left>![水平线](/images/posts/markdown_syntax/horizontal_rules.jpg)</left>
+
+<h3 id="section-10">注脚</h3>
+<p>使用 [^keyword] 表示注脚。
+这是一个<em>注脚</em><sup id="fnref:footnote"><a href="#fn:footnote" class="footnote">1</a></sup>的样例。</p>
+
+<h3 id="section-11">定义型列表</h3>
+<dl>
+  <dt>名词 1</dt>
+  <dd>定义 1（左侧有一个可见的冒号和四个不可见的空格）</dd>
+  <dt>代码块 2</dt>
+  <dd>这是代码块的定义（左侧有一个可见的冒号和四个不可见的空格）
+
+    <div class="highlighter-rouge"><pre class="highlight"><code>代码块（左侧有八个不可见的空格）
+</code></pre>
+    </div>
+  </dd>
+</dl>
+
+<h3 id="html">HTML标签</h3>
+<p>支持在 Markdown 语法中嵌套 Html 标签，譬如，你可以用 Html 写一个纵跨两行的表格：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>&lt;table&gt;
+    &lt;tr&gt;
+        &lt;th rowspan="2"&gt;值班人员&lt;/th&gt;
+        &lt;th&gt;星期一&lt;/th&gt;
+        &lt;th&gt;星期二&lt;/th&gt;
+        &lt;th&gt;星期三&lt;/th&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+        &lt;td&gt;李强&lt;/td&gt;
+        &lt;td&gt;张明&lt;/td&gt;
+        &lt;td&gt;王平&lt;/td&gt;
+    &lt;/tr&gt;
+&lt;/table&gt;
+</code></pre>
+</div>
+
+<table>
+    <tr>
+        <th rowspan="2">值班人员</th>
+        <th>星期一</th>
+        <th>星期二</th>
+        <th>星期三</th>
+    </tr>
+    <tr>
+        <td>李强</td>
+        <td>张明</td>
+        <td>王平</td>
+    </tr>
+</table>
+
+<h3 id="reference">reference</h3>
+<p>https://www.zybuluo.com/mdeditor?url=https://www.zybuluo.com/static/editor/md-help.markdown</p>
+
+<div class="footnotes">
+  <ol>
+    <li id="fn:footnote">
+      <p>这是一个 <em>注脚</em> 的文本。 <a href="#fnref:footnote" class="reversefootnote">&#8617;</a></p>
+    </li>
+  </ol>
+</div>
 
 
   </section>
