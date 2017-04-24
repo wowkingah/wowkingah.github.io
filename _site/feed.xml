@@ -5,8 +5,8 @@
     <description>I don&#39;t really know where I&#39;m going, but I hope I go far.</description>
     <link>https://wowkingah.github.io/</link>
     <atom:link href="https://wowkingah.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 24 Apr 2017 12:04:23 +0800</pubDate>
-    <lastBuildDate>Mon, 24 Apr 2017 12:04:23 +0800</lastBuildDate>
+    <pubDate>Mon, 24 Apr 2017 12:05:30 +0800</pubDate>
+    <lastBuildDate>Mon, 24 Apr 2017 12:05:30 +0800</lastBuildDate>
     <generator>Jekyll v3.1.1</generator>
     
       <item>
@@ -22,19 +22,19 @@
 三级标题：&lt;code class=&quot;highlighter-rouge&quot;&gt;### Header 3&lt;/code&gt;         &lt;br /&gt;
 四级标题：&lt;code class=&quot;highlighter-rouge&quot;&gt;#### Header 4&lt;/code&gt;         &lt;br /&gt;
 五级标题：&lt;code class=&quot;highlighter-rouge&quot;&gt;##### Header 5&lt;/code&gt;          &lt;br /&gt;
-六级标题：&lt;code class=&quot;highlighter-rouge&quot;&gt;###### Header 6&lt;/code&gt;&lt;/p&gt;
-&lt;left&gt;![标题](/images/posts/markdown_syntax/header.jpg)&lt;/left&gt;
+六级标题：&lt;code class=&quot;highlighter-rouge&quot;&gt;###### Header 6&lt;/code&gt;&lt;br /&gt;
+&lt;img src=&quot;/images/posts/markdown_syntax/header.jpg&quot; alt=&quot;标题&quot; /&gt;&lt;/p&gt;
 
 &lt;h3 id=&quot;section-1&quot;&gt;字体&lt;/h3&gt;
 &lt;p&gt;斜体：&lt;code class=&quot;highlighter-rouge&quot;&gt;*斜体*&lt;/code&gt;&lt;br /&gt;
 粗体：&lt;code class=&quot;highlighter-rouge&quot;&gt;**粗体**&lt;/code&gt;&lt;br /&gt;
 粗斜体：&lt;code class=&quot;highlighter-rouge&quot;&gt;***粗斜体***&lt;/code&gt;&lt;br /&gt;
-删除线：&lt;code class=&quot;highlighter-rouge&quot;&gt;~~删除线~~&lt;/code&gt;&lt;/p&gt;
-&lt;left&gt;![字体](/images/posts/markdown_syntax/font.jpg)&lt;/left&gt;
+删除线：&lt;code class=&quot;highlighter-rouge&quot;&gt;~~删除线~~&lt;/code&gt;&lt;br /&gt;
+&lt;img src=&quot;/images/posts/markdown_syntax/font.jpg&quot; alt=&quot;字体&quot; /&gt;&lt;/p&gt;
 
 &lt;h3 id=&quot;section-2&quot;&gt;目录&lt;/h3&gt;
-&lt;p&gt;在段落中填写 &lt;code class=&quot;highlighter-rouge&quot;&gt;[TOC]&lt;/code&gt; 以显示全文内容的目录结构。&lt;/p&gt;
-&lt;left&gt;![目录](/images/posts/markdown_syntax/catalogue.jpg)&lt;/left&gt;
+&lt;p&gt;在段落中填写 &lt;code class=&quot;highlighter-rouge&quot;&gt;[TOC]&lt;/code&gt; 以显示全文内容的目录结构。
+&lt;img src=&quot;/images/posts/markdown_syntax/catalogue.jpg&quot; alt=&quot;目录&quot; /&gt;&lt;/p&gt;
 
 &lt;h3 id=&quot;section-3&quot;&gt;段与行&lt;/h3&gt;
 &lt;p&gt;段落：&lt;code class=&quot;highlighter-rouge&quot;&gt;段落之间空一行&lt;/code&gt;&lt;br /&gt;
@@ -50,45 +50,44 @@
 列表项7：&lt;code class=&quot;highlighter-rouge&quot;&gt;1. 列表项7&lt;/code&gt;&lt;br /&gt;
 列表项8：&lt;code class=&quot;highlighter-rouge&quot;&gt;2. 列表项8&lt;/code&gt;&lt;br /&gt;
 列表项9：&lt;code class=&quot;highlighter-rouge&quot;&gt;- [ ] 列表项9&lt;/code&gt;&lt;br /&gt;
-列表项10：&lt;code class=&quot;highlighter-rouge&quot;&gt;- [x] 列表项10&lt;/code&gt;&lt;/p&gt;
-&lt;left&gt;![列表项](/images/posts/markdown_syntax/list.jpg)&lt;/left&gt;
+列表项10：&lt;code class=&quot;highlighter-rouge&quot;&gt;- [x] 列表项10&lt;/code&gt;&lt;br /&gt;
+&lt;img src=&quot;/images/posts/markdown_syntax/list.jpg&quot; alt=&quot;列表项&quot; /&gt;&lt;/p&gt;
 
 &lt;h3 id=&quot;section-5&quot;&gt;引用&lt;/h3&gt;
-&lt;p&gt;引用：&lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;gt; 引用内容，可结合列表项一起使用&lt;/code&gt;&lt;/p&gt;
-&lt;left&gt;![引用](/images/posts/markdown_syntax/reference.jpg)&lt;/left&gt;
+&lt;p&gt;引用：&lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;gt; 引用内容，可结合列表项一起使用&lt;/code&gt;&lt;br /&gt;
+&lt;img src=&quot;/images/posts/markdown_syntax/reference.jpg&quot; alt=&quot;引用&quot; /&gt;&lt;/p&gt;
 
 &lt;h3 id=&quot;section-6&quot;&gt;表格&lt;/h3&gt;
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;| 项目 | 价格 | 数量 |
 | -------- | -----: | :----: |
 | 计算机 | 8000 | 10 |
 | 手机 | 6000 | 5 |
-| 电视 | 3000 | 1 |
+| 电视 | 3000 | 1 | ![表格](/images/posts/markdown_syntax/table.jpg)
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
-&lt;left&gt;![表格](/images/posts/markdown_syntax/table.jpg)&lt;/left&gt;
 
 &lt;h3 id=&quot;section-7&quot;&gt;链接与图片&lt;/h3&gt;
 &lt;p&gt;链接：&lt;code class=&quot;highlighter-rouge&quot;&gt;[Title](URL)&lt;/code&gt;&lt;br /&gt;
-图片：&lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;lt;left&amp;gt;![](/images/image.jpg)&lt;/code&gt;&lt;/p&gt;
-&lt;left&gt;![链接](/images/posts/markdown_syntax/link.jpg)&lt;/left&gt;
+图片：&lt;code class=&quot;highlighter-rouge&quot;&gt;![](/images/image.jpg)&lt;/code&gt;&lt;br /&gt;
+&lt;img src=&quot;/images/posts/markdown_syntax/link.jpg&quot; alt=&quot;链接&quot; /&gt;&lt;/p&gt;
 
 &lt;h3 id=&quot;section-8&quot;&gt;代码高亮&lt;/h3&gt;
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;```python
 print &#39;hello world~&#39;
- ```
+ ``` ![代码](/images/posts/markdown_syntax/code.jpg)
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
-&lt;left&gt;![代码](/images/posts/markdown_syntax/code.jpg)&lt;/left&gt;
 
 &lt;h3 id=&quot;section-9&quot;&gt;水平线&lt;/h3&gt;
-&lt;p&gt;水平线：&lt;code class=&quot;highlighter-rouge&quot;&gt;---&lt;/code&gt;&lt;/p&gt;
-&lt;left&gt;![水平线](/images/posts/markdown_syntax/horizontal_rules.jpg)&lt;/left&gt;
+&lt;p&gt;水平线：&lt;code class=&quot;highlighter-rouge&quot;&gt;---&lt;/code&gt;&lt;br /&gt;
+&lt;img src=&quot;/images/posts/markdown_syntax/horizontal_rules.jpg&quot; alt=&quot;水平线&quot; /&gt;&lt;/p&gt;
 
 &lt;h3 id=&quot;section-10&quot;&gt;注脚&lt;/h3&gt;
 &lt;p&gt;使用 [^keyword] 表示注脚。
 这是一个&lt;em&gt;注脚&lt;/em&gt;&lt;sup id=&quot;fnref:footnote&quot;&gt;&lt;a href=&quot;#fn:footnote&quot; class=&quot;footnote&quot;&gt;1&lt;/a&gt;&lt;/sup&gt;的样例。&lt;/p&gt;
 
 &lt;h3 id=&quot;section-11&quot;&gt;定义型列表&lt;/h3&gt;
+
 &lt;dl&gt;
   &lt;dt&gt;名词 1&lt;/dt&gt;
   &lt;dd&gt;定义 1（左侧有一个可见的冒号和四个不可见的空格）&lt;/dd&gt;

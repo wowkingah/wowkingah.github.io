@@ -4,7 +4,6 @@ title: Markdown常用语法
 date: 2017-04-23 
 tags: markdown
 ---
-
 [TOC]  
 
 ### 什么是 Markdown
@@ -17,18 +16,18 @@ Markdown 是一种方便记忆、书写的纯文本标记语言，用户可以�
 四级标题：`#### Header 4`           
 五级标题：`##### Header 5`            
 六级标题：`###### Header 6`  
-<left>![标题](/images/posts/markdown_syntax/header.jpg)</left>
+![标题](/images/posts/markdown_syntax/header.jpg)
 
 ### 字体
 斜体：`*斜体*`  
 粗体：`**粗体**`  
 粗斜体：`***粗斜体***`  
 删除线：`~~删除线~~`  
-<left>![字体](/images/posts/markdown_syntax/font.jpg)</left>
+![字体](/images/posts/markdown_syntax/font.jpg)
 
 ### 目录
 在段落中填写 `[TOC]` 以显示全文内容的目录结构。
-<left>![目录](/images/posts/markdown_syntax/catalogue.jpg)</left>
+![目录](/images/posts/markdown_syntax/catalogue.jpg)
 
 ### 段与行
 段落：`段落之间空一行`  
@@ -45,11 +44,11 @@ Markdown 是一种方便记忆、书写的纯文本标记语言，用户可以�
 列表项8：`2. 列表项8`  
 列表项9：`- [ ] 列表项9`  
 列表项10：`- [x] 列表项10`  
-<left>![列表项](/images/posts/markdown_syntax/list.jpg)</left>
+![列表项](/images/posts/markdown_syntax/list.jpg)
 
 ### 引用
 引用：`> 引用内容，可结合列表项一起使用`  
-<left>![引用](/images/posts/markdown_syntax/reference.jpg)</left>
+![引用](/images/posts/markdown_syntax/reference.jpg)
 
 ### 表格
     | 项目 | 价格 | 数量 |
@@ -57,28 +56,29 @@ Markdown 是一种方便记忆、书写的纯文本标记语言，用户可以�
     | 计算机 | 8000 | 10 |
     | 手机 | 6000 | 5 |
     | 电视 | 3000 | 1 |
-<left>![表格](/images/posts/markdown_syntax/table.jpg)</left>
+![表格](/images/posts/markdown_syntax/table.jpg)
 
 ### 链接与图片
 链接：`[Title](URL)`  
-图片：`<left>![](/images/image.jpg)`  
-<left>![链接](/images/posts/markdown_syntax/link.jpg)</left>
+图片：`![](/images/image.jpg)`  
+![链接](/images/posts/markdown_syntax/link.jpg)
 
 ### 代码高亮
     ```python
     print 'hello world~'
      ```
-<left>![代码](/images/posts/markdown_syntax/code.jpg)</left>
+![代码](/images/posts/markdown_syntax/code.jpg)
 
 ### 水平线
 水平线：`---`  
-<left>![水平线](/images/posts/markdown_syntax/horizontal_rules.jpg)</left>
+![水平线](/images/posts/markdown_syntax/horizontal_rules.jpg)  
 
 ### 注脚
 使用 [^keyword] 表示注脚。
 这是一个*注脚*[^footnote]的样例。
 
 ### 定义型列表
+
 名词 1
 :   定义 1（左侧有一个可见的冒号和四个不可见的空格）
 
