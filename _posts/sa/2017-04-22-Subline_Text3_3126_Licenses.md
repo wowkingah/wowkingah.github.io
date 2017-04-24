@@ -1,8 +1,8 @@
 ---
 layout: post
-title: Subline Text3注册序列号3126
+title: Sublime Text3注册序列号3126
 date: 2017-04-22
-tags: tools subline
+tags: tools sublime
 ---
   
 
