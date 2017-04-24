@@ -4,7 +4,6 @@ title: Markdown常用语法
 date: 2017-04-23 
 tags: markdown
 ---
-[TOC]  
 
 ### 什么是 Markdown
 Markdown 是一种方便记忆、书写的纯文本标记语言，用户可以使用这些标记符号以最小的输入代价生成极富表现力的文档。  
