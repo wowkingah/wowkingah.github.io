@@ -206,6 +206,7 @@ OK
 
 
 ### reference
-https://redis.io/topics/cluster-tutorial  
-http://blog.csdn.net/dc_726/article/details/48552531  
-http://www.ttlsa.com/redis/redis-cluster-theoretical-knowledge  
+https://redis.io/topics/cluster-tutorial   
+http://blog.csdn.net/dc_726/article/details/48552531   
+http://www.ttlsa.com/redis/redis-cluster-theoretical-knowledge   
+
