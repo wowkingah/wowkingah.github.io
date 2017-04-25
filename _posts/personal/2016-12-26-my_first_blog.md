@@ -7,7 +7,8 @@ tags: personal
 
 # Welcome ~  
 ##    This is my first blog for Jekyll.  
-
+  
+  
 简单记录Jekyll安装步骤。  
 
 ### Ruby
