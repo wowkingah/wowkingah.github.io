@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <title>Sublime Text3编辑markdown文本</title>
+  <meta name="description" content="之前一直使用notepad++写SHELL、SQL，有一天想玩玩markdown的时候，觉得不是那么方便。于是，就有了sublime的出现。">
+  <meta name="author" content="Wowking">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Sublime Text3编辑markdown文本">
+  <meta name="twitter:description" content="之前一直使用notepad++写SHELL、SQL，有一天想玩玩markdown的时候，觉得不是那么方便。于是，就有了sublime的出现。">
+  
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Sublime Text3编辑markdown文本">
+  <meta property="og:description" content="之前一直使用notepad++写SHELL、SQL，有一天想玩玩markdown的时候，觉得不是那么方便。于是，就有了sublime的出现。">
+  
+  <link rel="icon" type="image/png" href="/images/favicon.png" />
+  <link href="/images/favicon.png" rel="shortcut icon" type="image/png">
+  
+  <link rel="stylesheet" href="/css/main.css">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+
+  <link rel="canonical" href="https://wowkingah.github.io/2017/04/Sublime%E7%BC%96%E8%BE%91markdown%E6%96%87%E6%9C%AC/">
+  <link rel="alternate" type="application/rss+xml" title="Wowking" href="https://wowkingah.github.io/feed.xml">
+  
+  <meta name="google-site-verification" content="1-1ZlHoRvM0T2FqPbW2S-qLgYXN6rsn52kErlMPd_gw" />
+
+<!-- 站点统计 -->
+  <script 
+  async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+  </script>  
+
+<!-- 百度统计 -->
+  
+
+<!-- google 统计 -->
+  
+  <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+          (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+      ga('create', 'UA-62308466-1', 'auto');
+      ga('send', 'pageview');
+  </script>
+  
+
+</head>
+
+
+  <body>
+
+    <span class="mobile btn-mobile-menu">        
+      <div class="nav_container">
+         <nav class="nav-menu-item" style = "float:right">
+            <i class="nav-menu-item">
+              <a href="/#blog" title="" class="blog-button">  博客主页
+              </a>
+            </i>
+            
+                <i class="nav-menu-item">
+
+                  <a href="/archive" title="archive" class="btn-mobile-menu__icon">
+                      所有文章
+                  </a>
+                </i>
+            
+                <i class="nav-menu-item">
+
+                  <a href="/tags" title="tags" class="btn-mobile-menu__icon">
+                      标签
+                  </a>
+                </i>
+            
+                <i class="nav-menu-item">
+
+                  <a href="/about" title="about" class="btn-mobile-menu__icon">
+                      关于我
+                  </a>
+                </i>
+            
+          </nav>
+      </div>
+    </span>
+    
+    <header class="panel-cover panel-cover--collapsed" style="background-image: url('/images/background-cover.jpg')">
+  <div class="panel-main">
+
+    <div class="panel-main__inner panel-inverted">
+    <div class="panel-main__content">
+        <!-- 头像效果-start -->
+        <div class="ih-item circle effect right_to_left">            
+            <a href="/#blog" title="前往 Wowking 的主页" class="blog-button">
+                <div class="img"><img src="/images/avatar.jpg" alt="img"></div>
+                <div class="info">
+                    <div class="info-back">
+                        <h2> 
+                            
+                                Wowking
+                            
+                        </h2>
+                        <p>
+                           
+                                DBA & SA
+                            
+                        </p>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <!-- 头像效果-end -->
+        <h1 class="panel-cover__title panel-title"><a href="/#blog" title="link to homepage for Wowking" class="blog-button">Wowking</a></h1>
+        
+        <hr class="panel-cover__divider" />
+        <p class="panel-cover__description">I don't really know where I'm going, but I hope I go far.</p>
+        <hr class="panel-cover__divider panel-cover__divider--secondary" />
+        
+        
+        
+
+        <div class="navigation-wrapper">
+          <div>
+            <nav class="cover-navigation cover-navigation--primary">
+              <ul class="navigation">
+                <li class="navigation__item"><a href="/#blog" title="" class="blog-button">博客主页</a></li>
+                
+                  <li class="navigation__item"><a href="/archive" title="archive">所有文章</a></li>
+                
+                  <li class="navigation__item"><a href="/tags" title="tags">标签</a></li>
+                
+                  <li class="navigation__item"><a href="/about" title="about">关于我</a></li>
+                
+              </ul>
+            </nav>
+          </div>          
+        </div>
+
+
+        </div>
+      </div>
+    </div>
+    
+    
+    <div class="panel-cover--overlay cover-clear"></div>
+    
+  </div>
+</header>
+
+
+    <div class="content-wrapper">
+        <div class="content-wrapper__inner">
+            <article class="post-container post-container--single" itemscope itemtype="http://schema.org/BlogPosting">
+  <header class="post-header">
+    <h1 class="post-title">Sublime Text3编辑markdown文本</h1>
+    <div class="post-meta">
+      <img src="/images/calendar.png" width="20px"/> 
+      <time datetime="2017-04-22 00:00:00 +0800" itemprop="datePublished" class="post-meta__date date">2017-04-22</time>  
+         
+      <span id="busuanzi_container_page_pv"> | 阅读：<span id="busuanzi_value_page_pv"></span>次</span>
+    </p>
+    </div>
+  </header>
+
+  <section class="post">
+    <p>之前一直使用notepad++写SHELL、SQL，有一天想玩玩markdown的时候，觉得不是那么方便。于是，就有了sublime的出现。</p>
+
+<p>使用sublime编写markdown需要：
+&gt; 1. 安装sublime
+&gt; 2. 安装markdown相关插件
+» * Package Control：用于管理插件
+» * MarkdownEditing：编辑markdown<br />
+» * Markdown Preview：预览markdown</p>
+
+<h3 id="sublime">安装sublime</h3>
+<p>Sublime 官网下载并安装(http://www.sublimetext.com/3)</p>
+
+<h3 id="package-control">安装Package Control</h3>
+<p>Package Control官网(https://packagecontrol.io/installation)
+#### 安装步骤：
+&gt; 1. 使用快捷键<code class="highlighter-rouge">ctrl+~</code> 或通过菜单栏 <code class="highlighter-rouge">View &gt; Show Console</code>调出console。
+&gt; 2. 复制官网Python code粘贴到console后按回车去执行。
+» * sublime text3选择SUBLIME TEXT3对应的代码
+» <code class="highlighter-rouge">python
+&gt;&gt; import urllib.request,os,hashlib; h = 'df21e130d211cfc94d9b0905775a7c0f' + '1e3d39e33b79698005270310898eea76'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://packagecontrol.io/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by)
+&gt;&gt;</code>
+&gt; <img src="/images/posts/sublime_text3/console.jpg" alt="" />
+&gt; 3. 重启sublime后，可在<code class="highlighter-rouge">Preferences -&gt; Package Settings</code>看到<code class="highlighter-rouge">Package Control</code>。</p>
+
+<h3 id="markdowneditingmarkdown-preview">安装MarkdownEditing与Markdown Preview</h3>
+<blockquote>
+  <ol>
+    <li>快捷方式<code class="highlighter-rouge">Ctrl + Shift + p</code>或通过菜单栏<code class="highlighter-rouge">Preferences -&gt; Package Control</code>，输入install
+ <img src="/images/posts/sublime_text3/install_package.jpg" alt="" /></li>
+    <li>安装MarkdownEditing 
+ <img src="/images/posts/sublime_text3/install_MarkdownEditing.jpg" alt="" /></li>
+    <li>安装Markdown Preview
+ <img src="/images/posts/sublime_text3/install_MarkdownPreview.jpg" alt="" /></li>
+  </ol>
+</blockquote>
+
+<h3 id="section">偏好设置</h3>
+<p><strong>设置语言平台</strong>
+&gt; 1. 打开Markdown Editing设置
+&gt; <code class="highlighter-rouge">Preferences -&gt; Package Settings -&gt; Markdown Editing -&gt; Markdown GFM Settings User</code>
+&gt; 2. 增加配置
+&gt; <code class="highlighter-rouge">
+// These settings override both User and Default settings for the Markdown syntax  
+{
+    "default_line_ending": "unix",
+}
+</code></p>
+
+<p><strong>sublime相关设置</strong>
+&gt; 1. 打开settings<br />
+&gt; <code class="highlighter-rouge">Preferences -&gt; Settings</code>
+&gt; 2. 增加配置
+&gt; <code class="highlighter-rouge">
+&gt; {
+&gt;     "font_size": 12,
+&gt;     "line_numbers": true,
+&gt; }  
+&gt;</code></p>
+
+<p><strong>自定义快捷键，预览markdown</strong>
+&gt; 1. 打开Key Bindings
+&gt; <code class="highlighter-rouge">Preferences -&gt; Key Bindings</code><br />
+&gt; 2. 增加配置
+&gt; <code class="highlighter-rouge">
+&gt; {"keys": ["f6"], "command": "markdown_preview", "args": { "target": "browser"}}
+&gt;</code><br />
+<strong><em>tips</em></strong>
+按F6就可以预览markdown文件啦。</p>
+
+
+  </section>
+</article>
+
+<section>
+
+            <div class="content-play">
+              <p><a href="javascript:void(0)" onclick="dashangToggle()" class="dashang" title="打赏，支持一下">打赏一个呗</a></p>
+              <div class="hide_box-play"></div>
+              <div class="shang_box-play">
+                <a class="shang_close-play" href="javascript:void(0)" onclick="dashangToggle()" title="关闭"><img src="/images/payimg/close.jpg" alt="取消" /></a>
+                <div class="shang_tit-play">
+                  <p>感谢您的支持，我会继续努力的!</p>
+                </div>
+                <div class="shang_payimg">
+                    <img src="/images/payimg/alipayimg.jpg" alt="扫码支持" title="扫一扫" />
+                </div>
+              <div class="shang_payimg">    
+                    <img src="/images/payimg/weipayimg.jpg" alt="扫码支持" title="扫一扫" />
+                </div>
+                <div class="pay_explain">扫码打赏，你说多少就多少</div>
+                <div class="shang_payselect">
+                  <div class="pay_item checked" data-id="alipay">
+                    <span class="pay_logo"><img src="/images/payimg/alipay.jpg" alt="支付宝" /></span>
+                  </div>
+                  <div class="pay_item" data-id="weipay">
+                    <span class="pay_logo"><img src="/images/payimg/wechat.jpg" alt="微信" /></span>
+                  </div>
+                </div>
+                <div class="shang_info-play">
+                  <p>打开<span id="shang_pay_txt">支付宝</span>扫一扫，即可进行扫码打赏哦</p>
+                </div>
+              </div>
+            </div>
+            <script type="text/javascript">
+            function dashangToggle(){
+              $(".hide_box-play").fadeToggle();
+              $(".shang_box-play").fadeToggle();
+            }
+            </script>
+
+            <div style="text-align:center;margin:50px 0; font:normal 14px/24px 'MicroSoft YaHei';"></div>
+
+            <style type="text/css">
+              .content-play{width:80%;margin-top: 20px;margin-bottom: 10px;height:40px;}
+              .hide_box-play{z-index:999;filter:alpha(opacity=50);background:#666;opacity: 0.5;-moz-opacity: 0.5;left:0;top:0;height:99%;width:100%;position:fixed;display:none;}
+              .shang_box-play{width:540px;height:540px;padding:10px;background-color:#fff;border-radius:10px;position:fixed;z-index:1000;left:50%;top:50%;margin-left:-280px;margin-top:-280px;border:1px dotted #dedede;display:none;}
+              .shang_box-play img{border:none;border-width:0;}
+              .dashang{display:block;width:100px;margin:5px auto;height:25px;line-height:25px;padding:10px;background-color:#E74851;color:#fff;text-align:center;text-decoration:none;border-radius:10px;font-weight:bold;font-size:16px;transition: all 0.3s;}
+              .dashang:hover{opacity:0.8;padding:15px;font-size:18px;}
+              .shang_close-play{float:right;display:inline-block;
+                margin-right: 10px;margin-top: 20px;
+              }
+              .shang_logo{display:block;text-align:center;margin:20px auto;}
+              .shang_tit-play{width: 100%;height: 75px;text-align: center;line-height: 66px;color: #a3a3a3;font-size: 16px;background: url('/images/payimg/cy-reward-title-bg.jpg');font-family: 'Microsoft YaHei';margin-top: 7px;margin-right:2px;}
+              .shang_tit-play p{color:#a3a3a3;text-align:center;font-size:16px;}
+              .shang_payimg{width:140px;padding:10px;padding-left: 80px; /*border:6px solid #EA5F00;**/margin:0 auto;border-radius:3px;height:140px;display:inline-block;}
+              .shang_payimg img{display:inline-block;margin-right:10px;float:left;text-align:center;width:140px;height:140px; }
+              .pay_explain{text-align:center;margin:10px auto;font-size:12px;color:#545454;}
+              .shang_payselect{text-align:center;margin:0 auto;margin-top:40px;cursor:pointer;height:60px;width:500px;margin-left:110px;}
+              .shang_payselect .pay_item{display:inline-block;margin-right:140px;float:left;}
+              .shang_info-play{clear:both;}
+              .shang_info-play p,.shang_info-play a{color:#C3C3C3;text-align:center;font-size:12px;text-decoration:none;line-height:2em;}
+            </style>
+
+       <ul class="pager">
+        
+        <li class="previous">
+            <a href="/2017/04/Sublime_Text3_3126_Licenses/" data-toggle="tooltip" data-placement="top" title="Sublime Text3注册序列号3126">上一篇：  <span>Sublime Text3注册序列号3126</span>
+            </a>
+        </li>
+        
+        
+        <li class="next">
+            <a href="/2017/04/git%E6%9B%B4%E6%96%B0fork%E7%9A%84repository/" data-toggle="tooltip" data-placement="top" title="git更新fork的repository">下一篇：  <span>git更新fork的repository</span>
+            </a>
+        </li>
+        
+    </ul>
+</section>
+
+<section class="post-comments">
+
+  
+    <div class="ds-thread" data-thread-key="/2017/04/Sublime%E7%BC%96%E8%BE%91markdown%E6%96%87%E6%9C%AC/" data-title="Sublime Text3编辑markdown文本" data-url="https://wowkingah.github.io/2017/04/Sublime%E7%BC%96%E8%BE%91markdown%E6%96%87%E6%9C%AC/"></div>
+
+    <script type="text/javascript">
+        var duoshuoQuery = {short_name:"Wowking"};
+        (function() {
+            var ds = document.createElement('script');
+            ds.type = 'text/javascript';ds.async = true;
+            ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+            ds.charset = 'UTF-8';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
+        })();
+    </script>
+  
+  
+  
+  
+</section>
+
+
+            <section class="footer">
+    <footer>
+        <div class = "footer_div">  
+        <nav class="cover-navigation navigation--social">
+          <ul class="navigation">
+
+          
+
+          
+          <!-- Github -->
+          <li class="navigation__item_social">
+            <a href="https://github.com/wowkingah" title="@wowkingah 的 Github" target="_blank">
+              <i class='social fa fa-github fa-2x'></i>
+              <span class="label">Github</span>
+            </a>
+          </li>
+          
+          
+          
+
+          
+
+          <!-- RSS -->
+          <li class="navigation__item_social">
+            <a href="/feed.xml" rel="author" title="RSS" target="_blank">
+              <i class='social fa fa-rss fa-2x'></i>
+              <span class="label">RSS</span>
+            </a>
+          </li>
+
+          
+
+          </ul>
+        </nav>
+
+        </div>
+
+        <div class = "footer_div">  
+           <p class="copyright text-muted">
+            Copyright &copy; Wowking 2017 Theme by <a href="https://wowkingah.github.io">Wowking</a> |
+            <iframe
+                style="margin-left: 2px; margin-bottom:-5px;"
+                frameborder="0" scrolling="0" width="91px" height="20px"
+                src="https://ghbtns.com/github-btn.html?user=wowkingah&repo=wowkingah.github.io&type=star&count=true" >
+            </iframe>
+            </p>
+        	<div align="right">
+    			<link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+          <!-- 访问统计 -->
+          <span id="busuanzi_container_site_pv">
+            本站总访问量
+            <span id="busuanzi_value_site_pv"></span>次
+          </span>
+
+        </div>
+        <div>
+    </footer>
+</section>
+
+        </div>
+    </div>
+    
+    <script type="text/javascript" src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="/js/main.js"></script>
+
+<script type="text/javascript" src="/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+    
+  </body>
+
+</html>

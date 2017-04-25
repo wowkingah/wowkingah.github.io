@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <title>SHELL实现多线程并发</title>
+  <meta name="description" content="SHELL本身是按顺序执行，并没有并发概念，但可以通过几种常见方式来模拟实现多线程并发。">
+  <meta name="author" content="Wowking">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="SHELL实现多线程并发">
+  <meta name="twitter:description" content="SHELL本身是按顺序执行，并没有并发概念，但可以通过几种常见方式来模拟实现多线程并发。">
+  
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="SHELL实现多线程并发">
+  <meta property="og:description" content="SHELL本身是按顺序执行，并没有并发概念，但可以通过几种常见方式来模拟实现多线程并发。">
+  
+  <link rel="icon" type="image/png" href="/images/favicon.png" />
+  <link href="/images/favicon.png" rel="shortcut icon" type="image/png">
+  
+  <link rel="stylesheet" href="/css/main.css">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+
+  <link rel="canonical" href="https://wowkingah.github.io/2016/12/SHELL%E5%AE%9E%E7%8E%B0%E5%A4%9A%E7%BA%BF%E7%A8%8B%E5%B9%B6%E5%8F%91/">
+  <link rel="alternate" type="application/rss+xml" title="Wowking" href="https://wowkingah.github.io/feed.xml">
+  
+  <meta name="google-site-verification" content="1-1ZlHoRvM0T2FqPbW2S-qLgYXN6rsn52kErlMPd_gw" />
+
+<!-- 站点统计 -->
+  <script 
+  async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+  </script>  
+
+<!-- 百度统计 -->
+  
+
+<!-- google 统计 -->
+  
+  <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+          (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+      ga('create', 'UA-62308466-1', 'auto');
+      ga('send', 'pageview');
+  </script>
+  
+
+</head>
+
+
+  <body>
+
+    <span class="mobile btn-mobile-menu">        
+      <div class="nav_container">
+         <nav class="nav-menu-item" style = "float:right">
+            <i class="nav-menu-item">
+              <a href="/#blog" title="" class="blog-button">  博客主页
+              </a>
+            </i>
+            
+                <i class="nav-menu-item">
+
+                  <a href="/archive" title="archive" class="btn-mobile-menu__icon">
+                      所有文章
+                  </a>
+                </i>
+            
+                <i class="nav-menu-item">
+
+                  <a href="/tags" title="tags" class="btn-mobile-menu__icon">
+                      标签
+                  </a>
+                </i>
+            
+                <i class="nav-menu-item">
+
+                  <a href="/about" title="about" class="btn-mobile-menu__icon">
+                      关于我
+                  </a>
+                </i>
+            
+          </nav>
+      </div>
+    </span>
+    
+    <header class="panel-cover panel-cover--collapsed" style="background-image: url('/images/background-cover.jpg')">
+  <div class="panel-main">
+
+    <div class="panel-main__inner panel-inverted">
+    <div class="panel-main__content">
+        <!-- 头像效果-start -->
+        <div class="ih-item circle effect right_to_left">            
+            <a href="/#blog" title="前往 Wowking 的主页" class="blog-button">
+                <div class="img"><img src="/images/avatar.jpg" alt="img"></div>
+                <div class="info">
+                    <div class="info-back">
+                        <h2> 
+                            
+                                Wowking
+                            
+                        </h2>
+                        <p>
+                           
+                                DBA & SA
+                            
+                        </p>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <!-- 头像效果-end -->
+        <h1 class="panel-cover__title panel-title"><a href="/#blog" title="link to homepage for Wowking" class="blog-button">Wowking</a></h1>
+        
+        <hr class="panel-cover__divider" />
+        <p class="panel-cover__description">I don't really know where I'm going, but I hope I go far.</p>
+        <hr class="panel-cover__divider panel-cover__divider--secondary" />
+        
+        
+        
+
+        <div class="navigation-wrapper">
+          <div>
+            <nav class="cover-navigation cover-navigation--primary">
+              <ul class="navigation">
+                <li class="navigation__item"><a href="/#blog" title="" class="blog-button">博客主页</a></li>
+                
+                  <li class="navigation__item"><a href="/archive" title="archive">所有文章</a></li>
+                
+                  <li class="navigation__item"><a href="/tags" title="tags">标签</a></li>
+                
+                  <li class="navigation__item"><a href="/about" title="about">关于我</a></li>
+                
+              </ul>
+            </nav>
+          </div>          
+        </div>
+
+
+        </div>
+      </div>
+    </div>
+    
+    
+    <div class="panel-cover--overlay cover-clear"></div>
+    
+  </div>
+</header>
+
+
+    <div class="content-wrapper">
+        <div class="content-wrapper__inner">
+            <article class="post-container post-container--single" itemscope itemtype="http://schema.org/BlogPosting">
+  <header class="post-header">
+    <h1 class="post-title">SHELL实现多线程并发</h1>
+    <div class="post-meta">
+      <img src="/images/calendar.png" width="20px"/> 
+      <time datetime="2016-12-07 00:00:00 +0800" itemprop="datePublished" class="post-meta__date date">2016-12-07</time>  
+         
+      <span id="busuanzi_container_page_pv"> | 阅读：<span id="busuanzi_value_page_pv"></span>次</span>
+    </p>
+    </div>
+  </header>
+
+  <section class="post">
+    <p>SHELL本身是按顺序执行，并没有并发概念，但可以通过几种常见方式来模拟实现多线程并发。</p>
+
+<h3 id="section">原始脚本</h3>
+<p>```bash
+[root@ZTEST-218 ~]# cat task.sh
+#!/bin/bash</p>
+
+<p>START_TIME=<code class="highlighter-rouge">date +%s</code></p>
+
+<p>for ((I=1;I&lt;=10;I++))   #模拟10个任务
+do
+    echo “${I}: success” ; sleep 2
+done</p>
+
+<p>STOP_TIME=<code class="highlighter-rouge">date +%s</code>
+echo “TIME: $(expr ${STOP_TIME} - ${START_TIME})”</p>
+
+<p>[root@ZTEST-218 ~]# sh task.s
+1: success
+2: success
+3: success
+4: success
+5: success
+6: success
+7: success
+8: success
+9: success
+10: success
+TIME: 20
+```
+&gt; tips:
+&gt; 顺序执行需要20s.</p>
+
+<h3 id="section-1">方式一：后台执行</h3>
+<p>```bash
+[root@ZTEST-218 ~]# cat d_task.sh
+#!/bin/bash</p>
+
+<p>START_TIME=<code class="highlighter-rouge">date +%s</code></p>
+
+<p>for ((I=1;I&lt;=10;I++))
+do
+    {
+        echo “${I}: success” ; sleep 2
+    }&amp;
+done
+wait</p>
+
+<p>STOP_TIME=<code class="highlighter-rouge">date +%s</code>
+echo “TIME: $(expr ${STOP_TIME} - ${START_TIME})”</p>
+
+<p>[root@ZTEST-218 ~]# sh d_task.sh
+7: success
+9: success
+3: success
+10: success
+5: success
+6: success
+1: success
+2: success
+4: success
+8: success
+TIME: 2
+```
+&gt; <strong><em>tips:</em></strong>
+&gt; 本次执行时间为2s.
+&gt; 使用“{}”将执行程序变为一个块，然后用“&amp;”将放入后台。10次执行全部放入后台后，需要用wait来等待所有后台进程执行结束，否则操作系统不会等待，而直接继续执行后续指令，直到整个程序结束。
+&gt; 缺陷：该方法不能控制运行在后台的进程数，任务较多时会拖垮操作系统。</p>
+
+<h3 id="section-2">方式二：管道+文件描述符</h3>
+<p>```bash
+[root@ZTEST-218 ~]# cat p_task.sh
+#!/bin/bash
+THREAD_NUM=5
+TMP_FILE=”/tmp/$$.fifo”</p>
+
+<p>trap “exec 6&gt;&amp;-;exec 6&lt;&amp;-;exit 0” 2     #脚本运行过程中，如果接收到信号2(Ctrl+C)中断命令，则关闭文件描述符6的读写，并正常退出</p>
+
+<p>mkfifo ${TMP_FILE}  #创建有名管道
+exec 6&lt;&gt;${TMP_FILE} #创建文件描述符，文件描述符可使用3-(n-1)，n取值范围：ulimit -n。以读写(&lt;,读；&gt;,写)方式绑定TMP_FILE管道文件。标识对文件描述符6的所有操作等同于对管道文件TMP_FILE的操作
+rm -rf ${TMP_FILE}  #为什么不直接使用管道文件？因为管道的一个重要特性：读写必须同时存在，缺失某个操作，另一个操作就会滞留。绑定文件描述符（读、写绑定）正好解决了这个问题</p>
+
+<p>for ((J=1;J&lt;=${THREAD_NUM};J++)) #向管道中中输入THREAD_NUM个并发数量的空行。为什么写入空行而不是字符？那是因为管道文件的读取是以行为单位。
+do
+    echo &gt;&amp;6
+done</p>
+
+<p>START_TIME=<code class="highlighter-rouge">date +%s</code></p>
+
+<p>for ((I=1;I&lt;=10;I++))
+do 
+    read -u6 #从管道中读取行，每次读一行。每读一次就会减少一个空行，直到管道中没有回车符，所有行读取完毕后执行挂起，实现线程数量控制。
+    {
+        echo “${I}: success” ; sleep 2
+        echo &gt;&amp;6    #任务在后台执行结束后，向文件描述符中写入一个空行。如果不在向描述符中写入空行，当后台放入THREAD_NUM个任务之后，由于描述符中没有可读取的空行，会导致read -u6停顿。
+    }&amp;
+done
+wait</p>
+
+<p>STOP_TIME=<code class="highlighter-rouge">date +%s</code>
+echo “TIME: $(expr ${STOP_TIME} - ${START_TIME})”</p>
+
+<p>exec 6&gt;&amp;-
+exec 6&lt;&amp;-</p>
+
+<p>[root@ZTEST-218 ~]# sh p_task.sh
+1: success
+2: success
+3: success
+5: success
+4: success
+6: success
+7: success
+9: success
+8: success
+10: success
+TIME: 4
+```
+&gt; <strong><em>tips:</em></strong>
+&gt; 本次执行时间为4s.</p>
+
+<h3 id="reference">reference</h3>
+<p>http://www.jianshu.com/p/2d60e6513fdd
+http://www.cnblogs.com/yxzfscg/p/5330136.html</p>
+
+
+  </section>
+</article>
+
+<section>
+
+            <div class="content-play">
+              <p><a href="javascript:void(0)" onclick="dashangToggle()" class="dashang" title="打赏，支持一下">打赏一个呗</a></p>
+              <div class="hide_box-play"></div>
+              <div class="shang_box-play">
+                <a class="shang_close-play" href="javascript:void(0)" onclick="dashangToggle()" title="关闭"><img src="/images/payimg/close.jpg" alt="取消" /></a>
+                <div class="shang_tit-play">
+                  <p>感谢您的支持，我会继续努力的!</p>
+                </div>
+                <div class="shang_payimg">
+                    <img src="/images/payimg/alipayimg.jpg" alt="扫码支持" title="扫一扫" />
+                </div>
+              <div class="shang_payimg">    
+                    <img src="/images/payimg/weipayimg.jpg" alt="扫码支持" title="扫一扫" />
+                </div>
+                <div class="pay_explain">扫码打赏，你说多少就多少</div>
+                <div class="shang_payselect">
+                  <div class="pay_item checked" data-id="alipay">
+                    <span class="pay_logo"><img src="/images/payimg/alipay.jpg" alt="支付宝" /></span>
+                  </div>
+                  <div class="pay_item" data-id="weipay">
+                    <span class="pay_logo"><img src="/images/payimg/wechat.jpg" alt="微信" /></span>
+                  </div>
+                </div>
+                <div class="shang_info-play">
+                  <p>打开<span id="shang_pay_txt">支付宝</span>扫一扫，即可进行扫码打赏哦</p>
+                </div>
+              </div>
+            </div>
+            <script type="text/javascript">
+            function dashangToggle(){
+              $(".hide_box-play").fadeToggle();
+              $(".shang_box-play").fadeToggle();
+            }
+            </script>
+
+            <div style="text-align:center;margin:50px 0; font:normal 14px/24px 'MicroSoft YaHei';"></div>
+
+            <style type="text/css">
+              .content-play{width:80%;margin-top: 20px;margin-bottom: 10px;height:40px;}
+              .hide_box-play{z-index:999;filter:alpha(opacity=50);background:#666;opacity: 0.5;-moz-opacity: 0.5;left:0;top:0;height:99%;width:100%;position:fixed;display:none;}
+              .shang_box-play{width:540px;height:540px;padding:10px;background-color:#fff;border-radius:10px;position:fixed;z-index:1000;left:50%;top:50%;margin-left:-280px;margin-top:-280px;border:1px dotted #dedede;display:none;}
+              .shang_box-play img{border:none;border-width:0;}
+              .dashang{display:block;width:100px;margin:5px auto;height:25px;line-height:25px;padding:10px;background-color:#E74851;color:#fff;text-align:center;text-decoration:none;border-radius:10px;font-weight:bold;font-size:16px;transition: all 0.3s;}
+              .dashang:hover{opacity:0.8;padding:15px;font-size:18px;}
+              .shang_close-play{float:right;display:inline-block;
+                margin-right: 10px;margin-top: 20px;
+              }
+              .shang_logo{display:block;text-align:center;margin:20px auto;}
+              .shang_tit-play{width: 100%;height: 75px;text-align: center;line-height: 66px;color: #a3a3a3;font-size: 16px;background: url('/images/payimg/cy-reward-title-bg.jpg');font-family: 'Microsoft YaHei';margin-top: 7px;margin-right:2px;}
+              .shang_tit-play p{color:#a3a3a3;text-align:center;font-size:16px;}
+              .shang_payimg{width:140px;padding:10px;padding-left: 80px; /*border:6px solid #EA5F00;**/margin:0 auto;border-radius:3px;height:140px;display:inline-block;}
+              .shang_payimg img{display:inline-block;margin-right:10px;float:left;text-align:center;width:140px;height:140px; }
+              .pay_explain{text-align:center;margin:10px auto;font-size:12px;color:#545454;}
+              .shang_payselect{text-align:center;margin:0 auto;margin-top:40px;cursor:pointer;height:60px;width:500px;margin-left:110px;}
+              .shang_payselect .pay_item{display:inline-block;margin-right:140px;float:left;}
+              .shang_info-play{clear:both;}
+              .shang_info-play p,.shang_info-play a{color:#C3C3C3;text-align:center;font-size:12px;text-decoration:none;line-height:2em;}
+            </style>
+
+       <ul class="pager">
+        
+        <li class="previous">
+            <a href="/2016/12/MySQL%E7%89%88%E6%9C%AC%E5%8D%87%E7%BA%A7/" data-toggle="tooltip" data-placement="top" title="MySQL版本升级">上一篇：  <span>MySQL版本升级</span>
+            </a>
+        </li>
+        
+        
+        <li class="next">
+            <a href="/2016/12/shell%E5%AE%9E%E7%8E%B0%E5%A4%9A%E7%BA%BF%E7%A8%8B%E5%B9%B6%E5%8F%91/" data-toggle="tooltip" data-placement="top" title="SHELL实现多线程并发">下一篇：  <span>SHELL实现多线程并发</span>
+            </a>
+        </li>
+        
+    </ul>
+</section>
+
+<section class="post-comments">
+
+  
+    <div class="ds-thread" data-thread-key="/2016/12/SHELL%E5%AE%9E%E7%8E%B0%E5%A4%9A%E7%BA%BF%E7%A8%8B%E5%B9%B6%E5%8F%91/" data-title="SHELL实现多线程并发" data-url="https://wowkingah.github.io/2016/12/SHELL%E5%AE%9E%E7%8E%B0%E5%A4%9A%E7%BA%BF%E7%A8%8B%E5%B9%B6%E5%8F%91/"></div>
+
+    <script type="text/javascript">
+        var duoshuoQuery = {short_name:"Wowking"};
+        (function() {
+            var ds = document.createElement('script');
+            ds.type = 'text/javascript';ds.async = true;
+            ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+            ds.charset = 'UTF-8';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
+        })();
+    </script>
+  
+  
+  
+  
+</section>
+
+
+            <section class="footer">
+    <footer>
+        <div class = "footer_div">  
+        <nav class="cover-navigation navigation--social">
+          <ul class="navigation">
+
+          
+
+          
+          <!-- Github -->
+          <li class="navigation__item_social">
+            <a href="https://github.com/wowkingah" title="@wowkingah 的 Github" target="_blank">
+              <i class='social fa fa-github fa-2x'></i>
+              <span class="label">Github</span>
+            </a>
+          </li>
+          
+          
+          
+
+          
+
+          <!-- RSS -->
+          <li class="navigation__item_social">
+            <a href="/feed.xml" rel="author" title="RSS" target="_blank">
+              <i class='social fa fa-rss fa-2x'></i>
+              <span class="label">RSS</span>
+            </a>
+          </li>
+
+          
+
+          </ul>
+        </nav>
+
+        </div>
+
+        <div class = "footer_div">  
+           <p class="copyright text-muted">
+            Copyright &copy; Wowking 2017 Theme by <a href="https://wowkingah.github.io">Wowking</a> |
+            <iframe
+                style="margin-left: 2px; margin-bottom:-5px;"
+                frameborder="0" scrolling="0" width="91px" height="20px"
+                src="https://ghbtns.com/github-btn.html?user=wowkingah&repo=wowkingah.github.io&type=star&count=true" >
+            </iframe>
+            </p>
+        	<div align="right">
+    			<link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+          <!-- 访问统计 -->
+          <span id="busuanzi_container_site_pv">
+            本站总访问量
+            <span id="busuanzi_value_site_pv"></span>次
+          </span>
+
+        </div>
+        <div>
+    </footer>
+</section>
+
+        </div>
+    </div>
+    
+    <script type="text/javascript" src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="/js/main.js"></script>
+
+<script type="text/javascript" src="/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+    
+  </body>
+
+</html>

@@ -1,0 +1,1304 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Wowking</title>
+    <description>I don&#39;t really know where I&#39;m going, but I hope I go far.</description>
+    <link>https://wowkingah.github.io/</link>
+    <atom:link href="https://wowkingah.github.io/feed.xml" rel="self" type="application/rss+xml"/>
+    <pubDate>Tue, 25 Apr 2017 20:12:37 +0800</pubDate>
+    <lastBuildDate>Tue, 25 Apr 2017 20:12:37 +0800</lastBuildDate>
+    <generator>Jekyll v3.1.1</generator>
+    
+      <item>
+        <title>Redis Cluster安装部署</title>
+        <description>&lt;h3 id=&quot;section&quot;&gt;简述&lt;/h3&gt;
+&lt;p&gt;从Redis 3.x开始，一直单机的Redis终于步入Cluster大时代。&lt;br /&gt;
+Redis从一个单纯的NoSQL内存数据库变成了分布式NoSQL数据库，CAP模型也从CP变成了AP。&lt;/p&gt;
+
+&lt;h3 id=&quot;section-1&quot;&gt;架构&lt;/h3&gt;
+&lt;p&gt;#### 架构图
+&lt;img src=&quot;/images/posts/sa/redis_cluster_install/redis_cluster_architecture.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;section-2&quot;&gt;架构细节&lt;/h4&gt;
+&lt;blockquote&gt;
+  &lt;ul&gt;
+    &lt;li&gt;所有 redis 结点彼此互联（PING-PONG 机制），内部使用二进制协议优化传输速度和带宽（客户端与结点之间的通信还是正常的ascii协议）；&lt;/li&gt;
+    &lt;li&gt;结点的 fail 是通过集群中超过半数的结点检测失效时才生效；&lt;/li&gt;
+    &lt;li&gt;客户端与 redis 结点直连，不需要中间 proxy 层；&lt;/li&gt;
+    &lt;li&gt;客户端不需要连接集群所有结点，连接集群中任何一个可用结点即可（可用结点）；&lt;/li&gt;
+    &lt;li&gt;redis-cluster 把所有的物理结点映射到[0-16383]slot 上，cluster 负责维护 node &amp;lt;-&amp;gt; slot &amp;lt;-&amp;gt; value。&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/blockquote&gt;
+
+&lt;h4 id=&quot;section-3&quot;&gt;选举与容错&lt;/h4&gt;
+&lt;p&gt;&lt;img src=&quot;/images/posts/sa/redis_cluster_install/fail.jpg&quot; alt=&quot;&quot; /&gt;
+##### 选举
+&amp;gt;* 选举过程是集群中所有 master 参与，如果半数以上 master 节点与 master 节点通信超过 (cluster-node-timeout)，认为当前 master 节点挂掉；&lt;/p&gt;
+
+&lt;h5 id=&quot;section-4&quot;&gt;容错&lt;/h5&gt;
+&lt;p&gt;什么时候整个集群不可用(cluster_state:fail)？
+&amp;gt;* 如果集群任意 master 挂掉，且当前 master 没有 slave，集群进入 fail 状态，也可以理解成集群的 slot 映射[0-16383]不完成时进入 fail 状态。
+&amp;gt; &amp;gt;* redis-3.0.0.rc1 加入 cluster-require-full-coverage 参数，默认关闭，打开集群兼容部分失败。
+&amp;gt;* 如果集群超过半数以上 master 挂掉，无论是否有 slave 集群进入 fail 状态。
+&amp;gt; &amp;gt;* 当集群不可用时，所有对集群的操作做都不可用，收到((error) CLUSTERDOWN The cluster is down) 错误。&lt;/p&gt;
+
+&lt;h3 id=&quot;redis&quot;&gt;Redis安装&lt;/h3&gt;
+&lt;p&gt;#### 安装redis
+Redis&lt;a href=&quot;https://redis.io/download&quot;&gt;官网&lt;/a&gt;下载并安装最新稳定版Redis。&lt;/p&gt;
+
+&lt;h4 id=&quot;redis-cluster&quot;&gt;redis cluster配置&lt;/h4&gt;
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;bash
+[root@Wowking-001 ~]# cat /etc/redis/6379.conf |grep -vE &#39;^#|^$&#39;
+daemonize yes
+pidfile /var/run/redis_6379.pid
+port 6379
+tcp-backlog 511
+timeout 0
+tcp-keepalive 0
+loglevel notice
+logfile /data/logs/redis/redis_6379.log
+databases 16
+stop-writes-on-bgsave-error yes
+rdbcompression no
+rdbchecksum no
+dbfilename dump.rdb
+dir /data/redis/data/6379
+slave-serve-stale-data yes
+slave-read-only yes
+repl-diskless-sync no
+repl-diskless-sync-delay 5
+repl-disable-tcp-nodelay no
+slave-priority 100
+appendonly no
+appendfilename &quot;appendonly.aof&quot;
+appendfsync everysec
+no-appendfsync-on-rewrite no
+auto-aof-rewrite-percentage 100
+auto-aof-rewrite-min-size 64mb
+aof-load-truncated yes
+lua-time-limit 5000
+ cluster-enabled yes
+ cluster-config-file nodes-6379.conf
+ cluster-node-timeout 5000
+ cluster-migration-barrier 1
+ cluster-require-full-coverage no
+slowlog-log-slower-than 10000
+slowlog-max-len 128
+latency-monitor-threshold 0
+notify-keyspace-events &quot;&quot;
+hash-max-ziplist-entries 512
+hash-max-ziplist-value 64
+list-max-ziplist-entries 512
+list-max-ziplist-value 64
+set-max-intset-entries 512
+zset-max-ziplist-entries 128
+zset-max-ziplist-value 64
+hll-sparse-max-bytes 3000
+activerehashing yes
+client-output-buffer-limit normal 0 0 0
+client-output-buffer-limit slave 256mb 64mb 60
+client-output-buffer-limit pubsub 32mb 8mb 60
+hz 10
+aof-rewrite-incremental-fsync yes
+&lt;/code&gt;
+&lt;em&gt;tips&lt;/em&gt;
+关闭了持久化。&lt;/p&gt;
+
+&lt;h3 id=&quot;section-5&quot;&gt;系统相关参数调整&lt;/h3&gt;
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;bash
+[root@Wowking-001 ~]# cat /etc/sysctl.conf
+##Redis
+vm.overcommit_memory = 1
+net.core.somaxconn = 2048
+net.ipv4.tcp_timestamps=1
+net.ipv4.tcp_syncookies = 1
+net.ipv4.tcp_tw_reuse = 1
+net.ipv4.tcp_tw_recycle = 1
+net.ipv4.tcp_fin_timeout = 30
+net.ipv4.tcp_keepalive_time = 1200
+net.ipv4.tcp_max_syn_backlog = 8192
+net.ipv4.tcp_max_tw_buckets = 5000
+net.ipv4.tcp_keepalive_probes = 3
+net.ipv4.tcp_keepalive_intvl =15
+net.ipv4.tcp_wmem = 8192 131072 16777216
+net.ipv4.tcp_rmem = 32768 131072 16777216
+[root@Wowking-001 ~]# sysctl -p
+[root@Wowking-001 ~]# echo never &amp;gt; /sys/kernel/mm/transparent_hugepage/enabled  #禁用Linux内核特性transparent huge pages，不然日志会报WARNING
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;redis-1&quot;&gt;启动Redis&lt;/h3&gt;
+&lt;p&gt;测试使用，在本机启3个不同端口的实例。
+&lt;code class=&quot;highlighter-rouge&quot;&gt;bash
+[root@Wowking-001 ~]# mkdir -p /data/logs/redis
+[root@Wowking-001 ~]# mkdir -p /data/redis/data/6{3,4,5}79
+[root@Wowking-001 ~]# redis-server /etc/redis/6379.conf
+[root@Wowking-001 ~]# redis-server /etc/redis/6479.conf
+[root@Wowking-001 ~]# redis-server /etc/redis/6579.conf
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;cluster&quot;&gt;cluster部署&lt;/h3&gt;
+&lt;p&gt;#### 安装ruby及ruby的redis模块
+&lt;code class=&quot;highlighter-rouge&quot;&gt;bash
+[root@Wowking-001 ~]# yum -y install ruby rubygems
+[root@Wowking-001 ~]# gem install redis
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;cluster-1&quot;&gt;cluster初始化&lt;/h4&gt;
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;bash
+[root@Wowking-001 ~]# redis-trib.rb create --replicas 0 192.168.1.1:6379 192.168.1.1:6479 192.168.1.1:6579
+&amp;gt;&amp;gt;&amp;gt; Creating cluster
+&amp;gt;&amp;gt;&amp;gt; Performing hash slots allocation on 3 nodes...
+Using 3 masters:
+192.168.1.1:6379
+192.168.1.1:6479
+192.168.1.1:6579
+M: 5d6519a85e2795f0eeb7566031eb6be47c97efbf 192.168.1.1:6379
+   slots:0-5460 (5461 slots) master
+M: fc82bf9de8adba9886b0cb62ad8a99e8d4495f35 192.168.1.1:6479
+   slots:5461-10922 (5462 slots) master
+M: 35586851e194755ca82e660010b930987adfde6d 192.168.1.1:6579
+   slots:10923-16383 (5461 slots) master
+Can I set the above configuration? (type &#39;yes&#39; to accept): yes
+&amp;gt;&amp;gt;&amp;gt; Nodes configuration updated
+&amp;gt;&amp;gt;&amp;gt; Assign a different config epoch to each node
+&amp;gt;&amp;gt;&amp;gt; Sending CLUSTER MEET messages to join the cluster
+Waiting for the cluster to join..
+&amp;gt;&amp;gt;&amp;gt; Performing Cluster Check (using node 192.168.1.1:6379)
+M: 5d6519a85e2795f0eeb7566031eb6be47c97efbf 192.168.1.1:6379
+   slots:0-5460 (5461 slots) master
+M: fc82bf9de8adba9886b0cb62ad8a99e8d4495f35 192.168.1.1:6479
+   slots:5461-10922 (5462 slots) master
+M: 35586851e194755ca82e660010b930987adfde6d 192.168.1.1:6579
+   slots:10923-16383 (5461 slots) master
+[OK] All nodes agree about slots configuration.
+&amp;gt;&amp;gt;&amp;gt; Check for open slots...
+&amp;gt;&amp;gt;&amp;gt; Check slots coverage...
+[OK] All 16384 slots covered.
+&lt;/code&gt;
+&lt;em&gt;tips&lt;/em&gt;
+&amp;gt;* –replicas：指定复本数，这是cluster最小复本要求。推荐2个以上复本，不然没法测试failover。&lt;/p&gt;
+
+&lt;h4 id=&quot;cluster-2&quot;&gt;查看cluster状态&lt;/h4&gt;
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;bash
+[root@Wowking-001 ~]# redis-trib.rb check 192.168.1.1:6379
+&amp;gt;&amp;gt;&amp;gt; Performing Cluster Check (using node 192.168.1.1:6379)
+M: 5d6519a85e2795f0eeb7566031eb6be47c97efbf 192.168.1.1:6379
+   slots:0-5460 (5461 slots) master
+   0 additional replica(s)
+M: 35586851e194755ca82e660010b930987adfde6d 192.168.1.1:6579
+   slots:10923-16383 (5461 slots) master
+   0 additional replica(s)
+M: fc82bf9de8adba9886b0cb62ad8a99e8d4495f35 192.168.1.1:6479
+   slots:5461-10922 (5462 slots) master
+   0 additional replica(s)
+[OK] All nodes agree about slots configuration.
+&amp;gt;&amp;gt;&amp;gt; Check for open slots...
+&amp;gt;&amp;gt;&amp;gt; Check slots coverage...
+[OK] All 16384 slots covered.
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;cluster-3&quot;&gt;cluster测试&lt;/h3&gt;
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;bash
+#任意结点写key
+[root@Wowking-001 ~]# redis-cli -p 6379
+127.0.0.1:6379&amp;gt; set aa 11
+OK
+127.0.0.1:6379&amp;gt; get aa
+&quot;11&quot;
+#任意结点get
+[root@Wowking-001 ~]# redis-cli -p 6579 -c
+127.0.0.1:6579&amp;gt; get aa
+-&amp;gt; Redirected to slot [1180] located at 192.168.1.1:6379
+&quot;11&quot;
+&lt;/code&gt;
+&lt;em&gt;tips&lt;/em&gt;
+&amp;gt;* -c：指定cluster模式。&lt;/p&gt;
+
+&lt;h3 id=&quot;reference&quot;&gt;reference&lt;/h3&gt;
+&lt;p&gt;https://redis.io/topics/cluster-tutorial &lt;br /&gt;
+http://blog.csdn.net/dc_726/article/details/48552531 &lt;br /&gt;
+http://www.ttlsa.com/redis/redis-cluster-theoretical-knowledge&lt;/p&gt;
+
+</description>
+        <pubDate>Tue, 25 Apr 2017 00:00:00 +0800</pubDate>
+        <link>https://wowkingah.github.io/2017/04/redis_cluster_install/</link>
+        <guid isPermaLink="true">https://wowkingah.github.io/2017/04/redis_cluster_install/</guid>
+        
+        <category>Redis</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>Markdown常用语法</title>
+        <description>&lt;h3 id=&quot;markdown&quot;&gt;什么是 Markdown&lt;/h3&gt;
+&lt;p&gt;Markdown 是一种方便记忆、书写的纯文本标记语言，用户可以使用这些标记符号以最小的输入代价生成极富表现力的文档。&lt;/p&gt;
+
+&lt;h3 id=&quot;section&quot;&gt;标题&lt;/h3&gt;
+&lt;p&gt;一级标题：&lt;code class=&quot;highlighter-rouge&quot;&gt;# Header 1&lt;/code&gt;&lt;br /&gt;
+二级标题：&lt;code class=&quot;highlighter-rouge&quot;&gt;## Header 2&lt;/code&gt;         &lt;br /&gt;
+三级标题：&lt;code class=&quot;highlighter-rouge&quot;&gt;### Header 3&lt;/code&gt;         &lt;br /&gt;
+四级标题：&lt;code class=&quot;highlighter-rouge&quot;&gt;#### Header 4&lt;/code&gt;         &lt;br /&gt;
+五级标题：&lt;code class=&quot;highlighter-rouge&quot;&gt;##### Header 5&lt;/code&gt;          &lt;br /&gt;
+六级标题：&lt;code class=&quot;highlighter-rouge&quot;&gt;###### Header 6&lt;/code&gt;&lt;br /&gt;
+&lt;img src=&quot;/images/posts/sa/markdown_syntax/header.jpg&quot; alt=&quot;标题&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;section-1&quot;&gt;字体&lt;/h3&gt;
+&lt;p&gt;斜体：&lt;code class=&quot;highlighter-rouge&quot;&gt;*斜体*&lt;/code&gt;&lt;br /&gt;
+粗体：&lt;code class=&quot;highlighter-rouge&quot;&gt;**粗体**&lt;/code&gt;&lt;br /&gt;
+粗斜体：&lt;code class=&quot;highlighter-rouge&quot;&gt;***粗斜体***&lt;/code&gt;&lt;br /&gt;
+删除线：&lt;code class=&quot;highlighter-rouge&quot;&gt;~~删除线~~&lt;/code&gt;&lt;br /&gt;
+&lt;img src=&quot;/images/posts/sa/markdown_syntax/font.jpg&quot; alt=&quot;字体&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;section-2&quot;&gt;目录&lt;/h3&gt;
+&lt;p&gt;在段落中填写 &lt;code class=&quot;highlighter-rouge&quot;&gt;[TOC]&lt;/code&gt; 以显示全文内容的目录结构。
+&lt;img src=&quot;/images/posts/sa/markdown_syntax/catalogue.jpg&quot; alt=&quot;目录&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;section-3&quot;&gt;段与行&lt;/h3&gt;
+&lt;p&gt;段落：&lt;code class=&quot;highlighter-rouge&quot;&gt;段落之间空一行&lt;/code&gt;&lt;br /&gt;
+换行：&lt;code class=&quot;highlighter-rouge&quot;&gt;一行结束时输入两个空格&lt;/code&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;section-4&quot;&gt;列表项&lt;/h3&gt;
+&lt;p&gt;列表项1：&lt;code class=&quot;highlighter-rouge&quot;&gt;* 列表项1&lt;/code&gt;&lt;br /&gt;
+列表项2：&lt;code class=&quot;highlighter-rouge&quot;&gt;* 列表项2&lt;/code&gt;&lt;br /&gt;
+列表项3：&lt;code class=&quot;highlighter-rouge&quot;&gt;+ 列表项3&lt;/code&gt;&lt;br /&gt;
+列表项4：&lt;code class=&quot;highlighter-rouge&quot;&gt;+ 列表项4&lt;/code&gt;&lt;br /&gt;
+列表项5：&lt;code class=&quot;highlighter-rouge&quot;&gt;- 列表项5&lt;/code&gt;&lt;br /&gt;
+列表项6：&lt;code class=&quot;highlighter-rouge&quot;&gt;- 列表项6&lt;/code&gt;&lt;br /&gt;
+列表项7：&lt;code class=&quot;highlighter-rouge&quot;&gt;1. 列表项7&lt;/code&gt;&lt;br /&gt;
+列表项8：&lt;code class=&quot;highlighter-rouge&quot;&gt;2. 列表项8&lt;/code&gt;&lt;br /&gt;
+列表项9：&lt;code class=&quot;highlighter-rouge&quot;&gt;- [ ] 列表项9&lt;/code&gt;&lt;br /&gt;
+列表项10：&lt;code class=&quot;highlighter-rouge&quot;&gt;- [x] 列表项10&lt;/code&gt;&lt;br /&gt;
+&lt;img src=&quot;/images/posts/sa/markdown_syntax/list.jpg&quot; alt=&quot;列表项&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;section-5&quot;&gt;引用&lt;/h3&gt;
+&lt;p&gt;引用：&lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;gt; 引用内容，可结合列表项一起使用&lt;/code&gt;&lt;br /&gt;
+&lt;img src=&quot;/images/posts/sa/markdown_syntax/reference.jpg&quot; alt=&quot;引用&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;section-6&quot;&gt;表格&lt;/h3&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;| 项目 | 价格 | 数量 |
+| -------- | -----: | :----: |
+| 计算机 | 8000 | 10 |
+| 手机 | 6000 | 5 |
+| 电视 | 3000 | 1 |
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/posts/sa/markdown_syntax/table.jpg&quot; alt=&quot;表格&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;section-7&quot;&gt;链接与图片&lt;/h3&gt;
+&lt;p&gt;链接：&lt;code class=&quot;highlighter-rouge&quot;&gt;[Title](URL)&lt;/code&gt;&lt;br /&gt;
+图片：&lt;code class=&quot;highlighter-rouge&quot;&gt;![](/images/image.jpg)&lt;/code&gt;&lt;br /&gt;
+&lt;img src=&quot;/images/posts/sa/markdown_syntax/link.jpg&quot; alt=&quot;链接&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;section-8&quot;&gt;代码高亮&lt;/h3&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;```python
+print &#39;hello world~&#39;
+ ```
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/posts/sa/markdown_syntax/code.jpg&quot; alt=&quot;代码&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;section-9&quot;&gt;水平线&lt;/h3&gt;
+&lt;p&gt;水平线：&lt;code class=&quot;highlighter-rouge&quot;&gt;---&lt;/code&gt;&lt;br /&gt;
+&lt;img src=&quot;/images/posts/sa/markdown_syntax/horizontal_rules.jpg&quot; alt=&quot;水平线&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;section-10&quot;&gt;注脚&lt;/h3&gt;
+&lt;p&gt;使用 [^keyword] 表示注脚。
+这是一个&lt;em&gt;注脚&lt;/em&gt;&lt;sup id=&quot;fnref:footnote&quot;&gt;&lt;a href=&quot;#fn:footnote&quot; class=&quot;footnote&quot;&gt;1&lt;/a&gt;&lt;/sup&gt;的样例。&lt;/p&gt;
+
+&lt;h3 id=&quot;section-11&quot;&gt;定义型列表&lt;/h3&gt;
+
+&lt;dl&gt;
+  &lt;dt&gt;名词 1&lt;/dt&gt;
+  &lt;dd&gt;定义 1（左侧有一个可见的冒号和四个不可见的空格）&lt;/dd&gt;
+  &lt;dt&gt;代码块 2&lt;/dt&gt;
+  &lt;dd&gt;这是代码块的定义（左侧有一个可见的冒号和四个不可见的空格）
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;代码块（左侧有八个不可见的空格）
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/dd&gt;
+&lt;/dl&gt;
+
+&lt;h3 id=&quot;html&quot;&gt;HTML标签&lt;/h3&gt;
+&lt;p&gt;支持在 Markdown 语法中嵌套 Html 标签，譬如，你可以用 Html 写一个纵跨两行的表格：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;table&amp;gt;
+    &amp;lt;tr&amp;gt;
+        &amp;lt;th rowspan=&quot;2&quot;&amp;gt;值班人员&amp;lt;/th&amp;gt;
+        &amp;lt;th&amp;gt;星期一&amp;lt;/th&amp;gt;
+        &amp;lt;th&amp;gt;星期二&amp;lt;/th&amp;gt;
+        &amp;lt;th&amp;gt;星期三&amp;lt;/th&amp;gt;
+    &amp;lt;/tr&amp;gt;
+    &amp;lt;tr&amp;gt;
+        &amp;lt;td&amp;gt;李强&amp;lt;/td&amp;gt;
+        &amp;lt;td&amp;gt;张明&amp;lt;/td&amp;gt;
+        &amp;lt;td&amp;gt;王平&amp;lt;/td&amp;gt;
+    &amp;lt;/tr&amp;gt;
+&amp;lt;/table&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;table&gt;
+    &lt;tr&gt;
+        &lt;th rowspan=&quot;2&quot;&gt;值班人员&lt;/th&gt;
+        &lt;th&gt;星期一&lt;/th&gt;
+        &lt;th&gt;星期二&lt;/th&gt;
+        &lt;th&gt;星期三&lt;/th&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+        &lt;td&gt;李强&lt;/td&gt;
+        &lt;td&gt;张明&lt;/td&gt;
+        &lt;td&gt;王平&lt;/td&gt;
+    &lt;/tr&gt;
+&lt;/table&gt;
+
+&lt;h3 id=&quot;reference&quot;&gt;reference&lt;/h3&gt;
+&lt;p&gt;https://www.zybuluo.com/mdeditor?url=https://www.zybuluo.com/static/editor/md-help.markdown&lt;/p&gt;
+
+&lt;div class=&quot;footnotes&quot;&gt;
+  &lt;ol&gt;
+    &lt;li id=&quot;fn:footnote&quot;&gt;
+      &lt;p&gt;这是一个 &lt;em&gt;注脚&lt;/em&gt; 的文本。 &lt;a href=&quot;#fnref:footnote&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+  &lt;/ol&gt;
+&lt;/div&gt;
+</description>
+        <pubDate>Sun, 23 Apr 2017 00:00:00 +0800</pubDate>
+        <link>https://wowkingah.github.io/2017/04/markdown_syntax/</link>
+        <guid isPermaLink="true">https://wowkingah.github.io/2017/04/markdown_syntax/</guid>
+        
+        <category>markdown</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>Markdown常用语法</title>
+        <description>&lt;h3 id=&quot;markdown&quot;&gt;什么是 Markdown&lt;/h3&gt;
+&lt;p&gt;Markdown 是一种方便记忆、书写的纯文本标记语言，用户可以使用这些标记符号以最小的输入代价生成极富表现力的文档。&lt;/p&gt;
+
+&lt;h3 id=&quot;section&quot;&gt;标题&lt;/h3&gt;
+&lt;p&gt;一级标题：&lt;code class=&quot;highlighter-rouge&quot;&gt;# Header 1&lt;/code&gt;&lt;br /&gt;
+二级标题：&lt;code class=&quot;highlighter-rouge&quot;&gt;## Header 2&lt;/code&gt;         &lt;br /&gt;
+三级标题：&lt;code class=&quot;highlighter-rouge&quot;&gt;### Header 3&lt;/code&gt;         &lt;br /&gt;
+四级标题：&lt;code class=&quot;highlighter-rouge&quot;&gt;#### Header 4&lt;/code&gt;         &lt;br /&gt;
+五级标题：&lt;code class=&quot;highlighter-rouge&quot;&gt;##### Header 5&lt;/code&gt;          &lt;br /&gt;
+六级标题：&lt;code class=&quot;highlighter-rouge&quot;&gt;###### Header 6&lt;/code&gt;&lt;br /&gt;
+&lt;img src=&quot;/images/posts/markdown_syntax/header.jpg&quot; alt=&quot;标题&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;section-1&quot;&gt;字体&lt;/h3&gt;
+&lt;p&gt;斜体：&lt;code class=&quot;highlighter-rouge&quot;&gt;*斜体*&lt;/code&gt;&lt;br /&gt;
+粗体：&lt;code class=&quot;highlighter-rouge&quot;&gt;**粗体**&lt;/code&gt;&lt;br /&gt;
+粗斜体：&lt;code class=&quot;highlighter-rouge&quot;&gt;***粗斜体***&lt;/code&gt;&lt;br /&gt;
+删除线：&lt;code class=&quot;highlighter-rouge&quot;&gt;~~删除线~~&lt;/code&gt;&lt;br /&gt;
+&lt;img src=&quot;/images/posts/markdown_syntax/font.jpg&quot; alt=&quot;字体&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;section-2&quot;&gt;目录&lt;/h3&gt;
+&lt;p&gt;在段落中填写 &lt;code class=&quot;highlighter-rouge&quot;&gt;[TOC]&lt;/code&gt; 以显示全文内容的目录结构。
+&lt;img src=&quot;/images/posts/markdown_syntax/catalogue.jpg&quot; alt=&quot;目录&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;section-3&quot;&gt;段与行&lt;/h3&gt;
+&lt;p&gt;段落：&lt;code class=&quot;highlighter-rouge&quot;&gt;段落之间空一行&lt;/code&gt;&lt;br /&gt;
+换行：&lt;code class=&quot;highlighter-rouge&quot;&gt;一行结束时输入两个空格&lt;/code&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;section-4&quot;&gt;列表项&lt;/h3&gt;
+&lt;p&gt;列表项1：&lt;code class=&quot;highlighter-rouge&quot;&gt;* 列表项1&lt;/code&gt;&lt;br /&gt;
+列表项2：&lt;code class=&quot;highlighter-rouge&quot;&gt;* 列表项2&lt;/code&gt;&lt;br /&gt;
+列表项3：&lt;code class=&quot;highlighter-rouge&quot;&gt;+ 列表项3&lt;/code&gt;&lt;br /&gt;
+列表项4：&lt;code class=&quot;highlighter-rouge&quot;&gt;+ 列表项4&lt;/code&gt;&lt;br /&gt;
+列表项5：&lt;code class=&quot;highlighter-rouge&quot;&gt;- 列表项5&lt;/code&gt;&lt;br /&gt;
+列表项6：&lt;code class=&quot;highlighter-rouge&quot;&gt;- 列表项6&lt;/code&gt;&lt;br /&gt;
+列表项7：&lt;code class=&quot;highlighter-rouge&quot;&gt;1. 列表项7&lt;/code&gt;&lt;br /&gt;
+列表项8：&lt;code class=&quot;highlighter-rouge&quot;&gt;2. 列表项8&lt;/code&gt;&lt;br /&gt;
+列表项9：&lt;code class=&quot;highlighter-rouge&quot;&gt;- [ ] 列表项9&lt;/code&gt;&lt;br /&gt;
+列表项10：&lt;code class=&quot;highlighter-rouge&quot;&gt;- [x] 列表项10&lt;/code&gt;&lt;br /&gt;
+&lt;img src=&quot;/images/posts/markdown_syntax/list.jpg&quot; alt=&quot;列表项&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;section-5&quot;&gt;引用&lt;/h3&gt;
+&lt;p&gt;引用：&lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;gt; 引用内容，可结合列表项一起使用&lt;/code&gt;&lt;br /&gt;
+&lt;img src=&quot;/images/posts/markdown_syntax/reference.jpg&quot; alt=&quot;引用&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;section-6&quot;&gt;表格&lt;/h3&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;| 项目 | 价格 | 数量 |
+| -------- | -----: | :----: |
+| 计算机 | 8000 | 10 |
+| 手机 | 6000 | 5 |
+| 电视 | 3000 | 1 |
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/posts/markdown_syntax/table.jpg&quot; alt=&quot;表格&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;section-7&quot;&gt;链接与图片&lt;/h3&gt;
+&lt;p&gt;链接：&lt;code class=&quot;highlighter-rouge&quot;&gt;[Title](URL)&lt;/code&gt;&lt;br /&gt;
+图片：&lt;code class=&quot;highlighter-rouge&quot;&gt;![](/images/image.jpg)&lt;/code&gt;&lt;br /&gt;
+&lt;img src=&quot;/images/posts/markdown_syntax/link.jpg&quot; alt=&quot;链接&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;section-8&quot;&gt;代码高亮&lt;/h3&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;```python
+print &#39;hello world~&#39;
+ ```
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/posts/markdown_syntax/code.jpg&quot; alt=&quot;代码&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;section-9&quot;&gt;水平线&lt;/h3&gt;
+&lt;p&gt;水平线：&lt;code class=&quot;highlighter-rouge&quot;&gt;---&lt;/code&gt;&lt;br /&gt;
+&lt;img src=&quot;/images/posts/markdown_syntax/horizontal_rules.jpg&quot; alt=&quot;水平线&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;section-10&quot;&gt;注脚&lt;/h3&gt;
+&lt;p&gt;使用 [^keyword] 表示注脚。
+这是一个&lt;em&gt;注脚&lt;/em&gt;&lt;sup id=&quot;fnref:footnote&quot;&gt;&lt;a href=&quot;#fn:footnote&quot; class=&quot;footnote&quot;&gt;1&lt;/a&gt;&lt;/sup&gt;的样例。&lt;/p&gt;
+
+&lt;h3 id=&quot;section-11&quot;&gt;定义型列表&lt;/h3&gt;
+
+&lt;dl&gt;
+  &lt;dt&gt;名词 1&lt;/dt&gt;
+  &lt;dd&gt;定义 1（左侧有一个可见的冒号和四个不可见的空格）&lt;/dd&gt;
+  &lt;dt&gt;代码块 2&lt;/dt&gt;
+  &lt;dd&gt;这是代码块的定义（左侧有一个可见的冒号和四个不可见的空格）
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;代码块（左侧有八个不可见的空格）
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/dd&gt;
+&lt;/dl&gt;
+
+&lt;h3 id=&quot;html&quot;&gt;HTML标签&lt;/h3&gt;
+&lt;p&gt;支持在 Markdown 语法中嵌套 Html 标签，譬如，你可以用 Html 写一个纵跨两行的表格：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;table&amp;gt;
+    &amp;lt;tr&amp;gt;
+        &amp;lt;th rowspan=&quot;2&quot;&amp;gt;值班人员&amp;lt;/th&amp;gt;
+        &amp;lt;th&amp;gt;星期一&amp;lt;/th&amp;gt;
+        &amp;lt;th&amp;gt;星期二&amp;lt;/th&amp;gt;
+        &amp;lt;th&amp;gt;星期三&amp;lt;/th&amp;gt;
+    &amp;lt;/tr&amp;gt;
+    &amp;lt;tr&amp;gt;
+        &amp;lt;td&amp;gt;李强&amp;lt;/td&amp;gt;
+        &amp;lt;td&amp;gt;张明&amp;lt;/td&amp;gt;
+        &amp;lt;td&amp;gt;王平&amp;lt;/td&amp;gt;
+    &amp;lt;/tr&amp;gt;
+&amp;lt;/table&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;table&gt;
+    &lt;tr&gt;
+        &lt;th rowspan=&quot;2&quot;&gt;值班人员&lt;/th&gt;
+        &lt;th&gt;星期一&lt;/th&gt;
+        &lt;th&gt;星期二&lt;/th&gt;
+        &lt;th&gt;星期三&lt;/th&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+        &lt;td&gt;李强&lt;/td&gt;
+        &lt;td&gt;张明&lt;/td&gt;
+        &lt;td&gt;王平&lt;/td&gt;
+    &lt;/tr&gt;
+&lt;/table&gt;
+
+&lt;h3 id=&quot;reference&quot;&gt;reference&lt;/h3&gt;
+&lt;p&gt;https://www.zybuluo.com/mdeditor?url=https://www.zybuluo.com/static/editor/md-help.markdown&lt;/p&gt;
+
+&lt;div class=&quot;footnotes&quot;&gt;
+  &lt;ol&gt;
+    &lt;li id=&quot;fn:footnote&quot;&gt;
+      &lt;p&gt;这是一个 &lt;em&gt;注脚&lt;/em&gt; 的文本。 &lt;a href=&quot;#fnref:footnote&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+  &lt;/ol&gt;
+&lt;/div&gt;
+</description>
+        <pubDate>Sun, 23 Apr 2017 00:00:00 +0800</pubDate>
+        <link>https://wowkingah.github.io/2017/04/Markdown_Syntax/</link>
+        <guid isPermaLink="true">https://wowkingah.github.io/2017/04/Markdown_Syntax/</guid>
+        
+        <category>markdown</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>Sublime Text3编辑markdown文本</title>
+        <description>&lt;p&gt;之前一直使用notepad++写SHELL、SQL，有一天想玩玩markdown的时候，觉得不是那么方便。于是，就有了sublime的出现。&lt;/p&gt;
+
+&lt;p&gt;使用sublime编写markdown需要：
+&amp;gt; 1. 安装sublime
+&amp;gt; 2. 安装markdown相关插件
+» * Package Control：用于管理插件
+» * MarkdownEditing：编辑markdown&lt;br /&gt;
+» * Markdown Preview：预览markdown&lt;/p&gt;
+
+&lt;h3 id=&quot;sublime&quot;&gt;安装sublime&lt;/h3&gt;
+&lt;p&gt;Sublime 官网下载并安装(http://www.sublimetext.com/3)&lt;/p&gt;
+
+&lt;h3 id=&quot;package-control&quot;&gt;安装Package Control&lt;/h3&gt;
+&lt;p&gt;Package Control官网(https://packagecontrol.io/installation)
+#### 安装步骤：
+&amp;gt; 1. 使用快捷键&lt;code class=&quot;highlighter-rouge&quot;&gt;ctrl+~&lt;/code&gt; 或通过菜单栏 &lt;code class=&quot;highlighter-rouge&quot;&gt;View &amp;gt; Show Console&lt;/code&gt;调出console。
+&amp;gt; 2. 复制官网Python code粘贴到console后按回车去执行。
+» * sublime text3选择SUBLIME TEXT3对应的代码
+» &lt;code class=&quot;highlighter-rouge&quot;&gt;python
+&amp;gt;&amp;gt; import urllib.request,os,hashlib; h = &#39;df21e130d211cfc94d9b0905775a7c0f&#39; + &#39;1e3d39e33b79698005270310898eea76&#39;; pf = &#39;Package Control.sublime-package&#39;; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( &#39;http://packagecontrol.io/&#39; + pf.replace(&#39; &#39;, &#39;%20&#39;)).read(); dh = hashlib.sha256(by).hexdigest(); print(&#39;Error validating download (got %s instead of %s), please try manual install&#39; % (dh, h)) if dh != h else open(os.path.join( ipp, pf), &#39;wb&#39; ).write(by)
+&amp;gt;&amp;gt;&lt;/code&gt;
+&amp;gt; &lt;img src=&quot;/images/posts/sa/sublime_text3/console.jpg&quot; alt=&quot;&quot; /&gt;
+&amp;gt; 3. 重启sublime后，可在&lt;code class=&quot;highlighter-rouge&quot;&gt;Preferences -&amp;gt; Package Settings&lt;/code&gt;看到&lt;code class=&quot;highlighter-rouge&quot;&gt;Package Control&lt;/code&gt;。&lt;/p&gt;
+
+&lt;h3 id=&quot;markdowneditingmarkdown-preview&quot;&gt;安装MarkdownEditing与Markdown Preview&lt;/h3&gt;
+&lt;blockquote&gt;
+  &lt;ol&gt;
+    &lt;li&gt;快捷方式&lt;code class=&quot;highlighter-rouge&quot;&gt;Ctrl + Shift + p&lt;/code&gt;或通过菜单栏&lt;code class=&quot;highlighter-rouge&quot;&gt;Preferences -&amp;gt; Package Control&lt;/code&gt;，输入install
+ &lt;img src=&quot;/images/posts/sa/sublime_text3/install_package.jpg&quot; alt=&quot;&quot; /&gt;&lt;/li&gt;
+    &lt;li&gt;安装MarkdownEditing 
+ &lt;img src=&quot;/images/posts/sa/sublime_text3/install_MarkdownEditing.jpg&quot; alt=&quot;&quot; /&gt;&lt;/li&gt;
+    &lt;li&gt;安装Markdown Preview
+ &lt;img src=&quot;/images/posts/sa/sublime_text3/install_MarkdownPreview.jpg&quot; alt=&quot;&quot; /&gt;&lt;/li&gt;
+  &lt;/ol&gt;
+&lt;/blockquote&gt;
+
+&lt;h3 id=&quot;section&quot;&gt;偏好设置&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;设置语言平台&lt;/strong&gt;
+&amp;gt; 1. 打开Markdown Editing设置
+&amp;gt; &lt;code class=&quot;highlighter-rouge&quot;&gt;Preferences -&amp;gt; Package Settings -&amp;gt; Markdown Editing -&amp;gt; Markdown GFM Settings User&lt;/code&gt;
+&amp;gt; 2. 增加配置
+&amp;gt; &lt;code class=&quot;highlighter-rouge&quot;&gt;
+// These settings override both User and Default settings for the Markdown syntax  
+{
+    &quot;default_line_ending&quot;: &quot;unix&quot;,
+}
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;sublime相关设置&lt;/strong&gt;
+&amp;gt; 1. 打开settings&lt;br /&gt;
+&amp;gt; &lt;code class=&quot;highlighter-rouge&quot;&gt;Preferences -&amp;gt; Settings&lt;/code&gt;
+&amp;gt; 2. 增加配置
+&amp;gt; &lt;code class=&quot;highlighter-rouge&quot;&gt;
+&amp;gt; {
+&amp;gt;     &quot;font_size&quot;: 12,
+&amp;gt;     &quot;line_numbers&quot;: true,
+&amp;gt; }  
+&amp;gt;&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;自定义快捷键，预览markdown&lt;/strong&gt;
+&amp;gt; 1. 打开Key Bindings
+&amp;gt; &lt;code class=&quot;highlighter-rouge&quot;&gt;Preferences -&amp;gt; Key Bindings&lt;/code&gt;&lt;br /&gt;
+&amp;gt; 2. 增加配置
+&amp;gt; &lt;code class=&quot;highlighter-rouge&quot;&gt;
+&amp;gt; {&quot;keys&quot;: [&quot;f6&quot;], &quot;command&quot;: &quot;markdown_preview&quot;, &quot;args&quot;: { &quot;target&quot;: &quot;browser&quot;}}
+&amp;gt;&lt;/code&gt;&lt;br /&gt;
+&lt;strong&gt;&lt;em&gt;tips&lt;/em&gt;&lt;/strong&gt;
+按F6就可以预览markdown文件啦。&lt;/p&gt;
+</description>
+        <pubDate>Sat, 22 Apr 2017 00:00:00 +0800</pubDate>
+        <link>https://wowkingah.github.io/2017/04/sublime%E7%BC%96%E8%BE%91markdown%E6%96%87%E6%9C%AC/</link>
+        <guid isPermaLink="true">https://wowkingah.github.io/2017/04/sublime%E7%BC%96%E8%BE%91markdown%E6%96%87%E6%9C%AC/</guid>
+        
+        <category>tools</category>
+        
+        <category>sublime</category>
+        
+        <category>markdown</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>Sublime Text3注册序列号3126</title>
+        <description>&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;
+—– BEGIN LICENSE —–
+Michael Barnes
+Single User License
+EA7E-821385
+8A353C41 872A0D5C DF9B2950 AFF6F667
+C458EA6D 8EA3C286 98D1D650 131A97AB
+AA919AEC EF20E143 B361B1E7 4C8B7F04
+B085E65E 2F5F5360 8489D422 FB8FC1AA
+93F6323C FD7F7544 3F39C318 D95E6480
+FCCC7561 8A4A1741 68FA4223 ADCEDE07
+200C25BE DBBC4855 C4CFB774 C5EC138C
+0FEC1CEF D9DCECEC D3A5DAD1 01316C36
+—— END LICENSE ——
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;
+—– BEGIN LICENSE —–
+Free Communities Consultoria em Informática Ltda
+Single User License
+EA7E-801302
+C154C122 4EFA4415 F1AAEBCC 315F3A7D
+2580735A 7955AA57 850ABD88 72A1DDD8
+8D2CE060 CF980C29 890D74F2 53131895
+281E324E 98EA1FEF 7FF69A12 17CA7784
+490862AF 833E133D FD22141D D8C89B94
+4C10A4D2 24693D70 AE37C18F 72EF0BE5
+1ED60704 651BC71F 16CA1B77 496A0B19
+463EDFF9 6BEB1861 CA5BAD96 89D0118E
+—— END LICENSE ——
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;
+—– BEGIN LICENSE —–
+Nicolas Hennion
+Single User License
+EA7E-866075
+8A01AA83 1D668D24 4484AEBC 3B04512C
+827B0DE5 69E9B07A A39ACCC0 F95F5410
+729D5639 4C37CECB B2522FB3 8D37FDC1
+72899363 BBA441AC A5F47F08 6CD3B3FE
+CEFB3783 B2E1BA96 71AAF7B4 AFB61B1D
+0CC513E7 52FF2333 9F726D2C CDE53B4A
+810C0D4F E1F419A3 CDA0832B 8440565A
+35BF00F6 4CA9F869 ED10E245 469C233E
+—— END LICENSE ——
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;
+—– BEGIN LICENSE —–
+Anthony Sansone
+Single User License
+EA7E-878563
+28B9A648 42B99D8A F2E3E9E0 16DE076E
+E218B3DC F3606379 C33C1526 E8B58964
+B2CB3F63 BDF901BE D31424D2 082891B5
+F7058694 55FA46D8 EFC11878 0868F093
+B17CAFE7 63A78881 86B78E38 0F146238
+BAE22DBB D4EC71A1 0EC2E701 C7F9C648
+5CF29CA3 1CB14285 19A46991 E9A98676
+14FD4777 2D8A0AB6 A444EE0D CA009B54
+—— END LICENSE ——
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;
+—– BEGIN LICENSE —–
+Alexey Plutalov
+Single User License
+EA7E-860776
+3DC19CC1 134CDF23 504DC871 2DE5CE55
+585DC8A6 253BB0D9 637C87A2 D8D0BA85
+AAE574AD BA7D6DA9 2B9773F2 324C5DEF
+17830A4E FBCF9D1D 182406E9 F883EA87
+E585BBA1 2538C270 E2E857C2 194283CA
+7234FF9E D0392F93 1D16E021 F1914917
+63909E12 203C0169 3F08FFC8 86D06EA8
+73DDAEF0 AC559F30 A6A67947 B60104C6
+—— END LICENSE ——
+&lt;/code&gt;&lt;/p&gt;
+</description>
+        <pubDate>Sat, 22 Apr 2017 00:00:00 +0800</pubDate>
+        <link>https://wowkingah.github.io/2017/04/sublime_text3_3126_licenses/</link>
+        <guid isPermaLink="true">https://wowkingah.github.io/2017/04/sublime_text3_3126_licenses/</guid>
+        
+        <category>tools</category>
+        
+        <category>sublime</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>git更新fork的repository</title>
+        <description>&lt;p&gt;Fork一个别人的repository，做了一些改动，想提交pull request的时候，发现原先别人的repository已经又有了一些更新了，这个时候想使得自己fork出的repository也得到这些更新，即和原repository同步，该怎么做呢？这个问题应该被问烂了，stackoverflow上也有解答，基本上是指向的GitHub上的官方文档。最主要的是这2篇：
+https://help.github.com/articles/configuring-a-remote-for-a-fork/
+https://help.github.com/articles/syncing-a-fork/
+本文略作翻译，以中文解答这个问题。
+——&lt;/p&gt;
+
+&lt;h3 id=&quot;section&quot;&gt;查看当前配置&lt;/h3&gt;
+&lt;p&gt;首先，检查一下当前的配置，看看当前有没有已经设置了上游，这要使用git remote -v 命令。如下：
+&lt;code class=&quot;highlighter-rouge&quot;&gt;bash
+$git remote -v  
+origin  https://github.com/YOUR_USERNAME/YOUR_FORK.git (fetch)  
+origin  https://github.com/YOUR_USERNAME/YOUR_FORK.git (push) 
+&lt;/code&gt; 
+以上表明，origin这个repository对应的是远端的https开头的这个链接指向的repository，即自己fork出的repository。&lt;/p&gt;
+
+&lt;h3 id=&quot;section-1&quot;&gt;设置上游&lt;/h3&gt;
+&lt;p&gt;第二步，将原repository设置为自己fork出的repository的上游（upstream）。运用如下的命令：
+&lt;code class=&quot;highlighter-rouge&quot;&gt;bash
+$git remote add upstream https://github.com/ORIGINAL_OWNER/ORIGINAL_REPOSITORY.git
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;运用第一步中提到的git remove -v命令再次检查一下，结果如下：
+&lt;code class=&quot;highlighter-rouge&quot;&gt;bash
+$git remote -v  
+origin    https://github.com/YOUR_USERNAME/YOUR_FORK.git (fetch)  
+origin    https://github.com/YOUR_USERNAME/YOUR_FORK.git (push)  
+upstream  https://github.com/ORIGINAL_OWNER/ORIGINAL_REPOSITORY.git (fetch)  
+upstream  https://github.com/ORIGINAL_OWNER/ORIGINAL_REPOSITORY.git (push)  
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;section-2&quot;&gt;获取上游更新&lt;/h3&gt;
+&lt;p&gt;第三步，运行 git fetch upstream 命令，如下：
+&lt;code class=&quot;highlighter-rouge&quot;&gt;bash
+$git fetch upstream  
+remote: Counting objects: 75, done.  
+remote: Compressing objects: 100% (53/53), done.  
+remote: Total 62 (delta 27), reused 44 (delta 9)  
+Unpacking objects: 100% (62/62), done.  
+From https://github.com/ORIGINAL_OWNER/ORIGINAL_REPOSITORY  
+ * [new branch]      master     -&amp;gt; upstream/master
+&lt;/code&gt;&lt;br /&gt;
+以上表明，远程的原repository上确实有一些更新，现在它们已经被download到本地的.git文件夹下了，但是还没有合并到本地的代码中。&lt;/p&gt;
+
+&lt;h3 id=&quot;checkoutrepo&quot;&gt;checkout本地repo&lt;/h3&gt;
+&lt;p&gt;第四步，git checkout master，这是保证切换到本地的repository的master上，如果本来就在，那么这一步不是必须的。
+&lt;code class=&quot;highlighter-rouge&quot;&gt;bash
+$git checkout master
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;merge&quot;&gt;merge上游更新&lt;/h3&gt;
+&lt;p&gt;第五步，运行 git merge upstream/master 命令，将upstream/master上的更新合并到本地的master上，其实就是将第三步中download到.git文件夹下的那些change合并到本地的master中。如下：
+&lt;code class=&quot;highlighter-rouge&quot;&gt;bash
+$git merge upstream/master  
+Updating a422352..5fdff0f  
+Fast-forward  
+ README                    |    9 -------  
+ README.md                 |    7 ++++++  
+ 2 files changed, 7 insertions(+), 9 deletions(-)  
+ delete mode 100644 README  
+ create mode 100644 README.md  
+&lt;/code&gt;
+如果本地没有什么自己独立的更新的话，那么将执行”fast-forward”的合并。如果本地有自己独立的更新，而又会引起冲突的话，则要解决冲突，再commit。&lt;/p&gt;
+
+&lt;p&gt;关于解决冲突，如果明确所有冲突都是使用upstream/master上的来override自己的，那么可以直接运行如下命令，则无需解决冲突了：
+&lt;code class=&quot;highlighter-rouge&quot;&gt;bash
+git merge -X theirs upstream/master  
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;注意，以上步骤结束后，仅仅是本地的fork出的repository和原repository取得了同步，如果想让远程的fork出的repository也同样取得同步，必须再git push上去。&lt;/p&gt;
+
+&lt;h3 id=&quot;reference&quot;&gt;reference&lt;/h3&gt;
+&lt;p&gt;http://blog.csdn.net/nirendao/article/details/51464191&lt;/p&gt;
+</description>
+        <pubDate>Sat, 22 Apr 2017 00:00:00 +0800</pubDate>
+        <link>https://wowkingah.github.io/2017/04/git%E6%9B%B4%E6%96%B0fork%E7%9A%84repository/</link>
+        <guid isPermaLink="true">https://wowkingah.github.io/2017/04/git%E6%9B%B4%E6%96%B0fork%E7%9A%84repository/</guid>
+        
+        <category>git</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>Sublime Text3编辑markdown文本</title>
+        <description>&lt;p&gt;之前一直使用notepad++写SHELL、SQL，有一天想玩玩markdown的时候，觉得不是那么方便。于是，就有了sublime的出现。&lt;/p&gt;
+
+&lt;p&gt;使用sublime编写markdown需要：
+&amp;gt; 1. 安装sublime
+&amp;gt; 2. 安装markdown相关插件
+» * Package Control：用于管理插件
+» * MarkdownEditing：编辑markdown&lt;br /&gt;
+» * Markdown Preview：预览markdown&lt;/p&gt;
+
+&lt;h3 id=&quot;sublime&quot;&gt;安装sublime&lt;/h3&gt;
+&lt;p&gt;Sublime 官网下载并安装(http://www.sublimetext.com/3)&lt;/p&gt;
+
+&lt;h3 id=&quot;package-control&quot;&gt;安装Package Control&lt;/h3&gt;
+&lt;p&gt;Package Control官网(https://packagecontrol.io/installation)
+#### 安装步骤：
+&amp;gt; 1. 使用快捷键&lt;code class=&quot;highlighter-rouge&quot;&gt;ctrl+~&lt;/code&gt; 或通过菜单栏 &lt;code class=&quot;highlighter-rouge&quot;&gt;View &amp;gt; Show Console&lt;/code&gt;调出console。
+&amp;gt; 2. 复制官网Python code粘贴到console后按回车去执行。
+» * sublime text3选择SUBLIME TEXT3对应的代码
+» &lt;code class=&quot;highlighter-rouge&quot;&gt;python
+&amp;gt;&amp;gt; import urllib.request,os,hashlib; h = &#39;df21e130d211cfc94d9b0905775a7c0f&#39; + &#39;1e3d39e33b79698005270310898eea76&#39;; pf = &#39;Package Control.sublime-package&#39;; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( &#39;http://packagecontrol.io/&#39; + pf.replace(&#39; &#39;, &#39;%20&#39;)).read(); dh = hashlib.sha256(by).hexdigest(); print(&#39;Error validating download (got %s instead of %s), please try manual install&#39; % (dh, h)) if dh != h else open(os.path.join( ipp, pf), &#39;wb&#39; ).write(by)
+&amp;gt;&amp;gt;&lt;/code&gt;
+&amp;gt; &lt;img src=&quot;/images/posts/sublime_text3/console.jpg&quot; alt=&quot;&quot; /&gt;
+&amp;gt; 3. 重启sublime后，可在&lt;code class=&quot;highlighter-rouge&quot;&gt;Preferences -&amp;gt; Package Settings&lt;/code&gt;看到&lt;code class=&quot;highlighter-rouge&quot;&gt;Package Control&lt;/code&gt;。&lt;/p&gt;
+
+&lt;h3 id=&quot;markdowneditingmarkdown-preview&quot;&gt;安装MarkdownEditing与Markdown Preview&lt;/h3&gt;
+&lt;blockquote&gt;
+  &lt;ol&gt;
+    &lt;li&gt;快捷方式&lt;code class=&quot;highlighter-rouge&quot;&gt;Ctrl + Shift + p&lt;/code&gt;或通过菜单栏&lt;code class=&quot;highlighter-rouge&quot;&gt;Preferences -&amp;gt; Package Control&lt;/code&gt;，输入install
+ &lt;img src=&quot;/images/posts/sublime_text3/install_package.jpg&quot; alt=&quot;&quot; /&gt;&lt;/li&gt;
+    &lt;li&gt;安装MarkdownEditing 
+ &lt;img src=&quot;/images/posts/sublime_text3/install_MarkdownEditing.jpg&quot; alt=&quot;&quot; /&gt;&lt;/li&gt;
+    &lt;li&gt;安装Markdown Preview
+ &lt;img src=&quot;/images/posts/sublime_text3/install_MarkdownPreview.jpg&quot; alt=&quot;&quot; /&gt;&lt;/li&gt;
+  &lt;/ol&gt;
+&lt;/blockquote&gt;
+
+&lt;h3 id=&quot;section&quot;&gt;偏好设置&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;设置语言平台&lt;/strong&gt;
+&amp;gt; 1. 打开Markdown Editing设置
+&amp;gt; &lt;code class=&quot;highlighter-rouge&quot;&gt;Preferences -&amp;gt; Package Settings -&amp;gt; Markdown Editing -&amp;gt; Markdown GFM Settings User&lt;/code&gt;
+&amp;gt; 2. 增加配置
+&amp;gt; &lt;code class=&quot;highlighter-rouge&quot;&gt;
+// These settings override both User and Default settings for the Markdown syntax  
+{
+    &quot;default_line_ending&quot;: &quot;unix&quot;,
+}
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;sublime相关设置&lt;/strong&gt;
+&amp;gt; 1. 打开settings&lt;br /&gt;
+&amp;gt; &lt;code class=&quot;highlighter-rouge&quot;&gt;Preferences -&amp;gt; Settings&lt;/code&gt;
+&amp;gt; 2. 增加配置
+&amp;gt; &lt;code class=&quot;highlighter-rouge&quot;&gt;
+&amp;gt; {
+&amp;gt;     &quot;font_size&quot;: 12,
+&amp;gt;     &quot;line_numbers&quot;: true,
+&amp;gt; }  
+&amp;gt;&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;自定义快捷键，预览markdown&lt;/strong&gt;
+&amp;gt; 1. 打开Key Bindings
+&amp;gt; &lt;code class=&quot;highlighter-rouge&quot;&gt;Preferences -&amp;gt; Key Bindings&lt;/code&gt;&lt;br /&gt;
+&amp;gt; 2. 增加配置
+&amp;gt; &lt;code class=&quot;highlighter-rouge&quot;&gt;
+&amp;gt; {&quot;keys&quot;: [&quot;f6&quot;], &quot;command&quot;: &quot;markdown_preview&quot;, &quot;args&quot;: { &quot;target&quot;: &quot;browser&quot;}}
+&amp;gt;&lt;/code&gt;&lt;br /&gt;
+&lt;strong&gt;&lt;em&gt;tips&lt;/em&gt;&lt;/strong&gt;
+按F6就可以预览markdown文件啦。&lt;/p&gt;
+</description>
+        <pubDate>Sat, 22 Apr 2017 00:00:00 +0800</pubDate>
+        <link>https://wowkingah.github.io/2017/04/Sublime%E7%BC%96%E8%BE%91markdown%E6%96%87%E6%9C%AC/</link>
+        <guid isPermaLink="true">https://wowkingah.github.io/2017/04/Sublime%E7%BC%96%E8%BE%91markdown%E6%96%87%E6%9C%AC/</guid>
+        
+        <category>tools</category>
+        
+        <category>sublime</category>
+        
+        <category>markdown</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>Sublime Text3注册序列号3126</title>
+        <description>&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;
+—– BEGIN LICENSE —–
+Michael Barnes
+Single User License
+EA7E-821385
+8A353C41 872A0D5C DF9B2950 AFF6F667
+C458EA6D 8EA3C286 98D1D650 131A97AB
+AA919AEC EF20E143 B361B1E7 4C8B7F04
+B085E65E 2F5F5360 8489D422 FB8FC1AA
+93F6323C FD7F7544 3F39C318 D95E6480
+FCCC7561 8A4A1741 68FA4223 ADCEDE07
+200C25BE DBBC4855 C4CFB774 C5EC138C
+0FEC1CEF D9DCECEC D3A5DAD1 01316C36
+—— END LICENSE ——
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;
+—– BEGIN LICENSE —–
+Free Communities Consultoria em Informática Ltda
+Single User License
+EA7E-801302
+C154C122 4EFA4415 F1AAEBCC 315F3A7D
+2580735A 7955AA57 850ABD88 72A1DDD8
+8D2CE060 CF980C29 890D74F2 53131895
+281E324E 98EA1FEF 7FF69A12 17CA7784
+490862AF 833E133D FD22141D D8C89B94
+4C10A4D2 24693D70 AE37C18F 72EF0BE5
+1ED60704 651BC71F 16CA1B77 496A0B19
+463EDFF9 6BEB1861 CA5BAD96 89D0118E
+—— END LICENSE ——
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;
+—– BEGIN LICENSE —–
+Nicolas Hennion
+Single User License
+EA7E-866075
+8A01AA83 1D668D24 4484AEBC 3B04512C
+827B0DE5 69E9B07A A39ACCC0 F95F5410
+729D5639 4C37CECB B2522FB3 8D37FDC1
+72899363 BBA441AC A5F47F08 6CD3B3FE
+CEFB3783 B2E1BA96 71AAF7B4 AFB61B1D
+0CC513E7 52FF2333 9F726D2C CDE53B4A
+810C0D4F E1F419A3 CDA0832B 8440565A
+35BF00F6 4CA9F869 ED10E245 469C233E
+—— END LICENSE ——
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;
+—– BEGIN LICENSE —–
+Anthony Sansone
+Single User License
+EA7E-878563
+28B9A648 42B99D8A F2E3E9E0 16DE076E
+E218B3DC F3606379 C33C1526 E8B58964
+B2CB3F63 BDF901BE D31424D2 082891B5
+F7058694 55FA46D8 EFC11878 0868F093
+B17CAFE7 63A78881 86B78E38 0F146238
+BAE22DBB D4EC71A1 0EC2E701 C7F9C648
+5CF29CA3 1CB14285 19A46991 E9A98676
+14FD4777 2D8A0AB6 A444EE0D CA009B54
+—— END LICENSE ——
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;
+—– BEGIN LICENSE —–
+Alexey Plutalov
+Single User License
+EA7E-860776
+3DC19CC1 134CDF23 504DC871 2DE5CE55
+585DC8A6 253BB0D9 637C87A2 D8D0BA85
+AAE574AD BA7D6DA9 2B9773F2 324C5DEF
+17830A4E FBCF9D1D 182406E9 F883EA87
+E585BBA1 2538C270 E2E857C2 194283CA
+7234FF9E D0392F93 1D16E021 F1914917
+63909E12 203C0169 3F08FFC8 86D06EA8
+73DDAEF0 AC559F30 A6A67947 B60104C6
+—— END LICENSE ——
+&lt;/code&gt;&lt;/p&gt;
+</description>
+        <pubDate>Sat, 22 Apr 2017 00:00:00 +0800</pubDate>
+        <link>https://wowkingah.github.io/2017/04/Sublime_Text3_3126_Licenses/</link>
+        <guid isPermaLink="true">https://wowkingah.github.io/2017/04/Sublime_Text3_3126_Licenses/</guid>
+        
+        <category>tools</category>
+        
+        <category>sublime</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>数据库大小写敏感问题</title>
+        <description>&lt;h3 id=&quot;oracle&quot;&gt;Oracle&lt;/h3&gt;
+&lt;p&gt;默认大小写不敏感，表名、字段名等不区分大小写。小写字母会自动转换为大写字母，需要用小写字母时需要使用双引号，或借助函数upper()和lower()。&lt;/p&gt;
+
+&lt;h3 id=&quot;sqlserver&quot;&gt;SQLServer&lt;/h3&gt;
+&lt;p&gt;默认大小写不敏感。可以通过修改排序规则改变：右击数据库 -&amp;gt; 属性 -&amp;gt; 选项 -&amp;gt; 排序规则：Chinese_PRC_CS_AS（区分大小写）、Chinese_PRC_CI_AS（不区分大小写）。&lt;/p&gt;
+
+&lt;h3 id=&quot;mysql&quot;&gt;MySQL&lt;/h3&gt;
+&lt;p&gt;#### Windows&lt;br /&gt;
+都不区分大小写。&lt;/p&gt;
+
+&lt;h4 id=&quot;linux&quot;&gt;Linux&lt;/h4&gt;
+&lt;p&gt;数据库名、表名、列名、别名大小写规则如下：&lt;br /&gt;
+&amp;gt; 1. 数据库名与表名是严格区分大小写；&lt;br /&gt;
+&amp;gt; 2. 表的别名是严格区分大小写；&lt;br /&gt;
+&amp;gt; 3. 变量名也是严格区分大小写；
+&amp;gt; 4. 列名与列的别名在所有的情况下均忽略大小写。&lt;/p&gt;
+
+&lt;h5 id=&quot;section&quot;&gt;解决办法：&lt;/h5&gt;
+&lt;p&gt;&lt;strong&gt;关于库名、表名、表别名的大小写敏感问题&lt;/strong&gt;&lt;br /&gt;
+可通过lower_case_table_names参数来控制数据库名、表名、表别名的大小写敏感。
+&lt;code class=&quot;highlighter-rouge&quot;&gt;bash
+mysql&amp;gt; show variables like &#39;lower%&#39;;
++------------------------+-------+
+| Variable_name  | Value |
++------------------------+-------+
+| lower_case_file_system | OFF   |
+| lower_case_table_names | 1 |
++------------------------+-------+
+2 rows in set (0.00 sec)
+&lt;/code&gt;
+tips:&lt;br /&gt;
+lower_case_file_system是只读参数，无法被修改，这个参数是用来告诉你在当前的系统平台下，是否对文件名大小写敏感。&lt;/p&gt;
+
+&lt;p&gt;notes:&lt;br /&gt;
+&amp;gt; 1. 对于windows和Mac OX S 这些文件系统对大小写不敏感的系统该参数不能设置为0，并且在5.6.27以后如果在大小写不敏感的操作系统上设置该参数为0启动实例时会报错，并且退出。&lt;br /&gt;
+&amp;gt; 2. linux系统值为0，windows默认设置为1，Mac OXS设置为2， lower_case_table_names=2 只能用于大小写不敏感的系统，在linux系统上设置lower_case_table_names=2，启动后errorlog中会有如下提示：&lt;br /&gt;
+ [Warning] lower_case_table_names was set to 2,even though your the file system ‘/home/test/var/lib/data1/’ is casesensitive.  Now settinglower_case_table_names to 0 to avoid future problems.&lt;br /&gt;
+&amp;gt; 3. 为了避免不同平台之间迁移数据库时遇到大小写问题，建议所有平台上都设置lower_case_table_names=1。&lt;br /&gt;
+&amp;gt; 4. 在unix系统上，如果你准备把lower_case_table_names从0改成1，那么你的先把有大写的表名都改成小写(RENAME TABLE T1 TO t1;)，否则你访问之前有大写字母的表会报如下错误：desc sysNumLimit_0408; ERROR 1146 (42S02): Table ‘kopc.sysnumlimit_0408’doesn’t exist.&lt;br /&gt;
+当然也可以在修改参数之前把库做导出，然后删除所有数据库(drop database)，然后修改参数，最后重新导入。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;关于字段值内容的大小写敏感问题&lt;/strong&gt;&lt;br /&gt;
+字段值的大小写敏感性由MySQL的校对规则(collate)来控制。提到校对规则，就不得不说字符集。字符集是一套符号和编码，collate指定了字符集中数据的排序和比对规则则，比如定义’A’&amp;lt;’B’这样的关系的规则。每种字符集都会对应一定数据库的collate，一般而言，collate是以其相关的字符集名开始，通常包括一个语言名，并且以_ci（ci是case insensitive的缩写）、_cs（cs是case sensitive的缩写）或_bin（二元）结束 。比如 latin1字符集的collate有latin1_general_ci(这个是utf8字符集默认的校对规则)，latin1_general_cs，latin1_bin表示二进制比较(区分大小写)。可以通过show collation命令来查看字符集支持的校对规则有哪些。&lt;/p&gt;
+
+&lt;p&gt;校对规则通过关键字collate指定，可以在数据库、表、列几个层面指定字符集和校对规，越往后优字符集和校对规则生效的优先级越高，如果没有为列或者表指定字符集和校对规则，那么它会继承上级的字符集和校对规则。比如创建数据库test1，指定字符集为utf8，校对规则为utf8_bin。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;相关测试如下：&lt;/strong&gt;&lt;br /&gt;
+```bash
+#1.创建字符集为utf8，校对规则为utf8_general_ci的数据库（MySQL5.6默认）
+mysql&amp;gt; CREATE DATABASE test1;
+Query OK, 1 row affected (0.00 sec)&lt;/p&gt;
+
+&lt;p&gt;mysql&amp;gt; use test1;
+Database changed&lt;/p&gt;
+
+&lt;h1 id=&quot;testcase&quot;&gt;2.1创建test_case表。因为没有为表和列指定字符集、校对规则，它们会继承所在数据库的字符集和校对规则&lt;/h1&gt;
+&lt;p&gt;mysql&amp;gt; CREATE TABLE test_case(name varchar(20));
+Query OK, 0 rows affected (0.77 sec)&lt;/p&gt;
+
+&lt;h1 id=&quot;section-1&quot;&gt;2.2为列指定了字符集和校对规则(列优先级高于表，高于数据库)&lt;/h1&gt;
+&lt;p&gt;mysql&amp;gt; CREATE TABLE test_case1(name varchar(20) character set utf8 collate utf8_bin);
+Query OK, 0 rows affected (0.80 sec)&lt;/p&gt;
+
+&lt;p&gt;mysql&amp;gt; SHOW CREATE TABLE test_case \G
+&lt;strong&gt;**&lt;/strong&gt;&lt;strong&gt;**&lt;/strong&gt;&lt;strong&gt;**&lt;/strong&gt;&lt;strong&gt;**&lt;/strong&gt;&lt;strong&gt;* 1. row **&lt;/strong&gt;&lt;strong&gt;**&lt;/strong&gt;&lt;strong&gt;**&lt;/strong&gt;&lt;strong&gt;**&lt;/strong&gt;*****
+   Table: test_case
+Create Table: CREATE TABLE &lt;code class=&quot;highlighter-rouge&quot;&gt;test_case&lt;/code&gt; (
+  &lt;code class=&quot;highlighter-rouge&quot;&gt;name&lt;/code&gt; varchar(20) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8
+1 row in set (0.00 sec)&lt;/p&gt;
+
+&lt;p&gt;mysql&amp;gt; SHOW CREATE TABLE test_case1 \G
+&lt;strong&gt;**&lt;/strong&gt;&lt;strong&gt;**&lt;/strong&gt;&lt;strong&gt;**&lt;/strong&gt;&lt;strong&gt;**&lt;/strong&gt;&lt;strong&gt;* 1. row **&lt;/strong&gt;&lt;strong&gt;**&lt;/strong&gt;&lt;strong&gt;**&lt;/strong&gt;&lt;strong&gt;**&lt;/strong&gt;*****
+   Table: test_case1
+Create Table: CREATE TABLE &lt;code class=&quot;highlighter-rouge&quot;&gt;test_case1&lt;/code&gt; (
+  &lt;code class=&quot;highlighter-rouge&quot;&gt;name&lt;/code&gt; varchar(20) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8
+1 row in set (0.00 sec)&lt;/p&gt;
+
+&lt;h1 id=&quot;section-2&quot;&gt;3.插入测试数据&lt;/h1&gt;
+&lt;p&gt;mysql&amp;gt; INSERT INTO test_case VALUES(‘abc’);
+Query OK, 1 row affected (0.13 sec)&lt;/p&gt;
+
+&lt;p&gt;mysql&amp;gt; INSERT INTO test_case VALUES(‘ABC’);
+Query OK, 1 row affected (0.13 sec)&lt;/p&gt;
+
+&lt;p&gt;mysql&amp;gt; INSERT INTO test_case1 VALUES(‘abc’);
+Query OK, 1 row affected (0.27 sec)&lt;/p&gt;
+
+&lt;p&gt;mysql&amp;gt; INSERT INTO test_case1 VALUES(‘Abc’);
+Query OK, 1 row affected (0.11 sec)&lt;/p&gt;
+
+&lt;p&gt;mysql&amp;gt; SELECT * FROM test_case;
++——+
+| name |
++——+
+| abc  |
+| ABC  |
++——+
+2 rows in set (0.00 sec)&lt;/p&gt;
+
+&lt;p&gt;mysql&amp;gt; SELECT * FROM test_case1;
++——+
+| name |
++——+
+| abc  |
+| Abc  |
++——+
+2 rows in set (0.00 sec)&lt;/p&gt;
+
+&lt;h1 id=&quot;section-3&quot;&gt;4.查询测试&lt;/h1&gt;
+&lt;p&gt;mysql&amp;gt; SELECT * FROM test_case WHERE name LIKE ‘ab%’;
++——+
+| name |
++——+
+| abc  |
+| ABC  |
++——+
+2 rows in set (0.00 sec)&lt;/p&gt;
+
+&lt;h1 id=&quot;testcaseutf8generalcitestcase1nameutf8bin&quot;&gt;因为test_case使用的utf8_general_ci校对规则，所以大小写不敏感；test_case1的name列使用的是utf8_bin，所以大小写敏感。&lt;/h1&gt;
+&lt;p&gt;mysql&amp;gt; SELECT * FROM test_case1 WHERE name LIKE ‘ab%’;
++——+
+| name |
++——+
+| abc  |
++——+
+1 row in set (0.00 sec)&lt;/p&gt;
+
+&lt;h1 id=&quot;section-4&quot;&gt;5.添加主键测试&lt;/h1&gt;
+&lt;p&gt;mysql&amp;gt; ALTER TABLE test_case ADD PRIMARY KEY (name);
+ERROR 1062 (23000): Duplicate entry ‘ABC’ for key ‘PRIMARY’
+mysql&amp;gt; ALTER TABLE test_case1 ADD PRIMARY KEY (name);
+Query OK, 2 rows affected (2.06 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+#test_case因为大小写不敏感，所以认为表中的abc和ABC两条记录是一样的，故添加主键时报错。
+```&lt;/p&gt;
+
+&lt;p&gt;NOTE:
+1. 通过上面的测试，可以看到如果想某个字段值区分大小写，可以在建表时为该字段指定区别大小写的collate(_ci或者_bin)，对于已存在的表可以通过如下语句修改列的collate： 
+&lt;code class=&quot;highlighter-rouge&quot;&gt;SQL 
+ALTER TABLE test_case MODIFY COLUMN NAME VARCHAR(20) CHARACTER SET UTF8 COLLATE UTF8_BIN;  
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;如果不想修改字段的collate，可以在查询的时候指定collate或者通过binary进行字段转换：&lt;br /&gt;
+&lt;code class=&quot;highlighter-rouge&quot;&gt;sql
+SELECT * FROM test_case WHERE name LIKE &#39;ab%&#39; COLLATE UTF8_BIN;  
+SELECT * FROM test_case WHERE BINARY name LIKE &#39;ab%&#39;;  
+SELECT * FROM test_case WHERE name = BINARY &#39;abc&#39;;  
+&lt;/code&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;strong&gt;测试验证&lt;/strong&gt;&lt;br /&gt;
+```bash
+mysql&amp;gt; SELECT * FROM test_case WHERE name LIKE ‘ab%’;
++——+
+| name |
++——+
+| abc  |
+| ABC  |
++——+
+2 rows in set (0.00 sec)
+#没有指定collate，默认使用name列的collate(utf8_general_ci)，所以查询不区分大小写&lt;/p&gt;
+
+&lt;p&gt;mysql&amp;gt; SELECT * FROM test_case WHERE name LIKE ‘ab%’ COLLATE UTF8_BIN;
++——+
+| name |
++——+
+| abc  |
++——+
+1 row in set (0.00 sec)
+#查询时指定collate为utf8_bin，所以查询区分大小写&lt;/p&gt;
+
+&lt;p&gt;mysql&amp;gt; SELECT * FROM test_case WHERE BINARY name LIKE ‘ab%’;
++——+
+| name |
++——+
+| abc  |
++——+
+1 row in set (0.00 sec)
+#通过使用binary关键字将字符串转换成二进制进行比较，这样也能够区分大小写。(实验发现对name列使用binary依然可以使用name列上的索引)&lt;/p&gt;
+
+&lt;p&gt;mysql&amp;gt; SELECT * FROM test_case1 WHERE name LIKE ‘ab%’;
++——+
+| name |
++——+
+| abc  |
++——+
+1 row in set (0.00 sec)
+#没有指定collate，查询默认使用name列的collate(utf8_bin)，所以查询区分大小写&lt;/p&gt;
+
+&lt;p&gt;mysql&amp;gt; SELECT * FROM test_case1 WHERE name LIKE ‘ab%’ COLLATE UTF8_GENERAL_CI;
++——+
+| name |
++——+
+| Abc  |
+| abc  |
++——+
+2 rows in set (0.00 sec)
+#查询指定collate为utf8_general_ci，所以查询区分大小写&lt;/p&gt;
+
+&lt;p&gt;mysql&amp;gt; SELECT * FROM test_case WHERE name LIKE ‘ab%’;
++——+
+| name |
++——+
+| abc  |
+| ABC  |
++——+
+2 rows in set (0.00 sec)
+#没有指定区别大小写的collate也没有指定binary，所以查询是不区分大小写的&lt;/p&gt;
+
+&lt;p&gt;mysql&amp;gt; SELECT * FROM test_case WHERE name LIKE BINARY ‘ab%’;
++——+
+| name |
++——+
+| abc  |
++——+
+1 row in set (0.00 sec)
+#使用binary 将’abc’字符串转换成二进制进行比较&lt;br /&gt;
+```&lt;/p&gt;
+
+&lt;h4 id=&quot;reference&quot;&gt;reference:&lt;/h4&gt;
+&lt;p&gt;http://www.voidcn.com/blog/shaochenshuo/article/p-6229106.html&lt;br /&gt;
+https://bbs.aliyun.com/read/243931.html&lt;/p&gt;
+</description>
+        <pubDate>Mon, 23 Jan 2017 14:08:05 +0800</pubDate>
+        <link>https://wowkingah.github.io/2017/01/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%A4%A7%E5%B0%8F%E5%86%99%E6%95%8F%E6%84%9F%E9%97%AE%E9%A2%98/</link>
+        <guid isPermaLink="true">https://wowkingah.github.io/2017/01/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%A4%A7%E5%B0%8F%E5%86%99%E6%95%8F%E6%84%9F%E9%97%AE%E9%A2%98/</guid>
+        
+        <category>databases</category>
+        
+        <category>mysql</category>
+        
+        <category>oracle</category>
+        
+        <category>mssql</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>Linux下使用github</title>
+        <description>&lt;h3 id=&quot;github&quot;&gt;1. GITHUB环境准备&lt;/h3&gt;
+
+&lt;h4 id=&quot;githubhttpsgithubcom&quot;&gt;1.1 申请GITHUB账号：https://github.com/&lt;/h4&gt;
+
+&lt;h4 id=&quot;key&quot;&gt;1.2 生成KEY&lt;/h4&gt;
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;
+[wowking@ZTEST-218 git]$ ssh-keygen -t rsa -C &quot;wowkingah@gmail.com&quot;
+Generating public/private rsa key pair.
+Enter file in which to save the key (/home/wowking/.ssh/id_rsa):
+Enter passphrase (empty for no passphrase):
+Enter same passphrase again:
+Your identification has been saved in /home/wowking/.ssh/id_rsa.
+Your public key has been saved in /home/wowking/.ssh/id_rsa.pub.
+The key fingerprint is:
+e5:1f:b6:cc:09:e0:bd:2a:d2:bb:1d:36:b4:a8:33:70 wowkingah@gmail.com
+The key&#39;s randomart image is:
++--[ RSA 2048]----+
+| |
+| |
+| . . |
+| . = |
+| S + o |
+| . E o . B + |
+| o .. = . * |
+| +.oo + |
+| .+o+o |
++-----------------+
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;key-1&quot;&gt;1.3 查看生成的KEY&lt;/h4&gt;
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;
+[wowking@ZTEST-218 git]$ ls ~/.ssh/
+id_rsa id_rsa.pub known_hosts
+[wowking@ZTEST-218 git]$ cat ~/.ssh/id_rsa.pub
+ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA2nkR/J0WOSrV5g1/JseP+e0Wv+VejDs+Qk1wXpbyWQd5W1QD4nJYlYaM58vpUMhooW+iC4ciA4PGwxMEwc+wXLs0JZAgKVuXW8moJCsnXfMxo0eUX1l0wWeuVgSo46tb/U+0bsQNmMhNj4UQgflDABHGWGdZqg/8nV5kGr0VDpmwPvo7gbdm+56rQDRPyldSo+sbDvS78zzidpJi+OmG4wpA7emvrQYC2T9YaJIgzNjG6Gvpbe0BG3it0/n5cIXy5PW56jhdsb1KO4A9fLNximb0y7FJluhcaoxvCGFP1OnBo4IfdiRIoEzYCS8xzRz6h7WxgQGZFjxbB3WITNpkwQ== wowkingah@gmail.com
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;idrsapubgithub&quot;&gt;1.4 将公钥id_rsa.pub添加至github&lt;/h4&gt;
+&lt;p&gt;github =&amp;gt; settings =&amp;gt; SSH and GPG keys =&amp;gt; New SSH key =&amp;gt; Add SSH key&lt;/p&gt;
+
+&lt;h4 id=&quot;section&quot;&gt;1.5 测试&lt;/h4&gt;
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;
+[wowking@ZTEST-218 git]$ ssh -T git@github.com
+The authenticity of host &#39;github.com (192.30.253.113)&#39; can&#39;t be established.
+RSA key fingerprint is 16:27:ac:a5:76:28:2d:36:63:1b:56:4d:eb:df:a6:48.
+Are you sure you want to continue connecting (yes/no)? yes
+Warning: Permanently added &#39;github.com,192.30.253.113&#39; (RSA) to the list of known hosts.
+Hi wowkingah! You&#39;ve successfully authenticated, but GitHub does not provide shell access.
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;git&quot;&gt;2. 常用GIT命令&lt;/h3&gt;
+&lt;p&gt;#### 2.1 clone
+&lt;code class=&quot;highlighter-rouge&quot;&gt;
+[wowking@ZTEST-218 git]$ git clone git@github.com:wowkingah/test.git
+Initialized empty Git repository in /home/wowking/git/test/.git/
+warning: You appear to have cloned an empty repository.
+[wowking@ZTEST-218 git]$ cd test
+[wowking@ZTEST-218 test]$ echo &quot;# test1&quot; &amp;gt; README.md
+[wowking@ZTEST-218 test]$ ll
+total 4
+-rw-rw-r-- 1 wowking wowking 8 Dec 26 16:35 README.md
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;add&quot;&gt;2.2 add&lt;/h4&gt;
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;
+[wowking@ZTEST-218 test]$ git add README.md
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;commit&quot;&gt;2.3 commit&lt;/h4&gt;
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;
+[wowking@ZTEST-218 test]$ git commit -m &quot;first commit&quot;
+[master (root-commit) a72396a] first commit
+1 files changed, 1 insertions(+), 0 deletions(-)
+create mode 100644 README.md
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;push&quot;&gt;2.4 push&lt;/h4&gt;
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;
+[wowking@ZTEST-218 test]$ git push -u origin master
+Counting objects: 3, done.
+Writing objects: 100% (3/3), 217 bytes, done.
+Total 3 (delta 0), reused 0 (delta 0)
+To git@github.com:wowkingah/test.git
+* [new branch] master -&amp;gt; master
+Branch master set up to track remote branch master from origin.
+&lt;/code&gt;&lt;/p&gt;
+</description>
+        <pubDate>Tue, 27 Dec 2016 00:00:00 +0800</pubDate>
+        <link>https://wowkingah.github.io/2016/12/linux%E4%B8%8B%E4%BD%BF%E7%94%A8github/</link>
+        <guid isPermaLink="true">https://wowkingah.github.io/2016/12/linux%E4%B8%8B%E4%BD%BF%E7%94%A8github/</guid>
+        
+        <category>git</category>
+        
+        
+      </item>
+    
+  </channel>
+</rss>
