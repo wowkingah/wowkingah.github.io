@@ -5,8 +5,8 @@ date: 2016-12-26
 tags: personal
 ---
 
-Welcome ~  
-    This is my first blog for Jekyll.  
+# Welcome ~  
+##    This is my first blog for Jekyll.  
 
 简单记录Jekyll安装步骤。  
 
@@ -40,6 +40,7 @@ To connect to rubygems.org insecurely, use ‘--no-check-certificate’.
 ```
 
 ### Jekyll
+```bash
 [root@db_node01 rubygems-2.6.11]# gem install jekyll bundler 
 [root@db_node01 wowkingah.github.io]# jekyll serve
 Could not find proper version of jekyll (3.1.1) in any of the sources
@@ -47,5 +48,5 @@ Run `bundle install` to install missing gems.
 [root@db_node01 wowkingah.github.io]# bundle install
 bundle install
 [root@db_node01 wowkingah.github.io]# jekyll serve
-
+```
 
