@@ -15,18 +15,18 @@ Markdown 是一种方便记忆、书写的纯文本标记语言，用户可以�
 四级标题：`#### Header 4`           
 五级标题：`##### Header 5`            
 六级标题：`###### Header 6`  
-![标题](/images/posts/sa/markdown_syntax/header.jpg)
+![标题](/images/posts/markdown_syntax/header.jpg)
 
 ### 字体
 斜体：`*斜体*`  
 粗体：`**粗体**`  
 粗斜体：`***粗斜体***`  
 删除线：`~~删除线~~`  
-![字体](/images/posts/sa/markdown_syntax/font.jpg)
+![字体](/images/posts/markdown_syntax/font.jpg)
 
 ### 目录
 在段落中填写 `[TOC]` 以显示全文内容的目录结构。
-![目录](/images/posts/sa/markdown_syntax/catalogue.jpg)
+![目录](/images/posts/markdown_syntax/catalogue.jpg)
 
 ### 段与行
 段落：`段落之间空一行`  
@@ -43,11 +43,11 @@ Markdown 是一种方便记忆、书写的纯文本标记语言，用户可以�
 列表项8：`2. 列表项8`  
 列表项9：`- [ ] 列表项9`  
 列表项10：`- [x] 列表项10`  
-![列表项](/images/posts/sa/markdown_syntax/list.jpg)
+![列表项](/images/posts/markdown_syntax/list.jpg)
 
 ### 引用
 引用：`> 引用内容，可结合列表项一起使用`  
-![引用](/images/posts/sa/markdown_syntax/reference.jpg)
+![引用](/images/posts/markdown_syntax/reference.jpg)
 
 ### 表格
     | 项目 | 价格 | 数量 |
@@ -56,23 +56,23 @@ Markdown 是一种方便记忆、书写的纯文本标记语言，用户可以�
     | 手机 | 6000 | 5 |
     | 电视 | 3000 | 1 |
 
-![表格](/images/posts/sa/markdown_syntax/table.jpg)
+![表格](/images/posts/markdown_syntax/table.jpg)
 
 ### 链接与图片
 链接：`[Title](URL)`  
 图片：`![](/images/image.jpg)`  
-![链接](/images/posts/sa/markdown_syntax/link.jpg)
+![链接](/images/posts/markdown_syntax/link.jpg)
 
 ### 代码高亮
     ```python
     print 'hello world~'
      ```
   
-![代码](/images/posts/sa/markdown_syntax/code.jpg)
+![代码](/images/posts/markdown_syntax/code.jpg)
 
 ### 水平线
 水平线：`---`  
-![水平线](/images/posts/sa/markdown_syntax/horizontal_rules.jpg)  
+![水平线](/images/posts/markdown_syntax/horizontal_rules.jpg)  
 
 ### 注脚
 使用 [^keyword] 表示注脚。
