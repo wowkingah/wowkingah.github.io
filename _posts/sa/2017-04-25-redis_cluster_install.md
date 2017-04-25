@@ -126,13 +126,13 @@ net.ipv4.tcp_rmem = 32768 131072 16777216
 [root@Wowking-001 ~]# redis-server /etc/redis/6579.conf
 ```
 
+### cluster部署
 #### 安装ruby及ruby的redis模块
 ```bash
 [root@Wowking-001 ~]# yum -y install ruby rubygems
 [root@Wowking-001 ~]# gem install redis
 ```
 
-### cluster部署
 #### cluster初始化
 ```bash
 [root@Wowking-001 ~]# redis-trib.rb create --replicas 0 192.168.1.1:6379 192.168.1.1:6479 192.168.1.1:6579
