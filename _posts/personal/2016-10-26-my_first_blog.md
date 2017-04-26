@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "My first blog for Jekyll~"
-date: 2016-12-26
+date: 2016-10-26
 tags: personal
 ---
 
