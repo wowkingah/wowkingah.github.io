@@ -1,8 +1,8 @@
 ---
 layout: post
-title: VMware安装macOS Sierra 10.12.4
+title: VMWare安装macOS Sierra 10.12.4
 date: 2017-05-05 
-tags: Mac
+tags: Mac VMWare
 ---
 
 ### 简述
