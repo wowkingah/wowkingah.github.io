@@ -31,8 +31,7 @@ VMware Workstation 12.5 Player 是VMWare Workstation的精简版，重要的是�
 
 ### 开工
 #### 1. securable
-运行securable，检测CPU是否支持虚拟化。  
-如下图显示，若不为YES，自行解决。
+运行securable，检测CPU是否支持虚拟化。如下图显示，若不为YES，自行解决。
 ![](/images/posts/sa/install_macos_for_vmware/securable.jpg)
 
 #### 2. VMWare
@@ -40,47 +39,50 @@ VMware Workstation 12.5 Player 是VMWare Workstation的精简版，重要的是�
 这时候VMWare新建虚拟机的时候，操作系统没有MAC OS类型可选，所以需要通过unlocker先解锁。
 
 #### 3. unlocker
->3.1. 停止vmware相关服务；
-> > a.windows下运行services.msc：
-> > ![](/images/posts/sa/install_macos_for_vmware/services_1.jpg)
-> > b.停止服务：
-> > ![](/images/posts/sa/install_macos_for_vmware/services_2.jpg)
->3.2. 下载unlocker并解压；
->3.3. 以管理员身份运行。
-> ![](/images/posts/sa/install_macos_for_vmware/unlocker.jpg)
+3.1. 停止vmware相关服务；
+ > a.windows下运行services.msc：
+  ![](/images/posts/sa/install_macos_for_vmware/services_1.jpg)
+ > b.停止服务：
+  ![](/images/posts/sa/install_macos_for_vmware/services_2.jpg)
+3.2. 下载unlocker并解压；
+3.3. 以管理员身份运行。
+ ![](/images/posts/sa/install_macos_for_vmware/unlocker.jpg)
 
 #### 4. 新建虚拟机
-记下图二中虚拟机名称与位置，之后要使用。
+记下图二中虚拟机名称与位置，之后要使用。  
+图一
 ![](/images/posts/sa/install_macos_for_vmware/create_vm_1.jpg)
+图二
 ![](/images/posts/sa/install_macos_for_vmware/create_vm_2.jpg)
+图三
 ![](/images/posts/sa/install_macos_for_vmware/create_vm_3.jpg)
 
 #### 5. 启动虚拟机
 这时候启动虚拟机会报错，如下图：
 ![](/images/posts/sa/install_macos_for_vmware/start_vm_1.jpg)
 修改虚拟机参数可解决。  
-> 5.1 进入虚拟机文件夹，找到后缀为Mac OS Sierra.vmx的文件（虚拟机文件夹参照新建虚拟机图二；Mac OS Sierra为虚拟机名）：
-> ![](/images/posts/sa/install_macos_for_vmware/vmx_1.jpg)
-> 5.2 以记事本打开，在smc.present = "TRUE" 添加一行`smc.version = 0`
-> ![](/images/posts/sa/install_macos_for_vmware/vmx_2.jpg)
+5.1 进入虚拟机文件夹，找到后缀为Mac OS Sierra.vmx的文件（虚拟机文件夹参照新建虚拟机图二；Mac OS Sierra为虚拟机名）：
+ ![](/images/posts/sa/install_macos_for_vmware/vmx_1.jpg)
+5.2 以记事本打开，在smc.present = "TRUE" 添加一行`smc.version = 0`
+ ![](/images/posts/sa/install_macos_for_vmware/vmx_2.jpg)
 
 #### 6. 又一次启动虚拟机
 华丽的成功了。
 ![](/images/posts/sa/install_macos_for_vmware/install_macos_1.jpg)
 
 #### 7. 系统安装
-> 7.1 实用工具 => 磁盘工具
-![](/images/posts/sa/install_macos_for_vmware/install_macos_2.jpg)
-> 7.2 选择虚拟磁盘 => 抹除
-> ![](/images/posts/sa/install_macos_for_vmware/install_macos_3.jpg)
-> ![](/images/posts/sa/install_macos_for_vmware/install_macos_4.jpg)
-> ![](/images/posts/sa/install_macos_for_vmware/install_macos_5.jpg)
-> 7.3 退出磁盘工具
-> ![](/images/posts/sa/install_macos_for_vmware/install_macos_6.jpg)
-> 7.4 选择安装磁盘，然后一路向北
-> ![](/images/posts/sa/install_macos_for_vmware/install_macos_7.jpg)
-> ![](/images/posts/sa/install_macos_for_vmware/install_macos_8.jpg)
-> ![](/images/posts/sa/install_macos_for_vmware/install_macos_9.jpg)
-> ![](/images/posts/sa/install_macos_for_vmware/install_macos_10.jpg)
+7.1 实用工具 => 磁盘工具
+ ![](/images/posts/sa/install_macos_for_vmware/install_macos_2.jpg)
+7.2 选择虚拟磁盘 => 抹除
+ ![](/images/posts/sa/install_macos_for_vmware/install_macos_3.jpg)
+ ![](/images/posts/sa/install_macos_for_vmware/install_macos_4.jpg)
+ ![](/images/posts/sa/install_macos_for_vmware/install_macos_5.jpg)
+7.3 退出磁盘工具
+ ![](/images/posts/sa/install_macos_for_vmware/install_macos_6.jpg)
+7.4 选择安装磁盘，然后一路向北
+ ![](/images/posts/sa/install_macos_for_vmware/install_macos_7.jpg)
+ ![](/images/posts/sa/install_macos_for_vmware/install_macos_8.jpg)
+ ![](/images/posts/sa/install_macos_for_vmware/install_macos_9.jpg)
+ ![](/images/posts/sa/install_macos_for_vmware/install_macos_10.jpg)
 
 
