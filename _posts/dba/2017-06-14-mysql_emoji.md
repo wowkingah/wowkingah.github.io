@@ -85,7 +85,7 @@ ALTER TABLE table_name CHANGE column_name column_name VARCHAR(191) CHARACTER SET
 ```
 
 #### sql_mode  
-如果通过以上配置还不支持Emoji表情，请查看sql_mode参数。
+如果通过以上配置还不支持Emoji表情，请查看sql_mode参数。  
 ```shell
 mysql> show variables like 'sql_mode';
 +---------------+----------------------------------------------------------------+
@@ -95,7 +95,7 @@ mysql> show variables like 'sql_mode';
 +---------------+----------------------------------------------------------------+
 1 row in set (0.00 sec)
 ```
-若返回结果中带有STRICT_TRANS_TABLES，去掉即可。
+若返回结果中带有STRICT_TRANS_TABLES，去掉即可。  
 **动态配置**  
 ```shell
 mysql> set global sql_mode = 'NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION';
