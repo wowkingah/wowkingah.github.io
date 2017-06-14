@@ -29,7 +29,7 @@ mysql> SHOW VARIABLES WHERE Variable_name LIKE 'character\_set\_%' OR Variable_n
 ```
 
 ### 相关配置
-#### 修改字符集   
+**修改字符集**  
 ```shell
 [root@test ~]# cat /etc/my.cnf
 [client]
@@ -66,24 +66,24 @@ mysql> SHOW VARIABLES WHERE Variable_name LIKE 'character\_set\_%' OR Variable_n
 10 rows in set (0.00 sec)
 ```
 
-#### 已有库表字段修改
+**已有库表字段修改**  
 对于已有实例、表、字段如果需支持Emoji表情，可按需修改字符集。如果只是某个字段需要，只需修改对应字段的字符集即可。  
-##### 修改数据库字符集   
+***修改数据库字符集***  
 ```shell
 ALTER DATABASE database_name CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
 ```
 
-##### 修改表的字符集  
+***修改表的字符集***   
 ```shell
 ALTER TABLE table_name CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 ```
 
-##### 修改字段的字符集  
+***修改字段的字符集***  
 ```shell
 ALTER TABLE table_name CHANGE column_name column_name VARCHAR(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 ```
 
-#### sql_mode  
+**sql_mode**  
 如果通过以上配置还不支持Emoji表情，请查看sql_mode参数。
 ```shell
 mysql> show variables like 'sql_mode';
@@ -95,11 +95,12 @@ mysql> show variables like 'sql_mode';
 1 row in set (0.00 sec)
 ```
 若返回结果中带有STRICT_TRANS_TABLES，去掉即可。
-##### 动态配置sql_mode   
+***动态配置***  
 ```shell
 mysql> set global sql_mode = 'NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION';
 ```
-##### 永久配置   
+
+***永久配置***  
 ```shell
 [root@test ~]# cat /etc/my.cnf
 [mysqld]
