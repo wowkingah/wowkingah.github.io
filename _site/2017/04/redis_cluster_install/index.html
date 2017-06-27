@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <title>Redis Cluster安装部署</title>
+  <meta name="description" content="简述从Redis 3.x开始，一直单机的Redis终于步入Cluster大时代。Redis从一个单纯的NoSQL内存数据库变成了分布式NoSQL数据库，CAP模型也从CP变成了AP。架构#### 架构图架构细节      所有 redis 结点彼此互联（PING-PONG 机制），内部使用二进制协议优化传输速度和...">
+  <meta name="author" content="Wowking">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Redis Cluster安装部署">
+  <meta name="twitter:description" content="简述从Redis 3.x开始，一直单机的Redis终于步入Cluster大时代。Redis从一个单纯的NoSQL内存数据库变成了分布式NoSQL数据库，CAP模型也从CP变成了AP。架构#### 架构图架构细节      所有 redis 结点彼此互联（PING-PONG 机制），内部使用二进制协议优化传输速度和...">
+  
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Redis Cluster安装部署">
+  <meta property="og:description" content="简述从Redis 3.x开始，一直单机的Redis终于步入Cluster大时代。Redis从一个单纯的NoSQL内存数据库变成了分布式NoSQL数据库，CAP模型也从CP变成了AP。架构#### 架构图架构细节      所有 redis 结点彼此互联（PING-PONG 机制），内部使用二进制协议优化传输速度和...">
+  
+  <link rel="icon" type="image/png" href="/images/favicon.png" />
+  <link href="/images/favicon.png" rel="shortcut icon" type="image/png">
+  
+  <link rel="stylesheet" href="/css/main.css">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+
+  <link rel="canonical" href="https://wowkingah.github.io/2017/04/redis_cluster_install/">
+  <link rel="alternate" type="application/rss+xml" title="Wowking" href="https://wowkingah.github.io/feed.xml">
+  
+  <meta name="google-site-verification" content="1-1ZlHoRvM0T2FqPbW2S-qLgYXN6rsn52kErlMPd_gw" />
+
+<!-- 站点统计 -->
+  <script 
+  async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+  </script>  
+
+<!-- 百度统计 -->
+  
+
+<!-- google 统计 -->
+  
+  <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+          (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+      ga('create', 'UA-62308466-1', 'auto');
+      ga('send', 'pageview');
+  </script>
+  
+
+</head>
+
+
+  <body>
+
+    <span class="mobile btn-mobile-menu">        
+      <div class="nav_container">
+         <nav class="nav-menu-item" style = "float:right">
+            <i class="nav-menu-item">
+              <a href="/#blog" title="" class="blog-button">  博客主页
+              </a>
+            </i>
+            
+                <i class="nav-menu-item">
+
+                  <a href="/archive" title="archive" class="btn-mobile-menu__icon">
+                      所有文章
+                  </a>
+                </i>
+            
+                <i class="nav-menu-item">
+
+                  <a href="/tags" title="tags" class="btn-mobile-menu__icon">
+                      标签
+                  </a>
+                </i>
+            
+                <i class="nav-menu-item">
+
+                  <a href="/about" title="about" class="btn-mobile-menu__icon">
+                      关于我
+                  </a>
+                </i>
+            
+          </nav>
+      </div>
+    </span>
+    
+    <header class="panel-cover panel-cover--collapsed" style="background-image: url('/images/background-cover.jpg')">
+  <div class="panel-main">
+
+    <div class="panel-main__inner panel-inverted">
+    <div class="panel-main__content">
+        <!-- 头像效果-start -->
+        <div class="ih-item circle effect right_to_left">            
+            <a href="/#blog" title="前往 Wowking 的主页" class="blog-button">
+                <div class="img"><img src="/images/avatar.jpg" alt="img"></div>
+                <div class="info">
+                    <div class="info-back">
+                        <h2> 
+                            
+                                Wowking
+                            
+                        </h2>
+                        <p>
+                           
+                                DBA & SA
+                            
+                        </p>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <!-- 头像效果-end -->
+        <h1 class="panel-cover__title panel-title"><a href="/#blog" title="link to homepage for Wowking" class="blog-button">Wowking</a></h1>
+        
+        <hr class="panel-cover__divider" />
+        <p class="panel-cover__description">I don't really know where I'm going, but I hope I go far.</p>
+        <hr class="panel-cover__divider panel-cover__divider--secondary" />
+        
+        
+        
+
+        <div class="navigation-wrapper">
+          <div>
+            <nav class="cover-navigation cover-navigation--primary">
+              <ul class="navigation">
+                <li class="navigation__item"><a href="/#blog" title="" class="blog-button">博客主页</a></li>
+                
+                  <li class="navigation__item"><a href="/archive" title="archive">所有文章</a></li>
+                
+                  <li class="navigation__item"><a href="/tags" title="tags">标签</a></li>
+                
+                  <li class="navigation__item"><a href="/about" title="about">关于我</a></li>
+                
+              </ul>
+            </nav>
+          </div>          
+        </div>
+
+
+        </div>
+      </div>
+    </div>
+    
+    
+    <div class="panel-cover--overlay cover-clear"></div>
+    
+  </div>
+</header>
+
+
+    <div class="content-wrapper">
+        <div class="content-wrapper__inner">
+            <article class="post-container post-container--single" itemscope itemtype="http://schema.org/BlogPosting">
+  <header class="post-header">
+    <h1 class="post-title">Redis Cluster安装部署</h1>
+    <div class="post-meta">
+      <img src="/images/calendar.png" width="20px"/> 
+      <time datetime="2017-04-25 00:00:00 +0800" itemprop="datePublished" class="post-meta__date date">2017-04-25</time>  
+         
+      <span id="busuanzi_container_page_pv"> | 阅读：<span id="busuanzi_value_page_pv"></span>次</span>
+    </p>
+    </div>
+  </header>
+
+  <section class="post">
+    <h3 id="section">简述</h3>
+<p>从Redis 3.x开始，一直单机的Redis终于步入Cluster大时代。<br />
+Redis从一个单纯的NoSQL内存数据库变成了分布式NoSQL数据库，CAP模型也从CP变成了AP。</p>
+
+<h3 id="section-1">架构</h3>
+<p>#### 架构图
+<img src="/images/posts/sa/redis_cluster_install/redis_cluster_architecture.jpg" alt="" /></p>
+
+<h4 id="section-2">架构细节</h4>
+<blockquote>
+  <ul>
+    <li>所有 redis 结点彼此互联（PING-PONG 机制），内部使用二进制协议优化传输速度和带宽（客户端与结点之间的通信还是正常的ascii协议）；</li>
+    <li>结点的 fail 是通过集群中超过半数的结点检测失效时才生效；</li>
+    <li>客户端与 redis 结点直连，不需要中间 proxy 层；</li>
+    <li>客户端不需要连接集群所有结点，连接集群中任何一个可用结点即可（可用结点）；</li>
+    <li>redis-cluster 把所有的物理结点映射到[0-16383]slot 上，cluster 负责维护 node &lt;-&gt; slot &lt;-&gt; value。</li>
+  </ul>
+</blockquote>
+
+<h4 id="section-3">选举与容错</h4>
+<p><img src="/images/posts/sa/redis_cluster_install/fail.jpg" alt="" />
+##### 选举
+&gt;* 选举过程是集群中所有 master 参与，如果半数以上 master 节点与 master 节点通信超过 (cluster-node-timeout)，认为当前 master 节点挂掉；</p>
+
+<h5 id="section-4">容错</h5>
+<p>什么时候整个集群不可用(cluster_state:fail)？
+&gt;* 如果集群任意 master 挂掉，且当前 master 没有 slave，集群进入 fail 状态，也可以理解成集群的 slot 映射[0-16383]不完成时进入 fail 状态。
+&gt; &gt;* redis-3.0.0.rc1 加入 cluster-require-full-coverage 参数，默认关闭，打开集群兼容部分失败。
+&gt;* 如果集群超过半数以上 master 挂掉，无论是否有 slave 集群进入 fail 状态。
+&gt; &gt;* 当集群不可用时，所有对集群的操作做都不可用，收到((error) CLUSTERDOWN The cluster is down) 错误。</p>
+
+<h3 id="redis">Redis安装</h3>
+<p>#### 安装redis
+Redis<a href="https://redis.io/download">官网</a>下载并安装最新稳定版Redis。</p>
+
+<h4 id="redis-cluster">redis cluster配置</h4>
+<p><code class="highlighter-rouge">bash
+[root@Wowking-001 ~]# cat /etc/redis/6379.conf |grep -vE '^#|^$'
+daemonize yes
+pidfile /var/run/redis_6379.pid
+port 6379
+tcp-backlog 511
+timeout 0
+tcp-keepalive 0
+loglevel notice
+logfile /data/logs/redis/redis_6379.log
+databases 16
+stop-writes-on-bgsave-error yes
+rdbcompression no
+rdbchecksum no
+dbfilename dump.rdb
+dir /data/redis/data/6379
+slave-serve-stale-data yes
+slave-read-only yes
+repl-diskless-sync no
+repl-diskless-sync-delay 5
+repl-disable-tcp-nodelay no
+slave-priority 100
+appendonly no
+appendfilename "appendonly.aof"
+appendfsync everysec
+no-appendfsync-on-rewrite no
+auto-aof-rewrite-percentage 100
+auto-aof-rewrite-min-size 64mb
+aof-load-truncated yes
+lua-time-limit 5000
+ cluster-enabled yes
+ cluster-config-file nodes-6379.conf
+ cluster-node-timeout 5000
+ cluster-migration-barrier 1
+ cluster-require-full-coverage no
+slowlog-log-slower-than 10000
+slowlog-max-len 128
+latency-monitor-threshold 0
+notify-keyspace-events ""
+hash-max-ziplist-entries 512
+hash-max-ziplist-value 64
+list-max-ziplist-entries 512
+list-max-ziplist-value 64
+set-max-intset-entries 512
+zset-max-ziplist-entries 128
+zset-max-ziplist-value 64
+hll-sparse-max-bytes 3000
+activerehashing yes
+client-output-buffer-limit normal 0 0 0
+client-output-buffer-limit slave 256mb 64mb 60
+client-output-buffer-limit pubsub 32mb 8mb 60
+hz 10
+aof-rewrite-incremental-fsync yes
+</code>
+<em>tips</em>
+关闭了持久化。</p>
+
+<h3 id="section-5">系统相关参数调整</h3>
+<p><code class="highlighter-rouge">bash
+[root@Wowking-001 ~]# cat /etc/sysctl.conf
+##Redis
+vm.overcommit_memory = 1
+net.core.somaxconn = 2048
+net.ipv4.tcp_timestamps=1
+net.ipv4.tcp_syncookies = 1
+net.ipv4.tcp_tw_reuse = 1
+net.ipv4.tcp_tw_recycle = 1
+net.ipv4.tcp_fin_timeout = 30
+net.ipv4.tcp_keepalive_time = 1200
+net.ipv4.tcp_max_syn_backlog = 8192
+net.ipv4.tcp_max_tw_buckets = 5000
+net.ipv4.tcp_keepalive_probes = 3
+net.ipv4.tcp_keepalive_intvl =15
+net.ipv4.tcp_wmem = 8192 131072 16777216
+net.ipv4.tcp_rmem = 32768 131072 16777216
+[root@Wowking-001 ~]# sysctl -p
+[root@Wowking-001 ~]# echo never &gt; /sys/kernel/mm/transparent_hugepage/enabled  #禁用Linux内核特性transparent huge pages，不然日志会报WARNING
+</code></p>
+
+<h3 id="redis-1">启动Redis</h3>
+<p>测试使用，在本机启3个不同端口的实例。
+<code class="highlighter-rouge">bash
+[root@Wowking-001 ~]# mkdir -p /data/logs/redis
+[root@Wowking-001 ~]# mkdir -p /data/redis/data/6{3,4,5}79
+[root@Wowking-001 ~]# redis-server /etc/redis/6379.conf
+[root@Wowking-001 ~]# redis-server /etc/redis/6479.conf
+[root@Wowking-001 ~]# redis-server /etc/redis/6579.conf
+</code></p>
+
+<h3 id="cluster">cluster部署</h3>
+<p>#### 安装ruby及ruby的redis模块
+<code class="highlighter-rouge">bash
+[root@Wowking-001 ~]# yum -y install ruby rubygems
+[root@Wowking-001 ~]# gem install redis
+</code></p>
+
+<h4 id="cluster-1">cluster初始化</h4>
+<p><code class="highlighter-rouge">bash
+[root@Wowking-001 ~]# redis-trib.rb create --replicas 0 192.168.1.1:6379 192.168.1.1:6479 192.168.1.1:6579
+&gt;&gt;&gt; Creating cluster
+&gt;&gt;&gt; Performing hash slots allocation on 3 nodes...
+Using 3 masters:
+192.168.1.1:6379
+192.168.1.1:6479
+192.168.1.1:6579
+M: 5d6519a85e2795f0eeb7566031eb6be47c97efbf 192.168.1.1:6379
+   slots:0-5460 (5461 slots) master
+M: fc82bf9de8adba9886b0cb62ad8a99e8d4495f35 192.168.1.1:6479
+   slots:5461-10922 (5462 slots) master
+M: 35586851e194755ca82e660010b930987adfde6d 192.168.1.1:6579
+   slots:10923-16383 (5461 slots) master
+Can I set the above configuration? (type 'yes' to accept): yes
+&gt;&gt;&gt; Nodes configuration updated
+&gt;&gt;&gt; Assign a different config epoch to each node
+&gt;&gt;&gt; Sending CLUSTER MEET messages to join the cluster
+Waiting for the cluster to join..
+&gt;&gt;&gt; Performing Cluster Check (using node 192.168.1.1:6379)
+M: 5d6519a85e2795f0eeb7566031eb6be47c97efbf 192.168.1.1:6379
+   slots:0-5460 (5461 slots) master
+M: fc82bf9de8adba9886b0cb62ad8a99e8d4495f35 192.168.1.1:6479
+   slots:5461-10922 (5462 slots) master
+M: 35586851e194755ca82e660010b930987adfde6d 192.168.1.1:6579
+   slots:10923-16383 (5461 slots) master
+[OK] All nodes agree about slots configuration.
+&gt;&gt;&gt; Check for open slots...
+&gt;&gt;&gt; Check slots coverage...
+[OK] All 16384 slots covered.
+</code>
+<em>tips</em>
+&gt;* –replicas：指定复本数，这是cluster最小复本要求。推荐2个以上复本，不然没法测试failover。</p>
+
+<h4 id="cluster-2">查看cluster状态</h4>
+<p><code class="highlighter-rouge">bash
+[root@Wowking-001 ~]# redis-trib.rb check 192.168.1.1:6379
+&gt;&gt;&gt; Performing Cluster Check (using node 192.168.1.1:6379)
+M: 5d6519a85e2795f0eeb7566031eb6be47c97efbf 192.168.1.1:6379
+   slots:0-5460 (5461 slots) master
+   0 additional replica(s)
+M: 35586851e194755ca82e660010b930987adfde6d 192.168.1.1:6579
+   slots:10923-16383 (5461 slots) master
+   0 additional replica(s)
+M: fc82bf9de8adba9886b0cb62ad8a99e8d4495f35 192.168.1.1:6479
+   slots:5461-10922 (5462 slots) master
+   0 additional replica(s)
+[OK] All nodes agree about slots configuration.
+&gt;&gt;&gt; Check for open slots...
+&gt;&gt;&gt; Check slots coverage...
+[OK] All 16384 slots covered.
+</code></p>
+
+<h3 id="cluster-3">cluster测试</h3>
+<p><code class="highlighter-rouge">bash
+#任意结点写key
+[root@Wowking-001 ~]# redis-cli -p 6379
+127.0.0.1:6379&gt; set aa 11
+OK
+127.0.0.1:6379&gt; get aa
+"11"
+#任意结点get
+[root@Wowking-001 ~]# redis-cli -p 6579 -c
+127.0.0.1:6579&gt; get aa
+-&gt; Redirected to slot [1180] located at 192.168.1.1:6379
+"11"
+</code>
+<em>tips</em>
+&gt;* -c：指定cluster模式。</p>
+
+<h3 id="reference">reference</h3>
+<p>https://redis.io/topics/cluster-tutorial <br />
+http://blog.csdn.net/dc_726/article/details/48552531 <br />
+http://www.ttlsa.com/redis/redis-cluster-theoretical-knowledge</p>
+
+
+
+  </section>
+</article>
+
+<section>
+
+            <div class="content-play">
+              <p><a href="javascript:void(0)" onclick="dashangToggle()" class="dashang" title="打赏，支持一下">打赏一个呗</a></p>
+              <div class="hide_box-play"></div>
+              <div class="shang_box-play">
+                <a class="shang_close-play" href="javascript:void(0)" onclick="dashangToggle()" title="关闭"><img src="/images/payimg/close.jpg" alt="取消" /></a>
+                <div class="shang_tit-play">
+                  <p>感谢您的支持，我会继续努力的!</p>
+                </div>
+                <div class="shang_payimg">
+                    <img src="/images/payimg/alipayimg.jpg" alt="扫码支持" title="扫一扫" />
+                </div>
+              <div class="shang_payimg">    
+                    <img src="/images/payimg/weipayimg.jpg" alt="扫码支持" title="扫一扫" />
+                </div>
+                <div class="pay_explain">扫码打赏，你说多少就多少</div>
+                <div class="shang_payselect">
+                  <div class="pay_item checked" data-id="alipay">
+                    <span class="pay_logo"><img src="/images/payimg/alipay.jpg" alt="支付宝" /></span>
+                  </div>
+                  <div class="pay_item" data-id="weipay">
+                    <span class="pay_logo"><img src="/images/payimg/wechat.jpg" alt="微信" /></span>
+                  </div>
+                </div>
+                <div class="shang_info-play">
+                  <p>打开<span id="shang_pay_txt">支付宝</span>扫一扫，即可进行扫码打赏哦</p>
+                </div>
+              </div>
+            </div>
+            <script type="text/javascript">
+            function dashangToggle(){
+              $(".hide_box-play").fadeToggle();
+              $(".shang_box-play").fadeToggle();
+            }
+            </script>
+
+            <div style="text-align:center;margin:50px 0; font:normal 14px/24px 'MicroSoft YaHei';"></div>
+
+            <style type="text/css">
+              .content-play{width:80%;margin-top: 20px;margin-bottom: 10px;height:40px;}
+              .hide_box-play{z-index:999;filter:alpha(opacity=50);background:#666;opacity: 0.5;-moz-opacity: 0.5;left:0;top:0;height:99%;width:100%;position:fixed;display:none;}
+              .shang_box-play{width:540px;height:540px;padding:10px;background-color:#fff;border-radius:10px;position:fixed;z-index:1000;left:50%;top:50%;margin-left:-280px;margin-top:-280px;border:1px dotted #dedede;display:none;}
+              .shang_box-play img{border:none;border-width:0;}
+              .dashang{display:block;width:100px;margin:5px auto;height:25px;line-height:25px;padding:10px;background-color:#E74851;color:#fff;text-align:center;text-decoration:none;border-radius:10px;font-weight:bold;font-size:16px;transition: all 0.3s;}
+              .dashang:hover{opacity:0.8;padding:15px;font-size:18px;}
+              .shang_close-play{float:right;display:inline-block;
+                margin-right: 10px;margin-top: 20px;
+              }
+              .shang_logo{display:block;text-align:center;margin:20px auto;}
+              .shang_tit-play{width: 100%;height: 75px;text-align: center;line-height: 66px;color: #a3a3a3;font-size: 16px;background: url('/images/payimg/cy-reward-title-bg.jpg');font-family: 'Microsoft YaHei';margin-top: 7px;margin-right:2px;}
+              .shang_tit-play p{color:#a3a3a3;text-align:center;font-size:16px;}
+              .shang_payimg{width:140px;padding:10px;padding-left: 80px; /*border:6px solid #EA5F00;**/margin:0 auto;border-radius:3px;height:140px;display:inline-block;}
+              .shang_payimg img{display:inline-block;margin-right:10px;float:left;text-align:center;width:140px;height:140px; }
+              .pay_explain{text-align:center;margin:10px auto;font-size:12px;color:#545454;}
+              .shang_payselect{text-align:center;margin:0 auto;margin-top:40px;cursor:pointer;height:60px;width:500px;margin-left:110px;}
+              .shang_payselect .pay_item{display:inline-block;margin-right:140px;float:left;}
+              .shang_info-play{clear:both;}
+              .shang_info-play p,.shang_info-play a{color:#C3C3C3;text-align:center;font-size:12px;text-decoration:none;line-height:2em;}
+            </style>
+
+       <ul class="pager">
+        
+        <li class="previous">
+            <a href="/2017/04/markdown_syntax/" data-toggle="tooltip" data-placement="top" title="Markdown常用语法">上一篇：  <span>Markdown常用语法</span>
+            </a>
+        </li>
+        
+        
+        <li class="next">
+            <a href="/2017/05/install_macos_for_vmware/" data-toggle="tooltip" data-placement="top" title="VMWare安装macOS Sierra 10.12.4">下一篇：  <span>VMWare安装macOS Sierra 10.12.4</span>
+            </a>
+        </li>
+        
+    </ul>
+</section>
+
+<section class="post-comments">
+
+  
+    <div class="ds-thread" data-thread-key="/2017/04/redis_cluster_install/" data-title="Redis Cluster安装部署" data-url="https://wowkingah.github.io/2017/04/redis_cluster_install/"></div>
+
+    <script type="text/javascript">
+        var duoshuoQuery = {short_name:"Wowking"};
+        (function() {
+            var ds = document.createElement('script');
+            ds.type = 'text/javascript';ds.async = true;
+            ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+            ds.charset = 'UTF-8';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
+        })();
+    </script>
+  
+  
+  
+  
+</section>
+
+
+            <section class="footer">
+    <footer>
+        <div class = "footer_div">  
+        <nav class="cover-navigation navigation--social">
+          <ul class="navigation">
+
+          
+
+          
+          <!-- Github -->
+          <li class="navigation__item_social">
+            <a href="https://github.com/wowkingah" title="@wowkingah 的 Github" target="_blank">
+              <i class='social fa fa-github fa-2x'></i>
+              <span class="label">Github</span>
+            </a>
+          </li>
+          
+          
+          
+
+          
+
+          <!-- RSS -->
+          <li class="navigation__item_social">
+            <a href="/feed.xml" rel="author" title="RSS" target="_blank">
+              <i class='social fa fa-rss fa-2x'></i>
+              <span class="label">RSS</span>
+            </a>
+          </li>
+
+          
+
+          </ul>
+        </nav>
+
+        </div>
+
+        <div class = "footer_div">  
+           <p class="copyright text-muted">
+            Copyright &copy; Wowking 2017 Theme by <a href="https://wowkingah.github.io">Wowking</a> |
+            <iframe
+                style="margin-left: 2px; margin-bottom:-5px;"
+                frameborder="0" scrolling="0" width="91px" height="20px"
+                src="https://ghbtns.com/github-btn.html?user=wowkingah&repo=wowkingah.github.io&type=star&count=true" >
+            </iframe>
+            </p>
+        	<div align="right">
+    			<link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+          <!-- 访问统计 -->
+          <span id="busuanzi_container_site_pv">
+            本站总访问量
+            <span id="busuanzi_value_site_pv"></span>次
+          </span>
+
+        </div>
+        <div>
+    </footer>
+</section>
+
+        </div>
+    </div>
+    
+    <script type="text/javascript" src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="/js/main.js"></script>
+
+<script type="text/javascript" src="/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+    
+  </body>
+
+</html>
