@@ -6,17 +6,17 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-  <title>VMWare安装macOS Sierra 10.12.4</title>
-  <meta name="description" content="简述突然之间又想倒腾一把MacOS，懒得找驱动，于是就在VMWare下开工，听闻10.12.4发布了~_~准备软件#### securable检测宿主机CPU是否支持虚拟化。securable官网unlockerVMWare 默认不支持安装 macOS 虚拟机，可通过 unlocker 来解锁。送你去百度云密码：...">
+  <title>Redis性能测试</title>
+  <meta name="description" content="简述简单压一把Redis在VM和Docker下性能如何。环境| Type | CPU | Mem | OS || ——– | :—-: | :—-: | :—-: || VM | 2c | 2G | CentOS release 6.7 (Final) || Docker | 2c | 2G | CentOS r...">
   <meta name="author" content="Wowking">
 
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="VMWare安装macOS Sierra 10.12.4">
-  <meta name="twitter:description" content="简述突然之间又想倒腾一把MacOS，懒得找驱动，于是就在VMWare下开工，听闻10.12.4发布了~_~准备软件#### securable检测宿主机CPU是否支持虚拟化。securable官网unlockerVMWare 默认不支持安装 macOS 虚拟机，可通过 unlocker 来解锁。送你去百度云密码：...">
+  <meta name="twitter:title" content="Redis性能测试">
+  <meta name="twitter:description" content="简述简单压一把Redis在VM和Docker下性能如何。环境| Type | CPU | Mem | OS || ——– | :—-: | :—-: | :—-: || VM | 2c | 2G | CentOS release 6.7 (Final) || Docker | 2c | 2G | CentOS r...">
   
   <meta property="og:type" content="article">
-  <meta property="og:title" content="VMWare安装macOS Sierra 10.12.4">
-  <meta property="og:description" content="简述突然之间又想倒腾一把MacOS，懒得找驱动，于是就在VMWare下开工，听闻10.12.4发布了~_~准备软件#### securable检测宿主机CPU是否支持虚拟化。securable官网unlockerVMWare 默认不支持安装 macOS 虚拟机，可通过 unlocker 来解锁。送你去百度云密码：...">
+  <meta property="og:title" content="Redis性能测试">
+  <meta property="og:description" content="简述简单压一把Redis在VM和Docker下性能如何。环境| Type | CPU | Mem | OS || ——– | :—-: | :—-: | :—-: || VM | 2c | 2G | CentOS release 6.7 (Final) || Docker | 2c | 2G | CentOS r...">
   
   <link rel="icon" type="image/png" href="/images/favicon.png" />
   <link href="/images/favicon.png" rel="shortcut icon" type="image/png">
@@ -24,7 +24,7 @@
   <link rel="stylesheet" href="/css/main.css">
   <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
 
-  <link rel="canonical" href="https://wowkingah.github.io/2017/05/install_macos_for_vmware/">
+  <link rel="canonical" href="https://wowkingah.github.io/2017/07/redis_performance_test/">
   <link rel="alternate" type="application/rss+xml" title="Wowking" href="https://wowkingah.github.io/feed.xml">
   
   <meta name="google-site-verification" content="1-1ZlHoRvM0T2FqPbW2S-qLgYXN6rsn52kErlMPd_gw" />
@@ -155,10 +155,10 @@
         <div class="content-wrapper__inner">
             <article class="post-container post-container--single" itemscope itemtype="http://schema.org/BlogPosting">
   <header class="post-header">
-    <h1 class="post-title">VMWare安装macOS Sierra 10.12.4</h1>
+    <h1 class="post-title">Redis性能测试</h1>
     <div class="post-meta">
       <img src="/images/calendar.png" width="20px"/> 
-      <time datetime="2017-05-05 00:00:00 +0800" itemprop="datePublished" class="post-meta__date date">2017-05-05</time>  
+      <time datetime="2017-07-13 00:00:00 +0800" itemprop="datePublished" class="post-meta__date date">2017-07-13</time>  
          
       <span id="busuanzi_container_page_pv"> | 阅读：<span id="busuanzi_value_page_pv"></span>次</span>
     </p>
@@ -167,84 +167,44 @@
 
   <section class="post">
     <h3 id="section">简述</h3>
-<p>突然之间又想倒腾一把MacOS，懒得找驱动，于是就在VMWare下开工，听闻10.12.4发布了~_~</p>
+<p>简单压一把Redis在VM和Docker下性能如何。</p>
 
-<h3 id="section-1">准备软件</h3>
-<p>#### securable
-检测宿主机CPU是否支持虚拟化。
-<a href="https://securable.en.softonic.com">securable官网</a></p>
+<h3 id="section-1">环境</h3>
+<p>| Type | CPU | Mem | OS |
+| ——– | :—-: | :—-: | :—-: |
+| VM | 2c | 2G | CentOS release 6.7 (Final) |
+| Docker | 2c | 2G | CentOS release 6.9 (Final) |</p>
 
-<h4 id="unlocker">unlocker</h4>
-<p>VMWare 默认不支持安装 macOS 虚拟机，可通过 unlocker 来解锁。
-<a href="http://pan.baidu.com/s/1c2hAjPe">送你去百度云</a>
-密码：r9fr</p>
+<h3 id="section-2">测试基准值</h3>
+<p>| Tools | type | requests | keyspacelen | size | parallel |
+| ——– | :—-: | :—-: | :—-: | :—-: | :—-: |
+| redis-benchmark | SET、GET | 5000000 | 500000 | 2(default) | 8 ~ 4096 |</p>
 
-<h4 id="vmware">VMWare</h4>
-<p>VMware Workstation 12.5 Player 是VMWare Workstation的精简版，重要的是个人免费。
-<a href="http://www.vmware.com/products/player/playerpro-evaluation.html">VMware官网</a></p>
+<h3 id="section-3">测试结果</h3>
+<p>#### SET<br />
+<img src="/images/posts/dba/redis_performance_test/qps_set.png" alt="" /></p>
 
-<h4 id="macos">MacOS</h4>
-<p>网上清一色都是用的别人定制的虚拟硬盘，不放心，放弃。<br />
-用ISO工具转换原生DMG镜像，试了好几次都成功，也放弃。<br />
-懒得折腾，花了10块大洋买了个CDR(macOS 10.12.4.cdr)~_~ 
-<a href="http://pan.baidu.com/s/1i4Jd3OL">送你去百度云</a>
-密码：i74b</p>
+<h4 id="get">GET</h4>
+<p><img src="/images/posts/dba/redis_performance_test/qps_get.png" alt="" /></p>
 
-<h3 id="section-2">开工</h3>
-<p>#### 1. securable
-运行securable，检测CPU是否支持虚拟化。如下图显示，若不为YES，自行解决。
-<img src="/images/posts/sa/install_macos_for_vmware/securable.jpg" alt="" /></p>
+<h3 id="section-4">测试结论</h3>
+<p>由于Docker很多内核参数不能调整，该测试结果建立在环境尽量一致的前提下。<br />
+从上图测试结果看，并发数小于256时，VM读写QPS要高于Docker；并发数大于512后，Docker读写QPS要高于VM。</p>
 
-<h4 id="vmware-1">2. VMWare</h4>
-<p>下载安装VMware Workstation Player，也可以用VMware Workstation，只要你开心。<br />
-这时候VMWare新建虚拟机的时候，操作系统没有MAC OS类型可选，所以需要通过unlocker先解锁。</p>
+<h3 id="section-5">其它</h3>
+<p>-P: 使用管道，默认值”1”。
+Redis是一种基于客户端-服务端模型以及请求响应协议的TCP服务。这意味着通常情况下一个请求会遵循以下步骤：<br />
+&gt;* 客户端向服务端发送一个查询请求，并监听Socket返回，通常是以阻塞模式，等待服务端响应。<br />
+&gt;* 服务端处理命令，并将结果返回给客户端。</p>
 
-<h4 id="unlocker-1">3. unlocker</h4>
-<p>3.1. 停止vmware相关服务；
- &gt; a.windows下运行services.msc：
-  <img src="/images/posts/sa/install_macos_for_vmware/services_1.jpg" alt="" />
- &gt; b.停止服务：
-  <img src="/images/posts/sa/install_macos_for_vmware/services_2.jpg" alt="" />
-3.2. 下载unlocker并解压；
-3.3. 以管理员身份运行。
- <img src="/images/posts/sa/install_macos_for_vmware/unlocker.jpg" alt="" /></p>
+<p>Redis管道技术可以在服务端未响应时，客户端可以继续向服务端发送请求，并最终一次性读取所有服务端的响应。管道技术最显著的优势是提高了redis服务的性能。</p>
 
-<h4 id="section-3">4. 新建虚拟机</h4>
-<p>记下图二中虚拟机名称与位置，之后要使用。<br />
-图一
-<img src="/images/posts/sa/install_macos_for_vmware/create_vm_1.jpg" alt="" />
-图二
-<img src="/images/posts/sa/install_macos_for_vmware/create_vm_2.jpg" alt="" />
-图三
-<img src="/images/posts/sa/install_macos_for_vmware/create_vm_3.jpg" alt="" /></p>
+<p>-r：不是request，而是random。后面跟的一个正整数M的含义是：0 ~ M之间的一个随机数，例如：-r 10，意思是随机0~9之间的一个数字。</p>
 
-<h4 id="section-4">5. 启动虚拟机</h4>
-<p>这时候启动虚拟机会报错，如下图：
-<img src="/images/posts/sa/install_macos_for_vmware/start_vm_1.jpg" alt="" />
-修改虚拟机参数可解决。<br />
-5.1 进入虚拟机文件夹，找到后缀为Mac OS Sierra.vmx的文件（虚拟机文件夹参照新建虚拟机图二；Mac OS Sierra为虚拟机名）：
- <img src="/images/posts/sa/install_macos_for_vmware/vmx_1.jpg" alt="" />
-5.2 以记事本打开，在smc.present = “TRUE” 添加一行<code class="highlighter-rouge">smc.version = 0</code>
- <img src="/images/posts/sa/install_macos_for_vmware/vmx_2.jpg" alt="" /></p>
-
-<h4 id="section-5">6. 又一次启动虚拟机</h4>
-<p>华丽的成功了。
-<img src="/images/posts/sa/install_macos_for_vmware/install_macos_1.jpg" alt="" /></p>
-
-<h4 id="section-6">7. 系统安装</h4>
-<p>7.1 实用工具 =&gt; 磁盘工具
- <img src="/images/posts/sa/install_macos_for_vmware/install_macos_2.jpg" alt="" />
-7.2 选择虚拟磁盘 =&gt; 抹除
- <img src="/images/posts/sa/install_macos_for_vmware/install_macos_3.jpg" alt="" />
- <img src="/images/posts/sa/install_macos_for_vmware/install_macos_4.jpg" alt="" />
- <img src="/images/posts/sa/install_macos_for_vmware/install_macos_5.jpg" alt="" />
-7.3 退出磁盘工具
- <img src="/images/posts/sa/install_macos_for_vmware/install_macos_6.jpg" alt="" />
-7.4 选择安装磁盘，然后一路向北
- <img src="/images/posts/sa/install_macos_for_vmware/install_macos_7.jpg" alt="" />
- <img src="/images/posts/sa/install_macos_for_vmware/install_macos_8.jpg" alt="" />
- <img src="/images/posts/sa/install_macos_for_vmware/install_macos_9.jpg" alt="" />
- <img src="/images/posts/sa/install_macos_for_vmware/install_macos_10.jpg" alt="" /></p>
+<p>PING_INLINE和PING_BULK<br />
+在统一请求协议之前，Redis使用一个不同的协议来发送命令，这个协议仍然被支持因为通过telnet它很容易手写。在这个协议中存在两种命令：<br />
+&gt; 1. ?inline命令:命令很简单，就是用空格把参数分隔开来的字符串。二进制安全是不可能的。
+&gt; 2. ?bulk命令: bulk命令和inline命令几乎是一样的，但是最后一个参数为了能够接受二进制安全的内容，所以需要以特殊的方式进行处理。</p>
 
 
 
@@ -315,15 +275,10 @@
        <ul class="pager">
         
         <li class="previous">
-            <a href="/2017/04/redis_cluster_install/" data-toggle="tooltip" data-placement="top" title="Redis Cluster安装部署">上一篇：  <span>Redis Cluster安装部署</span>
+            <a href="/2017/06/clean_binary_log_for_mysql/" data-toggle="tooltip" data-placement="top" title="MySQL清理binary日志">上一篇：  <span>MySQL清理binary日志</span>
             </a>
         </li>
         
-        
-        <li class="next">
-            <a href="/2017/05/coffee_and_life/" data-toggle="tooltip" data-placement="top" title="咖啡与生活">下一篇：  <span>咖啡与生活</span>
-            </a>
-        </li>
         
     </ul>
 </section>
