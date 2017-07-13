@@ -9,15 +9,23 @@ tags: Redis VM Docker
 简单压一把Redis在VM和Docker下性能如何。  
   
 ### 环境  
-| Type | CPU | Mem | OS |
-| -------- | :----: | :----: | :----: |
-| VM | 2c | 2G | CentOS release 6.7 (Final) |
-| Docker | 2c | 2G | CentOS release 6.9 (Final) |  
-  
+**VM**  
+CPU: 2C  
+Mem: 2G  
+OS: CentOS release 6.7 (Final)  
+ 
+**Docker**  
+CPU: 2C  
+Mem: 2G  
+OS: CentOS release 6.9 (Final)  
+
 ### 测试基准值  
-| Tools | type | requests | keyspacelen | size | parallel |
-| -------- | :----: | :----: | :----: | :----: | :----: |
-| redis-benchmark | SET、GET | 5000000 | 500000 | 2(default) | 8 ~ 4096 |
+>* tools: redis-benchmark  
+>* type: SET、GET  
+>* requests: 5000000  
+>* keyspacelen: 500000  
+>* size: 2(default)  
+>* parallel: 8 ~ 4096  
    
 ### 测试结果  
 #### SET  
