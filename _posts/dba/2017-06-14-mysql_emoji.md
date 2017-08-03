@@ -84,8 +84,13 @@ ALTER TABLE table_name CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_
 ALTER TABLE table_name CHANGE column_name column_name VARCHAR(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 ```
 
+### 注意事项  
+如果通过以上配置还不支持Emoji表情，请Connector/J版本或查看sql_mode参数。  
+
+#### Connector  
+connector版本大于5.1.13的不能加characterEncoding=utf8参数（未测试）。  
+
 #### sql_mode  
-如果通过以上配置还不支持Emoji表情，请查看sql_mode参数。  
 ```shell
 mysql> show variables like 'sql_mode';
 +---------------+----------------------------------------------------------------+

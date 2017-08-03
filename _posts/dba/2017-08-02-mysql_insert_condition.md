@@ -6,7 +6,7 @@ tags: MySQL
 ---
 
 ### 简述  
-INSERT条件判断：如果不存在则插入。与REPLACE是：如果存在则替换。  
+INSERT条件判断：如果不存在则插入。REPLACE判断：如果存在则替换。  
 对于普通的 INSERT 插入，如果想要保证不插入重复记录，可以通过唯一索引实现。  
 那有没有不创建唯一索引，仅通过 INSERT 一条语句实现的方案呢？ INSERT INTO IF EXISTS就来了。  
 
