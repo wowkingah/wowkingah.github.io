@@ -7,16 +7,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
   <title>Redis性能测试</title>
-  <meta name="description" content="简述简单压一把Redis在VM和Docker下性能如何。环境| Type | CPU | Mem | OS || ——– | :—-: | :—-: | :—-: || VM | 2c | 2G | CentOS release 6.7 (Final) || Docker | 2c | 2G | CentOS r...">
+  <meta name="description" content="简述简单压一把Redis在VM和Docker下性能如何。环境VMCPU: 2CMem: 2GOS: CentOS release 6.7 (Final)DockerCPU: 2CMem: 2GOS: CentOS release 6.9 (Final)测试基准值      tools: redis-benchma...">
   <meta name="author" content="Wowking">
 
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="Redis性能测试">
-  <meta name="twitter:description" content="简述简单压一把Redis在VM和Docker下性能如何。环境| Type | CPU | Mem | OS || ——– | :—-: | :—-: | :—-: || VM | 2c | 2G | CentOS release 6.7 (Final) || Docker | 2c | 2G | CentOS r...">
+  <meta name="twitter:description" content="简述简单压一把Redis在VM和Docker下性能如何。环境VMCPU: 2CMem: 2GOS: CentOS release 6.7 (Final)DockerCPU: 2CMem: 2GOS: CentOS release 6.9 (Final)测试基准值      tools: redis-benchma...">
   
   <meta property="og:type" content="article">
   <meta property="og:title" content="Redis性能测试">
-  <meta property="og:description" content="简述简单压一把Redis在VM和Docker下性能如何。环境| Type | CPU | Mem | OS || ——– | :—-: | :—-: | :—-: || VM | 2c | 2G | CentOS release 6.7 (Final) || Docker | 2c | 2G | CentOS r...">
+  <meta property="og:description" content="简述简单压一把Redis在VM和Docker下性能如何。环境VMCPU: 2CMem: 2GOS: CentOS release 6.7 (Final)DockerCPU: 2CMem: 2GOS: CentOS release 6.9 (Final)测试基准值      tools: redis-benchma...">
   
   <link rel="icon" type="image/png" href="/images/favicon.png" />
   <link href="/images/favicon.png" rel="shortcut icon" type="image/png">
@@ -170,15 +170,27 @@
 <p>简单压一把Redis在VM和Docker下性能如何。</p>
 
 <h3 id="section-1">环境</h3>
-<p>| Type | CPU | Mem | OS |
-| ——– | :—-: | :—-: | :—-: |
-| VM | 2c | 2G | CentOS release 6.7 (Final) |
-| Docker | 2c | 2G | CentOS release 6.9 (Final) |</p>
+<p><strong>VM</strong><br />
+CPU: 2C<br />
+Mem: 2G<br />
+OS: CentOS release 6.7 (Final)</p>
+
+<p><strong>Docker</strong><br />
+CPU: 2C<br />
+Mem: 2G<br />
+OS: CentOS release 6.9 (Final)</p>
 
 <h3 id="section-2">测试基准值</h3>
-<p>| Tools | type | requests | keyspacelen | size | parallel |
-| ——– | :—-: | :—-: | :—-: | :—-: | :—-: |
-| redis-benchmark | SET、GET | 5000000 | 500000 | 2(default) | 8 ~ 4096 |</p>
+<blockquote>
+  <ul>
+    <li>tools: redis-benchmark</li>
+    <li>type: SET、GET</li>
+    <li>requests: 5000000</li>
+    <li>keyspacelen: 500000</li>
+    <li>size: 2(default)</li>
+    <li>parallel: 8 ~ 4096</li>
+  </ul>
+</blockquote>
 
 <h3 id="section-3">测试结果</h3>
 <p>#### SET<br />
@@ -279,6 +291,11 @@ Redis是一种基于客户端-服务端模型以及请求响应协议的TCP服�
             </a>
         </li>
         
+        
+        <li class="next">
+            <a href="/2017/08/mysql_insert_condition/" data-toggle="tooltip" data-placement="top" title="MySQL INSERT条件判断">下一篇：  <span>MySQL INSERT条件判断</span>
+            </a>
+        </li>
         
     </ul>
 </section>

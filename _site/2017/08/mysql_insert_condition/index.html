@@ -6,17 +6,17 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-  <title>MySQL支持Emoji表情</title>
-  <meta name="description" content="简述MySQL 5.5.3开始通过修改字符集来支持Emoji表情。查看当前字符集shellmysql&gt; SHOW VARIABLES WHERE Variable_name LIKE 'character\_set\_%' OR Variable_name LIKE 'collation%';+------...">
+  <title>MySQL INSERT条件判断</title>
+  <meta name="description" content="简述INSERT条件判断：如果不存在则插入。REPLACE判断：如果存在则替换。对于普通的 INSERT 插入，如果想要保证不插入重复记录，可以通过唯一索引实现。那有没有不创建唯一索引，仅通过 INSERT 一条语句实现的方案呢？ INSERT INTO IF EXISTS就来了。语法sqlINSERT INTO...">
   <meta name="author" content="Wowking">
 
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="MySQL支持Emoji表情">
-  <meta name="twitter:description" content="简述MySQL 5.5.3开始通过修改字符集来支持Emoji表情。查看当前字符集shellmysql&gt; SHOW VARIABLES WHERE Variable_name LIKE 'character\_set\_%' OR Variable_name LIKE 'collation%';+------...">
+  <meta name="twitter:title" content="MySQL INSERT条件判断">
+  <meta name="twitter:description" content="简述INSERT条件判断：如果不存在则插入。REPLACE判断：如果存在则替换。对于普通的 INSERT 插入，如果想要保证不插入重复记录，可以通过唯一索引实现。那有没有不创建唯一索引，仅通过 INSERT 一条语句实现的方案呢？ INSERT INTO IF EXISTS就来了。语法sqlINSERT INTO...">
   
   <meta property="og:type" content="article">
-  <meta property="og:title" content="MySQL支持Emoji表情">
-  <meta property="og:description" content="简述MySQL 5.5.3开始通过修改字符集来支持Emoji表情。查看当前字符集shellmysql&gt; SHOW VARIABLES WHERE Variable_name LIKE 'character\_set\_%' OR Variable_name LIKE 'collation%';+------...">
+  <meta property="og:title" content="MySQL INSERT条件判断">
+  <meta property="og:description" content="简述INSERT条件判断：如果不存在则插入。REPLACE判断：如果存在则替换。对于普通的 INSERT 插入，如果想要保证不插入重复记录，可以通过唯一索引实现。那有没有不创建唯一索引，仅通过 INSERT 一条语句实现的方案呢？ INSERT INTO IF EXISTS就来了。语法sqlINSERT INTO...">
   
   <link rel="icon" type="image/png" href="/images/favicon.png" />
   <link href="/images/favicon.png" rel="shortcut icon" type="image/png">
@@ -24,7 +24,7 @@
   <link rel="stylesheet" href="/css/main.css">
   <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
 
-  <link rel="canonical" href="https://wowkingah.github.io/2017/06/mysql_emoji/">
+  <link rel="canonical" href="https://wowkingah.github.io/2017/08/mysql_insert_condition/">
   <link rel="alternate" type="application/rss+xml" title="Wowking" href="https://wowkingah.github.io/feed.xml">
   
   <meta name="google-site-verification" content="1-1ZlHoRvM0T2FqPbW2S-qLgYXN6rsn52kErlMPd_gw" />
@@ -155,10 +155,10 @@
         <div class="content-wrapper__inner">
             <article class="post-container post-container--single" itemscope itemtype="http://schema.org/BlogPosting">
   <header class="post-header">
-    <h1 class="post-title">MySQL支持Emoji表情</h1>
+    <h1 class="post-title">MySQL INSERT条件判断</h1>
     <div class="post-meta">
       <img src="/images/calendar.png" width="20px"/> 
-      <time datetime="2017-06-14 00:00:00 +0800" itemprop="datePublished" class="post-meta__date date">2017-06-14</time>  
+      <time datetime="2017-08-08 00:00:00 +0800" itemprop="datePublished" class="post-meta__date date">2017-08-08</time>  
          
       <span id="busuanzi_container_page_pv"> | 阅读：<span id="busuanzi_value_page_pv"></span>次</span>
     </p>
@@ -167,113 +167,79 @@
 
   <section class="post">
     <h3 id="section">简述</h3>
-<p>MySQL 5.5.3开始通过修改字符集来支持Emoji表情。</p>
+<p>INSERT条件判断：如果不存在则插入。REPLACE判断：如果存在则替换。<br />
+对于普通的 INSERT 插入，如果想要保证不插入重复记录，可以通过唯一索引实现。<br />
+那有没有不创建唯一索引，仅通过 INSERT 一条语句实现的方案呢？ INSERT INTO IF EXISTS就来了。</p>
 
-<h3 id="section-1">查看当前字符集</h3>
-<p><code class="highlighter-rouge">shell
-mysql&gt; SHOW VARIABLES WHERE Variable_name LIKE 'character\_set\_%' OR Variable_name LIKE 'collation%';
-+--------------------------+-----------------+
-| Variable_name            | Value           |
-+--------------------------+-----------------+
-| character_set_client     | utf8            |
-| character_set_connection | utf8            |
-| character_set_database   | utf8            |
-| character_set_filesystem | binary          |
-| character_set_results    | utf8            |
-| character_set_server     | utf8            |
-| character_set_system     | utf8            |
-| collation_connection     | utf8_general_ci |
-| collation_database       | utf8_general_ci |
-| collation_server         | utf8_general_ci |
-+--------------------------+-----------------+
-10 rows in set (0.01 sec)
-</code></p>
+<h3 id="section-1">语法</h3>
+<p><code class="highlighter-rouge">sql
+INSERT INTO t_name(c1, c2, cn) SELECT 'v1', 'v2', 'vn' FROM DUAL WHERE NOT EXISTS(SELECT c1 FROM t_name WHERE c1 = ?);
+</code>
+<em>tips: DUAL 为临时表，无需创建。</em></p>
 
-<h3 id="section-2">相关配置</h3>
-<p>#### 修改字符集<br />
+<h3 id="section-2">示例</h3>
+<p>#### 环境<br />
 ```shell
-[root@test ~]# cat /etc/my.cnf
-[client]
-default_character_set=utf8mb4</p>
+mysql&gt; DROP TABLE IF EXISTS t1;
+Query OK, 0 rows affected (0.20 sec)</p>
 
-<p>[mysql]
-default_character_set=utf8mb4</p>
+<p>mysql&gt; CREATE TABLE <code class="highlighter-rouge">t1</code> (
+    -&gt;   <code class="highlighter-rouge">id</code> int(11) unsigned NOT NULL AUTO_INCREMENT,
+    -&gt;   <code class="highlighter-rouge">name</code> varchar(8) NULL,
+    -&gt;   PRIMARY KEY (<code class="highlighter-rouge">id</code>)
+    -&gt; );
+Query OK, 0 rows affected (0.78 sec)</p>
 
-<p>[mysqld]
-##Character settings
-init_connect=’SET NAMES utf8mb4’
-character_set_server=utf8mb4
-collation_server=utf8mb4_general_ci
-skip_character_set_client_handshake
+<p>mysql&gt; INSERT INTO t1(name) VALUES (‘aa’),(‘bb’);
+Query OK, 2 rows affected (0.06 sec)
+Records: 2  Duplicates: 0  Warnings: 0</p>
+
+<p>mysql&gt; SELECT * FROM t1;
++—-+——+
+| id | name |
++—-+——+
+|  1 | aa   |
+|  2 | bb   |
++—-+——+
+2 rows in set (0.00 sec)
 ```</p>
 
-<h4 id="section-3">查看字符集</h4>
-<p><code class="highlighter-rouge">shell
-mysql&gt; SHOW VARIABLES WHERE Variable_name LIKE 'character\_set\_%' OR Variable_name LIKE 'collation%';
-+--------------------------+--------------------+
-| Variable_name            | Value              |
-+--------------------------+--------------------+
-| character_set_client     | utf8mb4            |
-| character_set_connection | utf8mb4            |
-| character_set_database   | utf8mb4            |
-| character_set_filesystem | binary             |
-| character_set_results    | utf8mb4            |
-| character_set_server     | utf8mb4            |
-| character_set_system     | utf8               |
-| collation_connection     | utf8mb4_general_ci |
-| collation_database       | utf8mb4_general_ci |
-| collation_server         | utf8mb4_general_ci |
-+--------------------------+--------------------+
-10 rows in set (0.00 sec)
-</code></p>
+<h4 id="section-3">测试</h4>
+<p>```sql
+mysql&gt; INSERT INTO t1(name) VALUES(‘aa’);
+Query OK, 1 row affected (0.08 sec)</p>
 
-<p><strong>已有库表字段修改</strong><br />
-对于已有实例、表、字段如果需支持Emoji表情，可按需修改字符集。如果只是某个字段需要，只需修改对应字段的字符集即可。</p>
+<p>mysql&gt; SELECT * FROM t1;
++—-+——+
+| id | name |
++—-+——+
+|  1 | aa   |
+|  2 | bb   |
+|  3 | aa   |
++—-+——+
+3 rows in set (0.00 sec)
+```
+<em>tips: 因name列无唯一索引，故aa可以插入。</em></p>
 
-<p><strong>修改数据库字符集</strong><br />
-<code class="highlighter-rouge">shell
-ALTER DATABASE database_name CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
-</code></p>
+<p>```sql
+mysql&gt; INSERT INTO t1(name) SELECT ‘bb’ FROM DUAL WHERE NOT EXISTS(SELECT name FROM t1 WHERE name=’bb’);
+Query OK, 0 rows affected (0.00 sec)
+Records: 0  Duplicates: 0  Warnings: 0</p>
 
-<p><strong>修改表的字符集</strong><br />
-<code class="highlighter-rouge">shell
-ALTER TABLE table_name CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-</code></p>
+<p>mysql&gt; SELECT * FROM t1;
++—-+——+
+| id | name |
++—-+——+
+|  1 | aa   |
+|  2 | bb   |
+|  3 | aa   |
++—-+——+
+3 rows in set (0.00 sec)
+```
+<em>tips: bb未插入。</em></p>
 
-<p><strong>修改字段的字符集</strong><br />
-<code class="highlighter-rouge">shell
-ALTER TABLE table_name CHANGE column_name column_name VARCHAR(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-</code></p>
-
-<h3 id="section-4">注意事项</h3>
-<p>如果通过以上配置还不支持Emoji表情，请Connector/J版本或查看sql_mode参数。</p>
-
-<h4 id="connector">Connector</h4>
-<p>connector版本大于5.1.13的不能加characterEncoding=utf8参数（未测试）。</p>
-
-<h4 id="sqlmode">sql_mode</h4>
-<p><code class="highlighter-rouge">shell
-mysql&gt; show variables like 'sql_mode';
-+---------------+----------------------------------------------------------------+
-| Variable_name | Value                                                          |
-+---------------+----------------------------------------------------------------+
-| sql_mode      | STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION |
-+---------------+----------------------------------------------------------------+
-1 row in set (0.00 sec)
-</code>
-若返回结果中带有STRICT_TRANS_TABLES，去掉即可。<br />
-<strong>动态配置</strong><br />
-<code class="highlighter-rouge">shell
-mysql&gt; set global sql_mode = 'NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION';
-</code></p>
-
-<p><strong>永久配置</strong><br />
-<code class="highlighter-rouge">shell
-[root@test ~]# cat /etc/my.cnf
-[mysqld]
-sql_mode="NO_ENGINE_SUBSTITUTION,NO_AUTO_CREATE_USER"
-</code></p>
-
+<h3 id="reference">reference</h3>
+<p>https://my.oschina.net/jsan/blog/270161/</p>
 
 
   </section>
@@ -343,13 +309,13 @@ sql_mode="NO_ENGINE_SUBSTITUTION,NO_AUTO_CREATE_USER"
        <ul class="pager">
         
         <li class="previous">
-            <a href="/2017/05/coffee_and_life/" data-toggle="tooltip" data-placement="top" title="咖啡与生活">上一篇：  <span>咖啡与生活</span>
+            <a href="/2017/07/redis_performance_test/" data-toggle="tooltip" data-placement="top" title="Redis性能测试">上一篇：  <span>Redis性能测试</span>
             </a>
         </li>
         
         
         <li class="next">
-            <a href="/2017/06/clean_binary_log_for_mysql/" data-toggle="tooltip" data-placement="top" title="MySQL清理binary日志">下一篇：  <span>MySQL清理binary日志</span>
+            <a href="/2017/09/oracle_maximum_number_of_processes/" data-toggle="tooltip" data-placement="top" title="Oracle 超过最大进程数">下一篇：  <span>Oracle 超过最大进程数</span>
             </a>
         </li>
         

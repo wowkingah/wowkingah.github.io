@@ -5,9 +5,147 @@
     <description>I don&#39;t really know where I&#39;m going, but I hope I go far.</description>
     <link>https://wowkingah.github.io/</link>
     <atom:link href="https://wowkingah.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 13 Jul 2017 15:56:54 +0800</pubDate>
-    <lastBuildDate>Thu, 13 Jul 2017 15:56:54 +0800</lastBuildDate>
+    <pubDate>Fri, 01 Sep 2017 17:26:27 +0800</pubDate>
+    <lastBuildDate>Fri, 01 Sep 2017 17:26:27 +0800</lastBuildDate>
     <generator>Jekyll v3.1.1</generator>
+    
+      <item>
+        <title>Oracle 超过最大进程数</title>
+        <description>&lt;h3 id=&quot;section&quot;&gt;简述&lt;/h3&gt;
+&lt;p&gt;Oracle超过最大进程数。&lt;/p&gt;
+
+&lt;h3 id=&quot;section-1&quot;&gt;报错&lt;/h3&gt;
+&lt;p&gt;#### 客户端连接报错&lt;br /&gt;
+ORA-12519: TNS:no appropriate service handler found&lt;/p&gt;
+
+&lt;h4 id=&quot;section-2&quot;&gt;命令行连接报错&lt;/h4&gt;
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;shell
+SQL&amp;gt; conn /as sysdba;  
+ERROR:  
+ORA-00020: maximum number of processes (150) exceeded  
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;section-3&quot;&gt;解决方案&lt;/h3&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;1.重启或停止问题客户端（如问题Tomcat/Nginx），释放几个空闲连接；
+2.查看当前进程数；
+```shell
+SQL&amp;gt; select count(1) from v$process;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;count1&quot;&gt;COUNT(1)&lt;/h2&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;   147   ``` &amp;gt; 3.查看最大进程数； ```shell SQL&amp;gt; select value from v$parameter where name = &#39;processes&#39;;  
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;value&quot;&gt;VALUE&lt;/h2&gt;
+&lt;p&gt;150&lt;br /&gt;
+&lt;code class=&quot;highlighter-rouge&quot;&gt;
+&amp;gt; 4.修改最大进程数；
+&lt;/code&gt;shell
+SQL&amp;gt; alter system set processes = 512 scope = spfile;&lt;br /&gt;
+&lt;code class=&quot;highlighter-rouge&quot;&gt;
+&amp;gt; 5.重启数据库。  
+&lt;/code&gt;shell
+SQL&amp;gt; conn /as sysdba;&lt;br /&gt;
+SQL&amp;gt; shutdown immediate;&lt;br /&gt;
+SQL&amp;gt; startup;&lt;br /&gt;
+```&lt;/p&gt;
+</description>
+        <pubDate>Fri, 01 Sep 2017 00:00:00 +0800</pubDate>
+        <link>https://wowkingah.github.io/2017/09/oracle_maximum_number_of_processes/</link>
+        <guid isPermaLink="true">https://wowkingah.github.io/2017/09/oracle_maximum_number_of_processes/</guid>
+        
+        <category>Oracle</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>MySQL INSERT条件判断</title>
+        <description>&lt;h3 id=&quot;section&quot;&gt;简述&lt;/h3&gt;
+&lt;p&gt;INSERT条件判断：如果不存在则插入。REPLACE判断：如果存在则替换。&lt;br /&gt;
+对于普通的 INSERT 插入，如果想要保证不插入重复记录，可以通过唯一索引实现。&lt;br /&gt;
+那有没有不创建唯一索引，仅通过 INSERT 一条语句实现的方案呢？ INSERT INTO IF EXISTS就来了。&lt;/p&gt;
+
+&lt;h3 id=&quot;section-1&quot;&gt;语法&lt;/h3&gt;
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;sql
+INSERT INTO t_name(c1, c2, cn) SELECT &#39;v1&#39;, &#39;v2&#39;, &#39;vn&#39; FROM DUAL WHERE NOT EXISTS(SELECT c1 FROM t_name WHERE c1 = ?);
+&lt;/code&gt;
+&lt;em&gt;tips: DUAL 为临时表，无需创建。&lt;/em&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;section-2&quot;&gt;示例&lt;/h3&gt;
+&lt;p&gt;#### 环境&lt;br /&gt;
+```shell
+mysql&amp;gt; DROP TABLE IF EXISTS t1;
+Query OK, 0 rows affected (0.20 sec)&lt;/p&gt;
+
+&lt;p&gt;mysql&amp;gt; CREATE TABLE &lt;code class=&quot;highlighter-rouge&quot;&gt;t1&lt;/code&gt; (
+    -&amp;gt;   &lt;code class=&quot;highlighter-rouge&quot;&gt;id&lt;/code&gt; int(11) unsigned NOT NULL AUTO_INCREMENT,
+    -&amp;gt;   &lt;code class=&quot;highlighter-rouge&quot;&gt;name&lt;/code&gt; varchar(8) NULL,
+    -&amp;gt;   PRIMARY KEY (&lt;code class=&quot;highlighter-rouge&quot;&gt;id&lt;/code&gt;)
+    -&amp;gt; );
+Query OK, 0 rows affected (0.78 sec)&lt;/p&gt;
+
+&lt;p&gt;mysql&amp;gt; INSERT INTO t1(name) VALUES (‘aa’),(‘bb’);
+Query OK, 2 rows affected (0.06 sec)
+Records: 2  Duplicates: 0  Warnings: 0&lt;/p&gt;
+
+&lt;p&gt;mysql&amp;gt; SELECT * FROM t1;
++—-+——+
+| id | name |
++—-+——+
+|  1 | aa   |
+|  2 | bb   |
++—-+——+
+2 rows in set (0.00 sec)
+```&lt;/p&gt;
+
+&lt;h4 id=&quot;section-3&quot;&gt;测试&lt;/h4&gt;
+&lt;p&gt;```sql
+mysql&amp;gt; INSERT INTO t1(name) VALUES(‘aa’);
+Query OK, 1 row affected (0.08 sec)&lt;/p&gt;
+
+&lt;p&gt;mysql&amp;gt; SELECT * FROM t1;
++—-+——+
+| id | name |
++—-+——+
+|  1 | aa   |
+|  2 | bb   |
+|  3 | aa   |
++—-+——+
+3 rows in set (0.00 sec)
+```
+&lt;em&gt;tips: 因name列无唯一索引，故aa可以插入。&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;```sql
+mysql&amp;gt; INSERT INTO t1(name) SELECT ‘bb’ FROM DUAL WHERE NOT EXISTS(SELECT name FROM t1 WHERE name=’bb’);
+Query OK, 0 rows affected (0.00 sec)
+Records: 0  Duplicates: 0  Warnings: 0&lt;/p&gt;
+
+&lt;p&gt;mysql&amp;gt; SELECT * FROM t1;
++—-+——+
+| id | name |
++—-+——+
+|  1 | aa   |
+|  2 | bb   |
+|  3 | aa   |
++—-+——+
+3 rows in set (0.00 sec)
+```
+&lt;em&gt;tips: bb未插入。&lt;/em&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;reference&quot;&gt;reference&lt;/h3&gt;
+&lt;p&gt;https://my.oschina.net/jsan/blog/270161/&lt;/p&gt;
+</description>
+        <pubDate>Tue, 08 Aug 2017 00:00:00 +0800</pubDate>
+        <link>https://wowkingah.github.io/2017/08/mysql_insert_condition/</link>
+        <guid isPermaLink="true">https://wowkingah.github.io/2017/08/mysql_insert_condition/</guid>
+        
+        <category>MySQL</category>
+        
+        
+      </item>
     
       <item>
         <title>Redis性能测试</title>
@@ -15,15 +153,27 @@
 &lt;p&gt;简单压一把Redis在VM和Docker下性能如何。&lt;/p&gt;
 
 &lt;h3 id=&quot;section-1&quot;&gt;环境&lt;/h3&gt;
-&lt;p&gt;| Type | CPU | Mem | OS |
-| ——– | :—-: | :—-: | :—-: |
-| VM | 2c | 2G | CentOS release 6.7 (Final) |
-| Docker | 2c | 2G | CentOS release 6.9 (Final) |&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;VM&lt;/strong&gt;&lt;br /&gt;
+CPU: 2C&lt;br /&gt;
+Mem: 2G&lt;br /&gt;
+OS: CentOS release 6.7 (Final)&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Docker&lt;/strong&gt;&lt;br /&gt;
+CPU: 2C&lt;br /&gt;
+Mem: 2G&lt;br /&gt;
+OS: CentOS release 6.9 (Final)&lt;/p&gt;
 
 &lt;h3 id=&quot;section-2&quot;&gt;测试基准值&lt;/h3&gt;
-&lt;p&gt;| Tools | type | requests | keyspacelen | size | parallel |
-| ——– | :—-: | :—-: | :—-: | :—-: | :—-: |
-| redis-benchmark | SET、GET | 5000000 | 500000 | 2(default) | 8 ~ 4096 |&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;ul&gt;
+    &lt;li&gt;tools: redis-benchmark&lt;/li&gt;
+    &lt;li&gt;type: SET、GET&lt;/li&gt;
+    &lt;li&gt;requests: 5000000&lt;/li&gt;
+    &lt;li&gt;keyspacelen: 500000&lt;/li&gt;
+    &lt;li&gt;size: 2(default)&lt;/li&gt;
+    &lt;li&gt;parallel: 8 ~ 4096&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/blockquote&gt;
 
 &lt;h3 id=&quot;section-3&quot;&gt;测试结果&lt;/h3&gt;
 &lt;p&gt;#### SET&lt;br /&gt;
@@ -208,9 +358,14 @@ ALTER TABLE table_name CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_
 ALTER TABLE table_name CHANGE column_name column_name VARCHAR(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 &lt;/code&gt;&lt;/p&gt;
 
+&lt;h3 id=&quot;section-4&quot;&gt;注意事项&lt;/h3&gt;
+&lt;p&gt;如果通过以上配置还不支持Emoji表情，请Connector/J版本或查看sql_mode参数。&lt;/p&gt;
+
+&lt;h4 id=&quot;connector&quot;&gt;Connector&lt;/h4&gt;
+&lt;p&gt;connector版本大于5.1.13的不能加characterEncoding=utf8参数（未测试）。&lt;/p&gt;
+
 &lt;h4 id=&quot;sqlmode&quot;&gt;sql_mode&lt;/h4&gt;
-&lt;p&gt;如果通过以上配置还不支持Emoji表情，请查看sql_mode参数。&lt;br /&gt;
-&lt;code class=&quot;highlighter-rouge&quot;&gt;shell
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;shell
 mysql&amp;gt; show variables like &#39;sql_mode&#39;;
 +---------------+----------------------------------------------------------------+
 | Variable_name | Value                                                          |
@@ -808,183 +963,6 @@ print &#39;hello world~&#39;
         <category>sublime</category>
         
         <category>markdown</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>Sublime Text3注册序列号3126</title>
-        <description>&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;
-—– BEGIN LICENSE —–
-Michael Barnes
-Single User License
-EA7E-821385
-8A353C41 872A0D5C DF9B2950 AFF6F667
-C458EA6D 8EA3C286 98D1D650 131A97AB
-AA919AEC EF20E143 B361B1E7 4C8B7F04
-B085E65E 2F5F5360 8489D422 FB8FC1AA
-93F6323C FD7F7544 3F39C318 D95E6480
-FCCC7561 8A4A1741 68FA4223 ADCEDE07
-200C25BE DBBC4855 C4CFB774 C5EC138C
-0FEC1CEF D9DCECEC D3A5DAD1 01316C36
-—— END LICENSE ——
-&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;
-—– BEGIN LICENSE —–
-Free Communities Consultoria em Informática Ltda
-Single User License
-EA7E-801302
-C154C122 4EFA4415 F1AAEBCC 315F3A7D
-2580735A 7955AA57 850ABD88 72A1DDD8
-8D2CE060 CF980C29 890D74F2 53131895
-281E324E 98EA1FEF 7FF69A12 17CA7784
-490862AF 833E133D FD22141D D8C89B94
-4C10A4D2 24693D70 AE37C18F 72EF0BE5
-1ED60704 651BC71F 16CA1B77 496A0B19
-463EDFF9 6BEB1861 CA5BAD96 89D0118E
-—— END LICENSE ——
-&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;
-—– BEGIN LICENSE —–
-Nicolas Hennion
-Single User License
-EA7E-866075
-8A01AA83 1D668D24 4484AEBC 3B04512C
-827B0DE5 69E9B07A A39ACCC0 F95F5410
-729D5639 4C37CECB B2522FB3 8D37FDC1
-72899363 BBA441AC A5F47F08 6CD3B3FE
-CEFB3783 B2E1BA96 71AAF7B4 AFB61B1D
-0CC513E7 52FF2333 9F726D2C CDE53B4A
-810C0D4F E1F419A3 CDA0832B 8440565A
-35BF00F6 4CA9F869 ED10E245 469C233E
-—— END LICENSE ——
-&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;
-—– BEGIN LICENSE —–
-Anthony Sansone
-Single User License
-EA7E-878563
-28B9A648 42B99D8A F2E3E9E0 16DE076E
-E218B3DC F3606379 C33C1526 E8B58964
-B2CB3F63 BDF901BE D31424D2 082891B5
-F7058694 55FA46D8 EFC11878 0868F093
-B17CAFE7 63A78881 86B78E38 0F146238
-BAE22DBB D4EC71A1 0EC2E701 C7F9C648
-5CF29CA3 1CB14285 19A46991 E9A98676
-14FD4777 2D8A0AB6 A444EE0D CA009B54
-—— END LICENSE ——
-&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;
-—– BEGIN LICENSE —–
-Alexey Plutalov
-Single User License
-EA7E-860776
-3DC19CC1 134CDF23 504DC871 2DE5CE55
-585DC8A6 253BB0D9 637C87A2 D8D0BA85
-AAE574AD BA7D6DA9 2B9773F2 324C5DEF
-17830A4E FBCF9D1D 182406E9 F883EA87
-E585BBA1 2538C270 E2E857C2 194283CA
-7234FF9E D0392F93 1D16E021 F1914917
-63909E12 203C0169 3F08FFC8 86D06EA8
-73DDAEF0 AC559F30 A6A67947 B60104C6
-—— END LICENSE ——
-&lt;/code&gt;&lt;/p&gt;
-</description>
-        <pubDate>Sat, 22 Apr 2017 00:00:00 +0800</pubDate>
-        <link>https://wowkingah.github.io/2017/04/sublime_text3_3126_licenses/</link>
-        <guid isPermaLink="true">https://wowkingah.github.io/2017/04/sublime_text3_3126_licenses/</guid>
-        
-        <category>tools</category>
-        
-        <category>sublime</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>git更新fork的repository</title>
-        <description>&lt;p&gt;Fork一个别人的repository，做了一些改动，想提交pull request的时候，发现原先别人的repository已经又有了一些更新了，这个时候想使得自己fork出的repository也得到这些更新，即和原repository同步，该怎么做呢？这个问题应该被问烂了，stackoverflow上也有解答，基本上是指向的GitHub上的官方文档。最主要的是这2篇：
-https://help.github.com/articles/configuring-a-remote-for-a-fork/
-https://help.github.com/articles/syncing-a-fork/
-本文略作翻译，以中文解答这个问题。
-——&lt;/p&gt;
-
-&lt;h3 id=&quot;section&quot;&gt;查看当前配置&lt;/h3&gt;
-&lt;p&gt;首先，检查一下当前的配置，看看当前有没有已经设置了上游，这要使用git remote -v 命令。如下：
-&lt;code class=&quot;highlighter-rouge&quot;&gt;bash
-$git remote -v  
-origin  https://github.com/YOUR_USERNAME/YOUR_FORK.git (fetch)  
-origin  https://github.com/YOUR_USERNAME/YOUR_FORK.git (push) 
-&lt;/code&gt; 
-以上表明，origin这个repository对应的是远端的https开头的这个链接指向的repository，即自己fork出的repository。&lt;/p&gt;
-
-&lt;h3 id=&quot;section-1&quot;&gt;设置上游&lt;/h3&gt;
-&lt;p&gt;第二步，将原repository设置为自己fork出的repository的上游（upstream）。运用如下的命令：
-&lt;code class=&quot;highlighter-rouge&quot;&gt;bash
-$git remote add upstream https://github.com/ORIGINAL_OWNER/ORIGINAL_REPOSITORY.git
-&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;运用第一步中提到的git remove -v命令再次检查一下，结果如下：
-&lt;code class=&quot;highlighter-rouge&quot;&gt;bash
-$git remote -v  
-origin    https://github.com/YOUR_USERNAME/YOUR_FORK.git (fetch)  
-origin    https://github.com/YOUR_USERNAME/YOUR_FORK.git (push)  
-upstream  https://github.com/ORIGINAL_OWNER/ORIGINAL_REPOSITORY.git (fetch)  
-upstream  https://github.com/ORIGINAL_OWNER/ORIGINAL_REPOSITORY.git (push)  
-&lt;/code&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;section-2&quot;&gt;获取上游更新&lt;/h3&gt;
-&lt;p&gt;第三步，运行 git fetch upstream 命令，如下：
-&lt;code class=&quot;highlighter-rouge&quot;&gt;bash
-$git fetch upstream  
-remote: Counting objects: 75, done.  
-remote: Compressing objects: 100% (53/53), done.  
-remote: Total 62 (delta 27), reused 44 (delta 9)  
-Unpacking objects: 100% (62/62), done.  
-From https://github.com/ORIGINAL_OWNER/ORIGINAL_REPOSITORY  
- * [new branch]      master     -&amp;gt; upstream/master
-&lt;/code&gt;&lt;br /&gt;
-以上表明，远程的原repository上确实有一些更新，现在它们已经被download到本地的.git文件夹下了，但是还没有合并到本地的代码中。&lt;/p&gt;
-
-&lt;h3 id=&quot;checkoutrepo&quot;&gt;checkout本地repo&lt;/h3&gt;
-&lt;p&gt;第四步，git checkout master，这是保证切换到本地的repository的master上，如果本来就在，那么这一步不是必须的。
-&lt;code class=&quot;highlighter-rouge&quot;&gt;bash
-$git checkout master
-&lt;/code&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;merge&quot;&gt;merge上游更新&lt;/h3&gt;
-&lt;p&gt;第五步，运行 git merge upstream/master 命令，将upstream/master上的更新合并到本地的master上，其实就是将第三步中download到.git文件夹下的那些change合并到本地的master中。如下：
-&lt;code class=&quot;highlighter-rouge&quot;&gt;bash
-$git merge upstream/master  
-Updating a422352..5fdff0f  
-Fast-forward  
- README                    |    9 -------  
- README.md                 |    7 ++++++  
- 2 files changed, 7 insertions(+), 9 deletions(-)  
- delete mode 100644 README  
- create mode 100644 README.md  
-&lt;/code&gt;
-如果本地没有什么自己独立的更新的话，那么将执行”fast-forward”的合并。如果本地有自己独立的更新，而又会引起冲突的话，则要解决冲突，再commit。&lt;/p&gt;
-
-&lt;p&gt;关于解决冲突，如果明确所有冲突都是使用upstream/master上的来override自己的，那么可以直接运行如下命令，则无需解决冲突了：
-&lt;code class=&quot;highlighter-rouge&quot;&gt;bash
-git merge -X theirs upstream/master  
-&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;注意，以上步骤结束后，仅仅是本地的fork出的repository和原repository取得了同步，如果想让远程的fork出的repository也同样取得同步，必须再git push上去。&lt;/p&gt;
-
-&lt;h3 id=&quot;reference&quot;&gt;reference&lt;/h3&gt;
-&lt;p&gt;http://blog.csdn.net/nirendao/article/details/51464191&lt;/p&gt;
-</description>
-        <pubDate>Sat, 22 Apr 2017 00:00:00 +0800</pubDate>
-        <link>https://wowkingah.github.io/2017/04/git%E6%9B%B4%E6%96%B0fork%E7%9A%84repository/</link>
-        <guid isPermaLink="true">https://wowkingah.github.io/2017/04/git%E6%9B%B4%E6%96%B0fork%E7%9A%84repository/</guid>
-        
-        <category>git</category>
         
         
       </item>

@@ -158,8 +158,50 @@
   <ol class="post-list">
     
     <li>
+      <h2 class="post-list__post-title post-title"><a href="/2017/09/oracle_maximum_number_of_processes/" title="访问 Oracle 超过最大进程数">Oracle 超过最大进程数</a></h2>
+      <p class="excerpt">简述Oracle超过最大进程数。报错#### 客户端连接报错ORA-12519: TNS:no appropriate service handler found命令行连接报错shellSQL&gt; conn /as sysdba;  ERROR:  ORA-00020: maximum number of processes (150) exceeded  解决方案  1.重启或停止问题客户端（如问题Tomcat/Nginx），释放几个空闲连接；2.查看当前进程数；```shellSQ...&hellip;</p>
+      <div class="post-list__meta">        
+        <time datetime="2017-09-01 00:00:00 +0800" class="post-list__meta--date date">
+          <img src="/images/calendar.png" width="20px" /> 
+          2017-09-01</time> 
+        <div class = "tag-img-icon">
+          <img src="/images/tag-icon.svg" width="20px" /> 
+        </div>
+        <a href="/tags">
+          <div class = "post-list-icon-mate">
+            <span class="post-list__meta--tags-right">Oracle</span>
+          </div>
+          <div class = "post-list-small-mate">
+          <a class="btn-border-small" href=/2017/09/oracle_maximum_number_of_processes/>阅读全文 » </a>
+          </div>
+      </div>
+      <hr class="post-list__divider" />
+    </li>
+    
+    <li>
+      <h2 class="post-list__post-title post-title"><a href="/2017/08/mysql_insert_condition/" title="访问 MySQL INSERT条件判断">MySQL INSERT条件判断</a></h2>
+      <p class="excerpt">简述INSERT条件判断：如果不存在则插入。REPLACE判断：如果存在则替换。对于普通的 INSERT 插入，如果想要保证不插入重复记录，可以通过唯一索引实现。那有没有不创建唯一索引，仅通过 INSERT 一条语句实现的方案呢？ INSERT INTO IF EXISTS就来了。语法sqlINSERT INTO t_name(c1, c2, cn) SELECT 'v1', 'v2', 'vn' FROM DUAL WHERE NOT EXISTS(SELECT c1 FROM t_na...&hellip;</p>
+      <div class="post-list__meta">        
+        <time datetime="2017-08-08 00:00:00 +0800" class="post-list__meta--date date">
+          <img src="/images/calendar.png" width="20px" /> 
+          2017-08-08</time> 
+        <div class = "tag-img-icon">
+          <img src="/images/tag-icon.svg" width="20px" /> 
+        </div>
+        <a href="/tags">
+          <div class = "post-list-icon-mate">
+            <span class="post-list__meta--tags-right">MySQL</span>
+          </div>
+          <div class = "post-list-small-mate">
+          <a class="btn-border-small" href=/2017/08/mysql_insert_condition/>阅读全文 » </a>
+          </div>
+      </div>
+      <hr class="post-list__divider" />
+    </li>
+    
+    <li>
       <h2 class="post-list__post-title post-title"><a href="/2017/07/redis_performance_test/" title="访问 Redis性能测试">Redis性能测试</a></h2>
-      <p class="excerpt">简述简单压一把Redis在VM和Docker下性能如何。环境| Type | CPU | Mem | OS || ——– | :—-: | :—-: | :—-: || VM | 2c | 2G | CentOS release 6.7 (Final) || Docker | 2c | 2G | CentOS release 6.9 (Final) |测试基准值| Tools | type | requests | keyspacelen | size | parallel || ——– ...&hellip;</p>
+      <p class="excerpt">简述简单压一把Redis在VM和Docker下性能如何。环境VMCPU: 2CMem: 2GOS: CentOS release 6.7 (Final)DockerCPU: 2CMem: 2GOS: CentOS release 6.9 (Final)测试基准值      tools: redis-benchmark    type: SET、GET    requests: 5000000    keyspacelen: 500000    size: 2(default)    par...&hellip;</p>
       <div class="post-list__meta">        
         <time datetime="2017-07-13 00:00:00 +0800" class="post-list__meta--date date">
           <img src="/images/calendar.png" width="20px" /> 
