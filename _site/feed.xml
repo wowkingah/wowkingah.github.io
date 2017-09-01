@@ -5,8 +5,8 @@
     <description>I don&#39;t really know where I&#39;m going, but I hope I go far.</description>
     <link>https://wowkingah.github.io/</link>
     <atom:link href="https://wowkingah.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Fri, 01 Sep 2017 17:26:27 +0800</pubDate>
-    <lastBuildDate>Fri, 01 Sep 2017 17:26:27 +0800</lastBuildDate>
+    <pubDate>Fri, 01 Sep 2017 17:48:42 +0800</pubDate>
+    <lastBuildDate>Fri, 01 Sep 2017 17:48:42 +0800</lastBuildDate>
     <generator>Jekyll v3.1.1</generator>
     
       <item>
@@ -15,42 +15,42 @@
 &lt;p&gt;Oracle超过最大进程数。&lt;/p&gt;
 
 &lt;h3 id=&quot;section-1&quot;&gt;报错&lt;/h3&gt;
-&lt;p&gt;#### 客户端连接报错&lt;br /&gt;
+&lt;p&gt;#### a.客户端连接报错 &lt;br /&gt;
 ORA-12519: TNS:no appropriate service handler found&lt;/p&gt;
 
-&lt;h4 id=&quot;section-2&quot;&gt;命令行连接报错&lt;/h4&gt;
+&lt;h4 id=&quot;b&quot;&gt;b.命令行连接报错&lt;/h4&gt;
 &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;shell
 SQL&amp;gt; conn /as sysdba;  
 ERROR:  
 ORA-00020: maximum number of processes (150) exceeded  
 &lt;/code&gt;&lt;/p&gt;
 
-&lt;h3 id=&quot;section-3&quot;&gt;解决方案&lt;/h3&gt;
+&lt;h3 id=&quot;section-2&quot;&gt;解决方案&lt;/h3&gt;
 &lt;blockquote&gt;
-  &lt;p&gt;1.重启或停止问题客户端（如问题Tomcat/Nginx），释放几个空闲连接；
-2.查看当前进程数；
+  &lt;p&gt;1.重启或停止问题客户端（如问题Tomcat/Nginx），释放几个空闲连接；&lt;br /&gt;
+2.查看当前进程数；&lt;br /&gt;
 ```shell
 SQL&amp;gt; select count(1) from v$process;&lt;/p&gt;
-&lt;/blockquote&gt;
 
-&lt;h2 id=&quot;count1&quot;&gt;COUNT(1)&lt;/h2&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;   147   ``` &amp;gt; 3.查看最大进程数； ```shell SQL&amp;gt; select value from v$parameter where name = &#39;processes&#39;;  
+  &lt;h2 id=&quot;count1&quot;&gt;COUNT(1)&lt;/h2&gt;
+  &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;   147   ``` 3.查看最大进程数；   ```shell SQL&amp;gt; select value from v$parameter where name = &#39;processes&#39;;  
 &lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+  &lt;/div&gt;
 
-&lt;h2 id=&quot;value&quot;&gt;VALUE&lt;/h2&gt;
-&lt;p&gt;150&lt;br /&gt;
+  &lt;h2 id=&quot;value&quot;&gt;VALUE&lt;/h2&gt;
+  &lt;p&gt;150&lt;br /&gt;
 &lt;code class=&quot;highlighter-rouge&quot;&gt;
-&amp;gt; 4.修改最大进程数；
+4.修改最大进程数；  
 &lt;/code&gt;shell
 SQL&amp;gt; alter system set processes = 512 scope = spfile;&lt;br /&gt;
 &lt;code class=&quot;highlighter-rouge&quot;&gt;
-&amp;gt; 5.重启数据库。  
+5.重启数据库。  
 &lt;/code&gt;shell
 SQL&amp;gt; conn /as sysdba;&lt;br /&gt;
 SQL&amp;gt; shutdown immediate;&lt;br /&gt;
 SQL&amp;gt; startup;&lt;br /&gt;
 ```&lt;/p&gt;
+&lt;/blockquote&gt;
 </description>
         <pubDate>Fri, 01 Sep 2017 00:00:00 +0800</pubDate>
         <link>https://wowkingah.github.io/2017/09/oracle_maximum_number_of_processes/</link>
