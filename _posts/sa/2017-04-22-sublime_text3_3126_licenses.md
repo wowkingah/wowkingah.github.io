@@ -2,7 +2,7 @@
 layout: post
 title: Sublime Text3注册序列号3126
 date: 2017-04-22
-tags: tools sublime
+tags: Tools Sublime
 ---
   
 

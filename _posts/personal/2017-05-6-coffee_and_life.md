@@ -2,7 +2,7 @@
 layout: post
 title: 咖啡与生活
 date: 2017-05-06 
-tags: coffee life
+tags: Coffee Life
 ---
 
 世界三大饮料：可可、咖啡、茶。奇怪，怎么没有奶茶~_~  

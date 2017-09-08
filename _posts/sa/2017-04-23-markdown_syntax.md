@@ -2,7 +2,7 @@
 layout: post
 title: Markdown常用语法
 date: 2017-04-23 
-tags: markdown
+tags: Markdown
 ---
 
 ### 什么是 Markdown

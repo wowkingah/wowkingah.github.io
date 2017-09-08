@@ -2,7 +2,7 @@
 layout: post
 title: "数据库大小写敏感问题"
 date: 2017/1/23 14:08:05 
-tags: databases mysql oracle mssql
+tags: Databases MySQL Oracle MSSQL
 ---
 
 ### Oracle  

@@ -2,7 +2,7 @@
 layout: post
 title: MySQL清理binary日志
 date: 2017-06-27
-tags: MySQL binary
+tags: MySQL
 ---
 
 ### 简述  
