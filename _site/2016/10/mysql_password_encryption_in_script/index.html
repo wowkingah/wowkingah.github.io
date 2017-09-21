@@ -6,17 +6,17 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-  <title>MySQL大表快速导入导出</title>
-  <meta name="description" content="MySQL大表快速导出常用两种方式：&gt; * mysqldump&gt; * INTO OUTFILE">
+  <title>加密脚本中MySQL用户密码</title>
+  <meta name="description" content="MySQL 5.6.6开始支持mysql_config_editor小工具。该工具将创建一个login-path，用于存储数据库的身份认证信息（仅仅只是存储数据库的用户密码等信息，实际的用户密码还是数据库创建）。  当脚本等一些地方需连接数据库时，可避免暴露用户明文密码，以增强数据库安全。">
   <meta name="author" content="Wowking">
 
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="MySQL大表快速导入导出">
-  <meta name="twitter:description" content="MySQL大表快速导出常用两种方式：&gt; * mysqldump&gt; * INTO OUTFILE">
+  <meta name="twitter:title" content="加密脚本中MySQL用户密码">
+  <meta name="twitter:description" content="MySQL 5.6.6开始支持mysql_config_editor小工具。该工具将创建一个login-path，用于存储数据库的身份认证信息（仅仅只是存储数据库的用户密码等信息，实际的用户密码还是数据库创建）。  当脚本等一些地方需连接数据库时，可避免暴露用户明文密码，以增强数据库安全。">
   
   <meta property="og:type" content="article">
-  <meta property="og:title" content="MySQL大表快速导入导出">
-  <meta property="og:description" content="MySQL大表快速导出常用两种方式：&gt; * mysqldump&gt; * INTO OUTFILE">
+  <meta property="og:title" content="加密脚本中MySQL用户密码">
+  <meta property="og:description" content="MySQL 5.6.6开始支持mysql_config_editor小工具。该工具将创建一个login-path，用于存储数据库的身份认证信息（仅仅只是存储数据库的用户密码等信息，实际的用户密码还是数据库创建）。  当脚本等一些地方需连接数据库时，可避免暴露用户明文密码，以增强数据库安全。">
   
   <link rel="icon" type="image/png" href="/images/favicon.png" />
   <link href="/images/favicon.png" rel="shortcut icon" type="image/png">
@@ -24,8 +24,8 @@
   <link rel="stylesheet" href="/css/main.css">
   <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
 
-  <link rel="canonical" href="https://wowkingah.github.io/2016/11/MySQL%E5%A4%A7%E8%A1%A8%E5%BF%AB%E9%80%9F%E5%AF%BC%E5%85%A5%E5%AF%BC%E5%87%BA/">
-  <link rel="alternate" type="application/rss+xml" title="Wowking" href="https://wowkingah.github.io/feed.xml">
+  <link rel="canonical" href="http://0.0.0.0:4000/2016/10/mysql_password_encryption_in_script/">
+  <link rel="alternate" type="application/rss+xml" title="Wowking" href="http://0.0.0.0:4000/feed.xml">
   
   <meta name="google-site-verification" content="1-1ZlHoRvM0T2FqPbW2S-qLgYXN6rsn52kErlMPd_gw" />
 
@@ -155,10 +155,10 @@
         <div class="content-wrapper__inner">
             <article class="post-container post-container--single" itemscope itemtype="http://schema.org/BlogPosting">
   <header class="post-header">
-    <h1 class="post-title">MySQL大表快速导入导出</h1>
+    <h1 class="post-title">加密脚本中MySQL用户密码</h1>
     <div class="post-meta">
       <img src="/images/calendar.png" width="20px"/> 
-      <time datetime="2016-11-30 00:00:00 +0800" itemprop="datePublished" class="post-meta__date date">2016-11-30</time>  
+      <time datetime="2016-10-28 00:00:00 +0800" itemprop="datePublished" class="post-meta__date date">2016-10-28</time>  
          
       <span id="busuanzi_container_page_pv"> | 阅读：<span id="busuanzi_value_page_pv"></span>次</span>
     </p>
@@ -166,64 +166,51 @@
   </header>
 
   <section class="post">
-    <p>MySQL大表快速导出常用两种方式：
-&gt; * mysqldump
-&gt; * INTO OUTFILE</p>
+    <p>MySQL 5.6.6开始支持mysql_config_editor小工具。该工具将创建一个login-path，用于存储数据库的身份认证信息（仅仅只是存储数据库的用户密码等信息，实际的用户密码还是数据库创建）。
+  当脚本等一些地方需连接数据库时，可避免暴露用户明文密码，以增强数据库安全。</p>
 
-<h3 id="mysqldump">mysqldump</h3>
-<p><code class="highlighter-rouge">bash
-[root@db_node01 ~]# mysqldump --opt -uxxx -pxxx test t1 &gt; /tmp/t1.sql
-</code>
-<strong><em>tips</em></strong>
-&gt; 适合整库或整表导出。<br />
-&gt; –opt：默认包含–add-drop-table –add-locks –create-options –disable-keys –extended-insert –lock-tables –quick –set-charset</p>
+<h2 id="语法">语法</h2>
+<h3 id="创建login-path">创建login-path</h3>
+<p><strong><em>数据库中已有backup用户</em></strong></p>
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code><span class="o">[</span>root@ZTEST-218 ~]# mysql_config_editor <span class="nb">set</span> --login-path<span class="o">=</span>backup_db --user<span class="o">=</span>backup --password --host<span class="o">=</span>localhost --port<span class="o">=</span>3306
+Enter password:
+</code></pre>
+</div>
 
-<h3 id="into-outfile">INTO OUTFILE</h3>
-<p><code class="highlighter-rouge">bash
-mysql&gt;  SELECT xxx FROM t1 WHERE xx INTO OUTFILE '/tmp/t1.sql';
-</code>
-<strong><em>tips</em></strong>
-&gt; 适合按指定条件导出表。 
-&gt; 可以通过FIELDS TERMINATED BY ‘字符串’ 来指定字段之间的分隔符，可以为单个或多个字符。默认为’\t’。<br />
-&gt; 可以通过FIELDS ENCLOSED BY ‘字符’ 来指定括住字段的值，只能为单个字符。默认情况下不使用任何符号，即当表中值为 TEST 时，导出后为 字符TEST符。</p>
+<h3 id="查看login-path">查看login-path</h3>
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code><span class="o">[</span>root@ZTEST-218 ~]# mysql_config_editor print --all
+<span class="o">[</span>db_backup]
+user <span class="o">=</span> backup
+password <span class="o">=</span> <span class="k">*****</span>
+host <span class="o">=</span> localhost
+port <span class="o">=</span> 3306
+</code></pre>
+</div>
 
-<h2 id="section">根据以上导出方式，有两种快速导入方式：</h2>
-<blockquote>
-  <ul>
-    <li>SOURCE</li>
-    <li>LOAD DATA INFILE</li>
-  </ul>
-</blockquote>
+<h3 id="查看login-path存储路径及格式">查看login-path存储路径及格式</h3>
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code><span class="o">[</span>root@ZTEST-218 ~]# file ~/.mylogin.cnf
+/root/.mylogin.cnf: data
+</code></pre>
+</div>
 
-<h3 id="source">SOURCE</h3>
-<p><code class="highlighter-rouge">bash
-mysql&gt; use db_name; source /tmp/t1.sql;
-</code></p>
+<h3 id="删除login-path">删除login-path</h3>
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code><span class="o">[</span>root@ZTEST-218 ~]# mysql_config_editor remove --login-path<span class="o">=</span>backup_db
+<span class="o">[</span>root@ZTEST-218 ~]# mysql_config_editor print --all
+<span class="o">[</span>root@ZTEST-218 ~]# mysqldump --login-path<span class="o">=</span>backup_db <span class="nb">test</span> &gt; test.sql
+mysqldump: Got error: 1045: Access denied <span class="k">for </span>user <span class="s1">'root'</span>@<span class="s1">'localhost'</span> <span class="o">(</span>using password: NO<span class="o">)</span> when trying to connect
+</code></pre>
+</div>
 
-<h3 id="load-data-infile">LOAD DATA INFILE</h3>
-<p><code class="highlighter-rouge">bash
-mysql&gt; use db_name; LOAD DATA INFILE '/tmp/t1.sql' INTO TABLE t1;
-</code>
-<strong><em>tips</em></strong>
-&gt; 如果SELECT … INTO OUTFILE时有指定FIELDS TERMINATED等参数，这里也需要指定。</p>
+<p><strong><em>tips</em></strong>
+mysqldump在脚本中使用login-path备份，将不再提示Warning: Using a password on the command line interface can be insecure.</p>
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code><span class="o">[</span>root@ZTEST-218 ~]# mysqldump --login-path<span class="o">=</span>db_backup <span class="nb">test</span> &gt; test.sql
+<span class="o">[</span>root@ZTEST-218 ~]# ll test.sql
+-rw-r--r-- 1 root root 169259 Oct 28 14:11 test.sql
+</code></pre>
+</div>
 
-<p>对于其它方式导入大表数据，可根据表ENGINE类型加以下参数：
-### MyISAM
-<code class="highlighter-rouge">bash
-mysql&gt; ALTER TABLE t_name DISABLE KEYS;
-mysql&gt; LOADING THE DATA ALTER TABLE t_name ENABLE KEYS;
-</code>
-<strong><em>tips</em></strong>
-&gt; 这两个命令用来打开或者关闭Myisam表非唯一索引的更新。对于导入大量数据到一个空MyISAM表，默认就是先导入数据然后才创建索引的，故不用进行设置。</p>
-
-<h3 id="innodb">InnoDB</h3>
-<p><code class="highlighter-rouge">bash
-mysql&gt; SET UNIQUE_CHECKS=0;
-mysql&gt; SET AUTOCOMMIT=0;
-</code>
-<strong><em>tips</em></strong>
-&gt; 一个关闭唯一性校验，一个关闭自动提交。数据导完后，得改回来。</p>
-
+<h3 id="reference">reference</h3>
+<p>http://dev.mysql.com/doc/refman/5.6/en/mysql-config-editor.html</p>
 
 
   </section>
@@ -293,13 +280,13 @@ mysql&gt; SET AUTOCOMMIT=0;
        <ul class="pager">
         
         <li class="previous">
-            <a href="/2016/10/%E5%8A%A0%E5%AF%86%E8%84%9A%E6%9C%AC%E4%B8%ADMySQL%E7%94%A8%E6%88%B7%E5%AF%86%E7%A0%81/" data-toggle="tooltip" data-placement="top" title="加密脚本中MySQL用户密码">上一篇：  <span>加密脚本中MySQL用户密码</span>
+            <a href="/2016/10/my_first_blog/" data-toggle="tooltip" data-placement="top" title="My first blog for Jekyll~">上一篇：  <span>My first blog for Jekyll~</span>
             </a>
         </li>
         
         
         <li class="next">
-            <a href="/2016/12/MySQL%E7%89%88%E6%9C%AC%E5%8D%87%E7%BA%A7/" data-toggle="tooltip" data-placement="top" title="MySQL版本升级">下一篇：  <span>MySQL版本升级</span>
+            <a href="/2016/11/mysql_big_table_import_export/" data-toggle="tooltip" data-placement="top" title="MySQL大表快速导入导出">下一篇：  <span>MySQL大表快速导入导出</span>
             </a>
         </li>
         
@@ -308,22 +295,27 @@ mysql&gt; SET AUTOCOMMIT=0;
 
 <section class="post-comments">
 
-
-    <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
-    <script src="https://img1.cache.netease.com/f2e/tie/yun/sdk/loader.js"></script>
-    <script>
-    var cloudTieConfig = {
-      url: document.location.href, 
-      sourceId: "",
-      productKey: "aa395cf7778f458492060f3f53301b7c",
-      target: "cloud-tie-wrapper"
-    };
-    var yunManualLoad = true;
-    Tie.loader("aHR0cHM6Ly9hcGkuZ2VudGllLjE2My5jb20vcGMvbGl2ZXNjcmlwdC5odG1s", true);
-    </script>
-
-
   
+    <div id="disqus_thread"></div>
+    <script>
+    
+    var disqus_config = function () {
+        this.page.url = "http://0.0.0.0:4000/2016/10/mysql_password_encryption_in_script/";
+        this.page.identifier = "/2016/10/mysql_password_encryption_in_script/";
+    };
+    var disqus_shortname = 'Wowking';
+    
+    (function() { // DON'T EDIT BELOW THIS LINE
+        var d = document, s = d.createElement('script');
+        s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+        })();
+    </script>
+    <noscript>要查看<a href="http://disqus.com/?ref_noscript"> Disqus </a>评论，请启用 JavaScript</noscript>
+    
+  
+
 </section>
 
 

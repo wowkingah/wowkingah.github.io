@@ -24,8 +24,8 @@
   <link rel="stylesheet" href="/css/main.css">
   <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
 
-  <link rel="canonical" href="https://wowkingah.github.io/2017/05/coffee_and_life/">
-  <link rel="alternate" type="application/rss+xml" title="Wowking" href="https://wowkingah.github.io/feed.xml">
+  <link rel="canonical" href="http://0.0.0.0:4000/2017/05/coffee_and_life/">
+  <link rel="alternate" type="application/rss+xml" title="Wowking" href="http://0.0.0.0:4000/feed.xml">
   
   <meta name="google-site-verification" content="1-1ZlHoRvM0T2FqPbW2S-qLgYXN6rsn52kErlMPd_gw" />
 
@@ -262,22 +262,27 @@
 
 <section class="post-comments">
 
-
-    <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
-    <script src="https://img1.cache.netease.com/f2e/tie/yun/sdk/loader.js"></script>
-    <script>
-    var cloudTieConfig = {
-      url: document.location.href, 
-      sourceId: "",
-      productKey: "aa395cf7778f458492060f3f53301b7c",
-      target: "cloud-tie-wrapper"
-    };
-    var yunManualLoad = true;
-    Tie.loader("aHR0cHM6Ly9hcGkuZ2VudGllLjE2My5jb20vcGMvbGl2ZXNjcmlwdC5odG1s", true);
-    </script>
-
-
   
+    <div id="disqus_thread"></div>
+    <script>
+    
+    var disqus_config = function () {
+        this.page.url = "http://0.0.0.0:4000/2017/05/coffee_and_life/";
+        this.page.identifier = "/2017/05/coffee_and_life/";
+    };
+    var disqus_shortname = 'Wowking';
+    
+    (function() { // DON'T EDIT BELOW THIS LINE
+        var d = document, s = d.createElement('script');
+        s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+        })();
+    </script>
+    <noscript>要查看<a href="http://disqus.com/?ref_noscript"> Disqus </a>评论，请启用 JavaScript</noscript>
+    
+  
+
 </section>
 
 

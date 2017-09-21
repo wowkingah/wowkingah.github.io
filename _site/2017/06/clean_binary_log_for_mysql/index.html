@@ -7,16 +7,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
   <title>MySQL清理binary日志</title>
-  <meta name="description" content="简述当MySQL开启binary log（二进制日志）后，会产生大量日志文件，时间久了会占用不少磁盘空间。解决方案      自动清理：expire_logs_days    手动清理：PURGE    重置日志：RESET  自动清理自动清理可通过expire_logs_days参数来实现。* MySQL中动态...">
+  <meta name="description" content="简述当MySQL开启binary log（二进制日志）后，会产生大量日志文件，时间久了会占用不少磁盘空间。解决方案      自动清理：expire_logs_days    手动清理：PURGE    重置日志：RESET  自动清理自动清理可通过expire_logs_days参数来实现。  MySQL中动态...">
   <meta name="author" content="Wowking">
 
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="MySQL清理binary日志">
-  <meta name="twitter:description" content="简述当MySQL开启binary log（二进制日志）后，会产生大量日志文件，时间久了会占用不少磁盘空间。解决方案      自动清理：expire_logs_days    手动清理：PURGE    重置日志：RESET  自动清理自动清理可通过expire_logs_days参数来实现。* MySQL中动态...">
+  <meta name="twitter:description" content="简述当MySQL开启binary log（二进制日志）后，会产生大量日志文件，时间久了会占用不少磁盘空间。解决方案      自动清理：expire_logs_days    手动清理：PURGE    重置日志：RESET  自动清理自动清理可通过expire_logs_days参数来实现。  MySQL中动态...">
   
   <meta property="og:type" content="article">
   <meta property="og:title" content="MySQL清理binary日志">
-  <meta property="og:description" content="简述当MySQL开启binary log（二进制日志）后，会产生大量日志文件，时间久了会占用不少磁盘空间。解决方案      自动清理：expire_logs_days    手动清理：PURGE    重置日志：RESET  自动清理自动清理可通过expire_logs_days参数来实现。* MySQL中动态...">
+  <meta property="og:description" content="简述当MySQL开启binary log（二进制日志）后，会产生大量日志文件，时间久了会占用不少磁盘空间。解决方案      自动清理：expire_logs_days    手动清理：PURGE    重置日志：RESET  自动清理自动清理可通过expire_logs_days参数来实现。  MySQL中动态...">
   
   <link rel="icon" type="image/png" href="/images/favicon.png" />
   <link href="/images/favicon.png" rel="shortcut icon" type="image/png">
@@ -24,8 +24,8 @@
   <link rel="stylesheet" href="/css/main.css">
   <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
 
-  <link rel="canonical" href="https://wowkingah.github.io/2017/06/clean_binary_log_for_mysql/">
-  <link rel="alternate" type="application/rss+xml" title="Wowking" href="https://wowkingah.github.io/feed.xml">
+  <link rel="canonical" href="http://0.0.0.0:4000/2017/06/clean_binary_log_for_mysql/">
+  <link rel="alternate" type="application/rss+xml" title="Wowking" href="http://0.0.0.0:4000/feed.xml">
   
   <meta name="google-site-verification" content="1-1ZlHoRvM0T2FqPbW2S-qLgYXN6rsn52kErlMPd_gw" />
 
@@ -166,10 +166,10 @@
   </header>
 
   <section class="post">
-    <h3 id="section">简述</h3>
+    <h3 id="简述">简述</h3>
 <p>当MySQL开启binary log（二进制日志）后，会产生大量日志文件，时间久了会占用不少磁盘空间。</p>
 
-<h3 id="section-1">解决方案</h3>
+<h3 id="解决方案">解决方案</h3>
 <blockquote>
   <ol>
     <li>自动清理：expire_logs_days</li>
@@ -178,41 +178,41 @@
   </ol>
 </blockquote>
 
-<h4 id="section-2">自动清理</h4>
-<p>自动清理可通过expire_logs_days参数来实现。<br />
-* MySQL中动态修改<br />
-<code class="highlighter-rouge">shell
-mysql&gt; SHOW GLOBAL VARIABLES LIKE 'expire_logs_days';  
-mysql&gt; SET GLOBAL expire_logs_days =15;  
-</code></p>
-
+<h4 id="自动清理">自动清理</h4>
+<p>自动清理可通过expire_logs_days参数来实现。</p>
 <ul>
+  <li>MySQL中动态修改
+    <div class="language-shell highlighter-rouge"><pre class="highlight"><code><span class="gp">mysql&gt; </span>SHOW GLOBAL VARIABLES LIKE <span class="s1">'expire_logs_days'</span>;  
+<span class="gp">mysql&gt; </span>SET GLOBAL expire_logs_days <span class="o">=</span>15;  
+</code></pre>
+    </div>
+  </li>
   <li>写入my.cnf配置文件<br />
 <code class="highlighter-rouge">expire_logs_days =15</code></li>
 </ul>
 
-<h4 id="section-3">手动清理</h4>
-<p><strong>语法</strong><br />
-<code class="highlighter-rouge">shell
-PURGE {MASTER | BINARY} LOGS TO 'binary_log_name'   
-PURGE {MASTER | BINARY} LOGS BEFORE 'date'   
-</code>
-<em>tips: 删除二进制日志索引（index）中指定日志或日期之前的二进制日志。</em></p>
+<h4 id="手动清理">手动清理</h4>
+<p><strong>语法</strong></p>
+<div class="language-shell highlighter-rouge"><pre class="highlight"><code>PURGE <span class="o">{</span>MASTER | BINARY<span class="o">}</span> LOGS TO <span class="s1">'binary_log_name'</span>   
+PURGE <span class="o">{</span>MASTER | BINARY<span class="o">}</span> LOGS BEFORE <span class="s1">'date'</span>   
+</code></pre>
+</div>
+<p><em>tips: 删除二进制日志索引（index）中指定日志或日期之前的二进制日志。</em></p>
 
-<p><strong>实例</strong><br />
-<code class="highlighter-rouge">shell
-mysql&gt; SHOW MASTER LOGS;  
-# 15天前  
-mysql&gt; PURGE MASTER LOGS BEFORE DATE_SUB(CURRENT_DATE, INTERVAL 15 DAY);  
-#删除日志文件到mysql-bin.000152  
-mysql&gt; PURGE MASTER LOGS TO 'mysql-bin.000152';   
-</code></p>
+<p><strong>实例</strong></p>
+<div class="language-shell highlighter-rouge"><pre class="highlight"><code><span class="gp">mysql&gt; </span>SHOW MASTER LOGS;  
+<span class="c"># 15天前  </span>
+<span class="gp">mysql&gt; </span>PURGE MASTER LOGS BEFORE DATE_SUB<span class="o">(</span>CURRENT_DATE, INTERVAL 15 DAY<span class="o">)</span>;  
+<span class="c">#删除日志文件到mysql-bin.000152  </span>
+<span class="gp">mysql&gt; </span>PURGE MASTER LOGS TO <span class="s1">'mysql-bin.000152'</span>;   
+</code></pre>
+</div>
 
-<h4 id="section-4">重置日志</h4>
-<p>高危命令，会清理所有要清理的日志，一般不常用。<br />
-<code class="highlighter-rouge">shell
-mysql&gt; RESET MASTER;  
-</code></p>
+<h4 id="重置日志">重置日志</h4>
+<p>高危命令，会清理所有要清理的日志，一般不常用。</p>
+<div class="language-shell highlighter-rouge"><pre class="highlight"><code><span class="gp">mysql&gt; </span>RESET MASTER;  
+</code></pre>
+</div>
 
 
 
@@ -298,22 +298,27 @@ mysql&gt; RESET MASTER;
 
 <section class="post-comments">
 
-
-    <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
-    <script src="https://img1.cache.netease.com/f2e/tie/yun/sdk/loader.js"></script>
-    <script>
-    var cloudTieConfig = {
-      url: document.location.href, 
-      sourceId: "",
-      productKey: "aa395cf7778f458492060f3f53301b7c",
-      target: "cloud-tie-wrapper"
-    };
-    var yunManualLoad = true;
-    Tie.loader("aHR0cHM6Ly9hcGkuZ2VudGllLjE2My5jb20vcGMvbGl2ZXNjcmlwdC5odG1s", true);
-    </script>
-
-
   
+    <div id="disqus_thread"></div>
+    <script>
+    
+    var disqus_config = function () {
+        this.page.url = "http://0.0.0.0:4000/2017/06/clean_binary_log_for_mysql/";
+        this.page.identifier = "/2017/06/clean_binary_log_for_mysql/";
+    };
+    var disqus_shortname = 'Wowking';
+    
+    (function() { // DON'T EDIT BELOW THIS LINE
+        var d = document, s = d.createElement('script');
+        s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+        })();
+    </script>
+    <noscript>要查看<a href="http://disqus.com/?ref_noscript"> Disqus </a>评论，请启用 JavaScript</noscript>
+    
+  
+
 </section>
 
 

@@ -24,8 +24,8 @@
   <link rel="stylesheet" href="/css/main.css">
   <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
 
-  <link rel="canonical" href="https://wowkingah.github.io/">
-  <link rel="alternate" type="application/rss+xml" title="Wowking" href="https://wowkingah.github.io/feed.xml">
+  <link rel="canonical" href="http://0.0.0.0:4000/">
+  <link rel="alternate" type="application/rss+xml" title="Wowking" href="http://0.0.0.0:4000/feed.xml">
   
   <meta name="google-site-verification" content="1-1ZlHoRvM0T2FqPbW2S-qLgYXN6rsn52kErlMPd_gw" />
 
@@ -158,8 +158,29 @@
   <ol class="post-list">
     
     <li>
+      <h2 class="post-list__post-title post-title"><a href="/2017/09/mysql_server_has_gone_away/" title="访问 MySQL server has gone away">MySQL server has gone away</a></h2>
+      <p class="excerpt">简述比较常见的一个报错日志：ERROR 2006 (HY000): MySQL server has gone away原因原因一：MySQL 服务宕了排查方法：1.1 查看MySQL运行时长mysql&gt; show global status like 'uptime';  +---------------+-------+  | Variable_name | Value |  +---------------+-------+  | Uptime        | 138   |...&hellip;</p>
+      <div class="post-list__meta">        
+        <time datetime="2017-09-21 00:00:00 +0800" class="post-list__meta--date date">
+          <img src="/images/calendar.png" width="20px" /> 
+          2017-09-21</time> 
+        <div class = "tag-img-icon">
+          <img src="/images/tag-icon.svg" width="20px" /> 
+        </div>
+        <a href="/tags">
+          <div class = "post-list-icon-mate">
+            <span class="post-list__meta--tags-right">MySQL</span>
+          </div>
+          <div class = "post-list-small-mate">
+          <a class="btn-border-small" href=/2017/09/mysql_server_has_gone_away/>阅读全文 » </a>
+          </div>
+      </div>
+      <hr class="post-list__divider" />
+    </li>
+    
+    <li>
       <h2 class="post-list__post-title post-title"><a href="/2017/09/oracle_maximum_number_of_processes/" title="访问 Oracle 超过最大进程数">Oracle 超过最大进程数</a></h2>
-      <p class="excerpt">简述Oracle超过最大进程数。报错#### a.客户端连接报错 ORA-12519: TNS:no appropriate service handler foundb.命令行连接报错shellSQL&gt; conn /as sysdba;  ERROR:  ORA-00020: maximum number of processes (150) exceeded  解决方案  1.重启或停止问题客户端（如问题Tomcat/Nginx），释放几个空闲连接；2.查看当前进程数；```sh...&hellip;</p>
+      <p class="excerpt">简述Oracle超过最大进程数。报错a.客户端连接报错ORA-12519: TNS:no appropriate service handler foundb.命令行连接报错SQL&gt; conn /as sysdba;  ERROR:  ORA-00020: maximum number of processes (150) exceeded  解决方案  1.重启或停止问题客户端（如问题Tomcat/Nginx），释放几个空闲连接；2.查看当前进程数；  SQL&gt; select...&hellip;</p>
       <div class="post-list__meta">        
         <time datetime="2017-09-01 00:00:00 +0800" class="post-list__meta--date date">
           <img src="/images/calendar.png" width="20px" /> 
@@ -180,7 +201,7 @@
     
     <li>
       <h2 class="post-list__post-title post-title"><a href="/2017/08/mysql_insert_condition/" title="访问 MySQL INSERT条件判断">MySQL INSERT条件判断</a></h2>
-      <p class="excerpt">简述INSERT条件判断：如果不存在则插入。REPLACE判断：如果存在则替换。对于普通的 INSERT 插入，如果想要保证不插入重复记录，可以通过唯一索引实现。那有没有不创建唯一索引，仅通过 INSERT 一条语句实现的方案呢？ INSERT INTO IF EXISTS就来了。语法sqlINSERT INTO t_name(c1, c2, cn) SELECT 'v1', 'v2', 'vn' FROM DUAL WHERE NOT EXISTS(SELECT c1 FROM t_na...&hellip;</p>
+      <p class="excerpt">简述INSERT条件判断：如果不存在则插入。REPLACE判断：如果存在则替换。对于普通的 INSERT 插入，如果想要保证不插入重复记录，可以通过唯一索引实现。那有没有不创建唯一索引，仅通过 INSERT 一条语句实现的方案呢？ INSERT INTO IF EXISTS就来了。语法INSERT INTO t_name(c1, c2, cn) SELECT 'v1', 'v2', 'vn' FROM DUAL WHERE NOT EXISTS(SELECT c1 FROM t_name ...&hellip;</p>
       <div class="post-list__meta">        
         <time datetime="2017-08-08 00:00:00 +0800" class="post-list__meta--date date">
           <img src="/images/calendar.png" width="20px" /> 
@@ -222,7 +243,7 @@
     
     <li>
       <h2 class="post-list__post-title post-title"><a href="/2017/06/clean_binary_log_for_mysql/" title="访问 MySQL清理binary日志">MySQL清理binary日志</a></h2>
-      <p class="excerpt">简述当MySQL开启binary log（二进制日志）后，会产生大量日志文件，时间久了会占用不少磁盘空间。解决方案      自动清理：expire_logs_days    手动清理：PURGE    重置日志：RESET  自动清理自动清理可通过expire_logs_days参数来实现。* MySQL中动态修改shellmysql&gt; SHOW GLOBAL VARIABLES LIKE 'expire_logs_days';  mysql&gt; SET GLOBAL expi...&hellip;</p>
+      <p class="excerpt">简述当MySQL开启binary log（二进制日志）后，会产生大量日志文件，时间久了会占用不少磁盘空间。解决方案      自动清理：expire_logs_days    手动清理：PURGE    重置日志：RESET  自动清理自动清理可通过expire_logs_days参数来实现。  MySQL中动态修改    mysql&gt; SHOW GLOBAL VARIABLES LIKE 'expire_logs_days';  mysql&gt; SET GLOBAL expir...&hellip;</p>
       <div class="post-list__meta">        
         <time datetime="2017-06-27 00:00:00 +0800" class="post-list__meta--date date">
           <img src="/images/calendar.png" width="20px" /> 
@@ -232,7 +253,7 @@
         </div>
         <a href="/tags">
           <div class = "post-list-icon-mate">
-            <span class="post-list__meta--tags-right">MySQLbinary</span>
+            <span class="post-list__meta--tags-right">MySQL</span>
           </div>
           <div class = "post-list-small-mate">
           <a class="btn-border-small" href=/2017/06/clean_binary_log_for_mysql/>阅读全文 » </a>
@@ -243,7 +264,7 @@
     
     <li>
       <h2 class="post-list__post-title post-title"><a href="/2017/06/mysql_emoji/" title="访问 MySQL支持Emoji表情">MySQL支持Emoji表情</a></h2>
-      <p class="excerpt">简述MySQL 5.5.3开始通过修改字符集来支持Emoji表情。查看当前字符集shellmysql&gt; SHOW VARIABLES WHERE Variable_name LIKE 'character\_set\_%' OR Variable_name LIKE 'collation%';+--------------------------+-----------------+| Variable_name            | Value           |+----...&hellip;</p>
+      <p class="excerpt">简述MySQL 5.5.3开始通过修改字符集来支持Emoji表情。查看当前字符集mysql&gt; SHOW VARIABLES WHERE Variable_name LIKE 'character\_set\_%' OR Variable_name LIKE 'collation%';+--------------------------+-----------------+| Variable_name            | Value           |+---------...&hellip;</p>
       <div class="post-list__meta">        
         <time datetime="2017-06-14 00:00:00 +0800" class="post-list__meta--date date">
           <img src="/images/calendar.png" width="20px" /> 
@@ -274,7 +295,7 @@
         </div>
         <a href="/tags">
           <div class = "post-list-icon-mate">
-            <span class="post-list__meta--tags-right">coffeelife</span>
+            <span class="post-list__meta--tags-right">CoffeeLife</span>
           </div>
           <div class = "post-list-small-mate">
           <a class="btn-border-small" href=/2017/05/coffee_and_life/>阅读全文 » </a>
@@ -285,7 +306,7 @@
     
     <li>
       <h2 class="post-list__post-title post-title"><a href="/2017/05/install_macos_for_vmware/" title="访问 VMWare安装macOS Sierra 10.12.4">VMWare安装macOS Sierra 10.12.4</a></h2>
-      <p class="excerpt">简述突然之间又想倒腾一把MacOS，懒得找驱动，于是就在VMWare下开工，听闻10.12.4发布了~_~准备软件#### securable检测宿主机CPU是否支持虚拟化。securable官网unlockerVMWare 默认不支持安装 macOS 虚拟机，可通过 unlocker 来解锁。送你去百度云密码：r9frVMWareVMware Workstation 12.5 Player 是VMWare Workstation的精简版，重要的是个人免费。VMware官网MacOS网上清...&hellip;</p>
+      <p class="excerpt">简述突然之间又想倒腾一把MacOS，懒得找驱动，于是就在VMWare下开工，听闻10.12.4发布了~_~准备软件securable检测宿主机CPU是否支持虚拟化。securable官网unlockerVMWare 默认不支持安装 macOS 虚拟机，可通过 unlocker 来解锁。送你去百度云密码：r9frVMWareVMware Workstation 12.5 Player 是VMWare Workstation的精简版，重要的是个人免费。VMware官网MacOS网上清一色都是用...&hellip;</p>
       <div class="post-list__meta">        
         <time datetime="2017-05-05 00:00:00 +0800" class="post-list__meta--date date">
           <img src="/images/calendar.png" width="20px" /> 
@@ -306,7 +327,7 @@
     
     <li>
       <h2 class="post-list__post-title post-title"><a href="/2017/04/redis_cluster_install/" title="访问 Redis Cluster安装部署">Redis Cluster安装部署</a></h2>
-      <p class="excerpt">简述从Redis 3.x开始，一直单机的Redis终于步入Cluster大时代。Redis从一个单纯的NoSQL内存数据库变成了分布式NoSQL数据库，CAP模型也从CP变成了AP。架构#### 架构图架构细节      所有 redis 结点彼此互联（PING-PONG 机制），内部使用二进制协议优化传输速度和带宽（客户端与结点之间的通信还是正常的ascii协议）；    结点的 fail 是通过集群中超过半数的结点检测失效时才生效；    客户端与 redis 结点直连，不需要中间 p...&hellip;</p>
+      <p class="excerpt">简述从Redis 3.x开始，一直单机的Redis终于步入Cluster大时代。Redis从一个单纯的NoSQL内存数据库变成了分布式NoSQL数据库，CAP模型也从CP变成了AP。架构架构图架构细节      所有 redis 结点彼此互联（PING-PONG 机制），内部使用二进制协议优化传输速度和带宽（客户端与结点之间的通信还是正常的ascii协议）；    结点的 fail 是通过集群中超过半数的结点检测失效时才生效；    客户端与 redis 结点直连，不需要中间 proxy ...&hellip;</p>
       <div class="post-list__meta">        
         <time datetime="2017-04-25 00:00:00 +0800" class="post-list__meta--date date">
           <img src="/images/calendar.png" width="20px" /> 
@@ -337,31 +358,10 @@
         </div>
         <a href="/tags">
           <div class = "post-list-icon-mate">
-            <span class="post-list__meta--tags-right">markdown</span>
+            <span class="post-list__meta--tags-right">Markdown</span>
           </div>
           <div class = "post-list-small-mate">
           <a class="btn-border-small" href=/2017/04/markdown_syntax/>阅读全文 » </a>
-          </div>
-      </div>
-      <hr class="post-list__divider" />
-    </li>
-    
-    <li>
-      <h2 class="post-list__post-title post-title"><a href="/2017/04/sublime%E7%BC%96%E8%BE%91markdown%E6%96%87%E6%9C%AC/" title="访问 Sublime Text3编辑markdown文本">Sublime Text3编辑markdown文本</a></h2>
-      <p class="excerpt">之前一直使用notepad++写SHELL、SQL，有一天想玩玩markdown的时候，觉得不是那么方便。于是，就有了sublime的出现。使用sublime编写markdown需要：&gt; 1. 安装sublime&gt; 2. 安装markdown相关插件» * Package Control：用于管理插件» * MarkdownEditing：编辑markdown» * Markdown Preview：预览markdown安装sublimeSublime 官网下载并安装(http...&hellip;</p>
-      <div class="post-list__meta">        
-        <time datetime="2017-04-22 00:00:00 +0800" class="post-list__meta--date date">
-          <img src="/images/calendar.png" width="20px" /> 
-          2017-04-22</time> 
-        <div class = "tag-img-icon">
-          <img src="/images/tag-icon.svg" width="20px" /> 
-        </div>
-        <a href="/tags">
-          <div class = "post-list-icon-mate">
-            <span class="post-list__meta--tags-right">toolssublimemarkdown</span>
-          </div>
-          <div class = "post-list-small-mate">
-          <a class="btn-border-small" href=/2017/04/sublime%E7%BC%96%E8%BE%91markdown%E6%96%87%E6%9C%AC/>阅读全文 » </a>
           </div>
       </div>
       <hr class="post-list__divider" />
@@ -379,7 +379,7 @@
         </div>
         <a href="/tags">
           <div class = "post-list-icon-mate">
-            <span class="post-list__meta--tags-right">toolssublime</span>
+            <span class="post-list__meta--tags-right">ToolsSublime</span>
           </div>
           <div class = "post-list-small-mate">
           <a class="btn-border-small" href=/2017/04/sublime_text3_3126_licenses/>阅读全文 » </a>
@@ -389,7 +389,28 @@
     </li>
     
     <li>
-      <h2 class="post-list__post-title post-title"><a href="/2017/04/git%E6%9B%B4%E6%96%B0fork%E7%9A%84repository/" title="访问 git更新fork的repository">git更新fork的repository</a></h2>
+      <h2 class="post-list__post-title post-title"><a href="/2017/04/sublime_for_markdown/" title="访问 Sublime Text3编辑markdown文本">Sublime Text3编辑markdown文本</a></h2>
+      <p class="excerpt">之前一直使用notepad++写SHELL、SQL，有一天想玩玩markdown的时候，觉得不是那么方便。于是，就有了sublime的出现。使用sublime编写markdown需要：      安装sublime    安装markdown相关插件                        Package Control：用于管理插件          MarkdownEditing：编辑markdown          Markdown Preview：预览markdown   ...&hellip;</p>
+      <div class="post-list__meta">        
+        <time datetime="2017-04-22 00:00:00 +0800" class="post-list__meta--date date">
+          <img src="/images/calendar.png" width="20px" /> 
+          2017-04-22</time> 
+        <div class = "tag-img-icon">
+          <img src="/images/tag-icon.svg" width="20px" /> 
+        </div>
+        <a href="/tags">
+          <div class = "post-list-icon-mate">
+            <span class="post-list__meta--tags-right">ToolsSublimeMarkdown</span>
+          </div>
+          <div class = "post-list-small-mate">
+          <a class="btn-border-small" href=/2017/04/sublime_for_markdown/>阅读全文 » </a>
+          </div>
+      </div>
+      <hr class="post-list__divider" />
+    </li>
+    
+    <li>
+      <h2 class="post-list__post-title post-title"><a href="/2017/04/git_fork_repository/" title="访问 git更新fork的repository">git更新fork的repository</a></h2>
       <p class="excerpt">Fork一个别人的repository，做了一些改动，想提交pull request的时候，发现原先别人的repository已经又有了一些更新了，这个时候想使得自己fork出的repository也得到这些更新，即和原repository同步，该怎么做呢？这个问题应该被问烂了，stackoverflow上也有解答，基本上是指向的GitHub上的官方文档。最主要的是这2篇：https://help.github.com/articles/configuring-a-remote-for-a...&hellip;</p>
       <div class="post-list__meta">        
         <time datetime="2017-04-22 00:00:00 +0800" class="post-list__meta--date date">
@@ -400,18 +421,18 @@
         </div>
         <a href="/tags">
           <div class = "post-list-icon-mate">
-            <span class="post-list__meta--tags-right">git</span>
+            <span class="post-list__meta--tags-right">Git</span>
           </div>
           <div class = "post-list-small-mate">
-          <a class="btn-border-small" href=/2017/04/git%E6%9B%B4%E6%96%B0fork%E7%9A%84repository/>阅读全文 » </a>
+          <a class="btn-border-small" href=/2017/04/git_fork_repository/>阅读全文 » </a>
           </div>
       </div>
       <hr class="post-list__divider" />
     </li>
     
     <li>
-      <h2 class="post-list__post-title post-title"><a href="/2017/01/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%A4%A7%E5%B0%8F%E5%86%99%E6%95%8F%E6%84%9F%E9%97%AE%E9%A2%98/" title="访问 数据库大小写敏感问题">数据库大小写敏感问题</a></h2>
-      <p class="excerpt">Oracle默认大小写不敏感，表名、字段名等不区分大小写。小写字母会自动转换为大写字母，需要用小写字母时需要使用双引号，或借助函数upper()和lower()。SQLServer默认大小写不敏感。可以通过修改排序规则改变：右击数据库 -&gt; 属性 -&gt; 选项 -&gt; 排序规则：Chinese_PRC_CS_AS（区分大小写）、Chinese_PRC_CI_AS（不区分大小写）。MySQL#### Windows都不区分大小写。Linux数据库名、表名、列名、别名大小写规则如...&hellip;</p>
+      <h2 class="post-list__post-title post-title"><a href="/2017/01/database_case_sensitive/" title="访问 数据库大小写敏感问题">数据库大小写敏感问题</a></h2>
+      <p class="excerpt">Oracle默认大小写不敏感，表名、字段名等不区分大小写。小写字母会自动转换为大写字母，需要用小写字母时需要使用双引号，或借助函数upper()和lower()。SQLServer默认大小写不敏感。可以通过修改排序规则改变：右击数据库 -&gt; 属性 -&gt; 选项 -&gt; 排序规则：Chinese_PRC_CS_AS（区分大小写）、Chinese_PRC_CI_AS（不区分大小写）。MySQLWindows都不区分大小写。Linux数据库名、表名、列名、别名大小写规则如下：   ...&hellip;</p>
       <div class="post-list__meta">        
         <time datetime="2017-01-23 14:08:05 +0800" class="post-list__meta--date date">
           <img src="/images/calendar.png" width="20px" /> 
@@ -421,17 +442,17 @@
         </div>
         <a href="/tags">
           <div class = "post-list-icon-mate">
-            <span class="post-list__meta--tags-right">databasesmysqloraclemssql</span>
+            <span class="post-list__meta--tags-right">DatabasesMySQLOracleMSSQL</span>
           </div>
           <div class = "post-list-small-mate">
-          <a class="btn-border-small" href=/2017/01/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%A4%A7%E5%B0%8F%E5%86%99%E6%95%8F%E6%84%9F%E9%97%AE%E9%A2%98/>阅读全文 » </a>
+          <a class="btn-border-small" href=/2017/01/database_case_sensitive/>阅读全文 » </a>
           </div>
       </div>
       <hr class="post-list__divider" />
     </li>
     
     <li>
-      <h2 class="post-list__post-title post-title"><a href="/2016/12/linux%E4%B8%8B%E4%BD%BF%E7%94%A8github/" title="访问 Linux下使用github">Linux下使用github</a></h2>
+      <h2 class="post-list__post-title post-title"><a href="/2016/12/github_for_linux/" title="访问 Linux下使用github">Linux下使用github</a></h2>
       <p class="excerpt">1. GITHUB环境准备1.1 申请GITHUB账号：https://github.com/1.2 生成KEY[wowking@ZTEST-218 git]$ ssh-keygen -t rsa -C "wowkingah@gmail.com"Generating public/private rsa key pair.Enter file in which to save the key (/home/wowking/.ssh/id_rsa):Enter passphrase (emp...&hellip;</p>
       <div class="post-list__meta">        
         <time datetime="2016-12-27 00:00:00 +0800" class="post-list__meta--date date">
@@ -442,18 +463,18 @@
         </div>
         <a href="/tags">
           <div class = "post-list-icon-mate">
-            <span class="post-list__meta--tags-right">git</span>
+            <span class="post-list__meta--tags-right">Git</span>
           </div>
           <div class = "post-list-small-mate">
-          <a class="btn-border-small" href=/2016/12/linux%E4%B8%8B%E4%BD%BF%E7%94%A8github/>阅读全文 » </a>
+          <a class="btn-border-small" href=/2016/12/github_for_linux/>阅读全文 » </a>
           </div>
       </div>
       <hr class="post-list__divider" />
     </li>
     
     <li>
-      <h2 class="post-list__post-title post-title"><a href="/2016/12/shell%E5%AE%9E%E7%8E%B0%E5%A4%9A%E7%BA%BF%E7%A8%8B%E5%B9%B6%E5%8F%91/" title="访问 SHELL实现多线程并发">SHELL实现多线程并发</a></h2>
-      <p class="excerpt">SHELL本身是按顺序执行，并没有并发概念，但可以通过几种常见方式来模拟实现多线程并发。原始脚本```bash[root@ZTEST-218 ~]# cat task.sh#!/bin/bashSTART_TIME=date +%sfor ((I=1;I&lt;=10;I++))   #模拟10个任务do    echo “${I}: success” ; sleep 2doneSTOP_TIME=date +%secho “TIME: $(expr ${STOP_TIME} - ${ST...&hellip;</p>
+      <h2 class="post-list__post-title post-title"><a href="/2016/12/shell_concurrence/" title="访问 SHELL实现多线程并发">SHELL实现多线程并发</a></h2>
+      <p class="excerpt">SHELL本身是按顺序执行，并没有并发概念，但可以通过几种常见方式来模拟实现多线程并发。原始脚本[root@ZTEST-218 ~]# cat task.sh#!/bin/bashSTART_TIME=`date +%s`for ((I=1;I&lt;=10;I++))   #模拟10个任务do    echo "${I}: success" ; sleep 2doneSTOP_TIME=`date +%s`echo "TIME: $(expr ${STOP_TIME} - ${START...&hellip;</p>
       <div class="post-list__meta">        
         <time datetime="2016-12-07 00:00:00 +0800" class="post-list__meta--date date">
           <img src="/images/calendar.png" width="20px" /> 
@@ -463,18 +484,18 @@
         </div>
         <a href="/tags">
           <div class = "post-list-icon-mate">
-            <span class="post-list__meta--tags-right">SHELL</span>
+            <span class="post-list__meta--tags-right">Shell</span>
           </div>
           <div class = "post-list-small-mate">
-          <a class="btn-border-small" href=/2016/12/shell%E5%AE%9E%E7%8E%B0%E5%A4%9A%E7%BA%BF%E7%A8%8B%E5%B9%B6%E5%8F%91/>阅读全文 » </a>
+          <a class="btn-border-small" href=/2016/12/shell_concurrence/>阅读全文 » </a>
           </div>
       </div>
       <hr class="post-list__divider" />
     </li>
     
     <li>
-      <h2 class="post-list__post-title post-title"><a href="/2016/12/MySQL%E7%89%88%E6%9C%AC%E5%8D%87%E7%BA%A7/" title="访问 MySQL版本升级">MySQL版本升级</a></h2>
-      <p class="excerpt">小版本升级从MySQL 5.6.1升级到MySQL5.6.x，升级未跨越5.6.x称为小版本升级。YUM升级      不可少的备份；    查看YUM可升级的目标版本：bash  [root@ZTEST-206 ~]# yum list mysql-community-server Installed Packages mysql-community-server.x86_64 5.6.28-2.el6 @mysql56-community Available Packages mysq...&hellip;</p>
+      <h2 class="post-list__post-title post-title"><a href="/2016/12/mysql_update/" title="访问 MySQL版本升级">MySQL版本升级</a></h2>
+      <p class="excerpt">小版本升级从MySQL 5.6.1升级到MySQL5.6.x，升级未跨越5.6.x称为小版本升级。YUM升级      不可少的备份；    查看YUM可升级的目标版本：       [root@ZTEST-206 ~]# yum list mysql-community-server Installed Packages mysql-community-server.x86_64 5.6.28-2.el6 @mysql56-community Available Packages mys...&hellip;</p>
       <div class="post-list__meta">        
         <time datetime="2016-12-06 00:00:00 +0800" class="post-list__meta--date date">
           <img src="/images/calendar.png" width="20px" /> 
@@ -487,15 +508,15 @@
             <span class="post-list__meta--tags-right">MySQL</span>
           </div>
           <div class = "post-list-small-mate">
-          <a class="btn-border-small" href=/2016/12/MySQL%E7%89%88%E6%9C%AC%E5%8D%87%E7%BA%A7/>阅读全文 » </a>
+          <a class="btn-border-small" href=/2016/12/mysql_update/>阅读全文 » </a>
           </div>
       </div>
       <hr class="post-list__divider" />
     </li>
     
     <li>
-      <h2 class="post-list__post-title post-title"><a href="/2016/11/MySQL%E5%A4%A7%E8%A1%A8%E5%BF%AB%E9%80%9F%E5%AF%BC%E5%85%A5%E5%AF%BC%E5%87%BA/" title="访问 MySQL大表快速导入导出">MySQL大表快速导入导出</a></h2>
-      <p class="excerpt">MySQL大表快速导出常用两种方式：&gt; * mysqldump&gt; * INTO OUTFILEmysqldumpbash[root@db_node01 ~]# mysqldump --opt -uxxx -pxxx test t1 &gt; /tmp/t1.sqltips&gt; 适合整库或整表导出。&gt; –opt：默认包含–add-drop-table –add-locks –create-options –disable-keys –extended-insert –l...&hellip;</p>
+      <h2 class="post-list__post-title post-title"><a href="/2016/11/mysql_big_table_import_export/" title="访问 MySQL大表快速导入导出">MySQL大表快速导入导出</a></h2>
+      <p class="excerpt">MySQL大表快速导出常用两种方式：      mysqldump    INTO OUTFILE  mysqldump[root@db_node01 ~]# mysqldump --opt -uxxx -pxxx test t1 &gt; /tmp/t1.sqltips  适合整库或整表导出。–opt：默认包含–add-drop-table –add-locks –create-options –disable-keys –extended-insert –lock-tables –qu...&hellip;</p>
       <div class="post-list__meta">        
         <time datetime="2016-11-30 00:00:00 +0800" class="post-list__meta--date date">
           <img src="/images/calendar.png" width="20px" /> 
@@ -508,15 +529,15 @@
             <span class="post-list__meta--tags-right">MySQL</span>
           </div>
           <div class = "post-list-small-mate">
-          <a class="btn-border-small" href=/2016/11/MySQL%E5%A4%A7%E8%A1%A8%E5%BF%AB%E9%80%9F%E5%AF%BC%E5%85%A5%E5%AF%BC%E5%87%BA/>阅读全文 » </a>
+          <a class="btn-border-small" href=/2016/11/mysql_big_table_import_export/>阅读全文 » </a>
           </div>
       </div>
       <hr class="post-list__divider" />
     </li>
     
     <li>
-      <h2 class="post-list__post-title post-title"><a href="/2016/10/%E5%8A%A0%E5%AF%86%E8%84%9A%E6%9C%AC%E4%B8%ADMySQL%E7%94%A8%E6%88%B7%E5%AF%86%E7%A0%81/" title="访问 加密脚本中MySQL用户密码">加密脚本中MySQL用户密码</a></h2>
-      <p class="excerpt">MySQL 5.6.6开始支持mysql_config_editor小工具。该工具将创建一个login-path，用于存储数据库的身份认证信息（仅仅只是存储数据库的用户密码等信息，实际的用户密码还是数据库创建）。  当脚本等一些地方需连接数据库时，可避免暴露用户明文密码，以增强数据库安全。语法### 创建login-path数据库中已有backup用户bash[root@ZTEST-218 ~]# mysql_config_editor set --login-path=backup_db...&hellip;</p>
+      <h2 class="post-list__post-title post-title"><a href="/2016/10/mysql_password_encryption_in_script/" title="访问 加密脚本中MySQL用户密码">加密脚本中MySQL用户密码</a></h2>
+      <p class="excerpt">MySQL 5.6.6开始支持mysql_config_editor小工具。该工具将创建一个login-path，用于存储数据库的身份认证信息（仅仅只是存储数据库的用户密码等信息，实际的用户密码还是数据库创建）。  当脚本等一些地方需连接数据库时，可避免暴露用户明文密码，以增强数据库安全。语法创建login-path数据库中已有backup用户[root@ZTEST-218 ~]# mysql_config_editor set --login-path=backup_db --user=...&hellip;</p>
       <div class="post-list__meta">        
         <time datetime="2016-10-28 00:00:00 +0800" class="post-list__meta--date date">
           <img src="/images/calendar.png" width="20px" /> 
@@ -529,7 +550,7 @@
             <span class="post-list__meta--tags-right">MySQL</span>
           </div>
           <div class = "post-list-small-mate">
-          <a class="btn-border-small" href=/2016/10/%E5%8A%A0%E5%AF%86%E8%84%9A%E6%9C%AC%E4%B8%ADMySQL%E7%94%A8%E6%88%B7%E5%AF%86%E7%A0%81/>阅读全文 » </a>
+          <a class="btn-border-small" href=/2016/10/mysql_password_encryption_in_script/>阅读全文 » </a>
           </div>
       </div>
       <hr class="post-list__divider" />
@@ -537,7 +558,7 @@
     
     <li>
       <h2 class="post-list__post-title post-title"><a href="/2016/10/my_first_blog/" title="访问 My first blog for Jekyll~">My first blog for Jekyll~</a></h2>
-      <p class="excerpt">Welcome ~##    This is my first blog for Jekyll.简单记录Jekyll安装步骤。Ruby```bash[root@db_node01 srv]# yum -y install gcc[root@db_node01 srv]# curl -L get.rvm.io| bash -s stable[root@db_node01 srv]# source /etc/profile[root@db_node01 srv]# gem sources –r...&hellip;</p>
+      <p class="excerpt">Welcome ~This is my first blog for Jekyll.简单记录Jekyll安装步骤。Ruby[root@db_node01 srv]# yum -y install gcc[root@db_node01 srv]# curl -L get.rvm.io| bash -s stable[root@db_node01 srv]# source /etc/profile[root@db_node01 srv]# gem sources --remove https:...&hellip;</p>
       <div class="post-list__meta">        
         <time datetime="2016-10-26 00:00:00 +0800" class="post-list__meta--date date">
           <img src="/images/calendar.png" width="20px" /> 
@@ -547,7 +568,7 @@
         </div>
         <a href="/tags">
           <div class = "post-list-icon-mate">
-            <span class="post-list__meta--tags-right">personal</span>
+            <span class="post-list__meta--tags-right">Personal</span>
           </div>
           <div class = "post-list-small-mate">
           <a class="btn-border-small" href=/2016/10/my_first_blog/>阅读全文 » </a>

@@ -7,16 +7,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
   <title>Redis Cluster安装部署</title>
-  <meta name="description" content="简述从Redis 3.x开始，一直单机的Redis终于步入Cluster大时代。Redis从一个单纯的NoSQL内存数据库变成了分布式NoSQL数据库，CAP模型也从CP变成了AP。架构#### 架构图架构细节      所有 redis 结点彼此互联（PING-PONG 机制），内部使用二进制协议优化传输速度和...">
+  <meta name="description" content="简述从Redis 3.x开始，一直单机的Redis终于步入Cluster大时代。Redis从一个单纯的NoSQL内存数据库变成了分布式NoSQL数据库，CAP模型也从CP变成了AP。架构架构图架构细节      所有 redis 结点彼此互联（PING-PONG 机制），内部使用二进制协议优化传输速度和带宽（客户...">
   <meta name="author" content="Wowking">
 
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="Redis Cluster安装部署">
-  <meta name="twitter:description" content="简述从Redis 3.x开始，一直单机的Redis终于步入Cluster大时代。Redis从一个单纯的NoSQL内存数据库变成了分布式NoSQL数据库，CAP模型也从CP变成了AP。架构#### 架构图架构细节      所有 redis 结点彼此互联（PING-PONG 机制），内部使用二进制协议优化传输速度和...">
+  <meta name="twitter:description" content="简述从Redis 3.x开始，一直单机的Redis终于步入Cluster大时代。Redis从一个单纯的NoSQL内存数据库变成了分布式NoSQL数据库，CAP模型也从CP变成了AP。架构架构图架构细节      所有 redis 结点彼此互联（PING-PONG 机制），内部使用二进制协议优化传输速度和带宽（客户...">
   
   <meta property="og:type" content="article">
   <meta property="og:title" content="Redis Cluster安装部署">
-  <meta property="og:description" content="简述从Redis 3.x开始，一直单机的Redis终于步入Cluster大时代。Redis从一个单纯的NoSQL内存数据库变成了分布式NoSQL数据库，CAP模型也从CP变成了AP。架构#### 架构图架构细节      所有 redis 结点彼此互联（PING-PONG 机制），内部使用二进制协议优化传输速度和...">
+  <meta property="og:description" content="简述从Redis 3.x开始，一直单机的Redis终于步入Cluster大时代。Redis从一个单纯的NoSQL内存数据库变成了分布式NoSQL数据库，CAP模型也从CP变成了AP。架构架构图架构细节      所有 redis 结点彼此互联（PING-PONG 机制），内部使用二进制协议优化传输速度和带宽（客户...">
   
   <link rel="icon" type="image/png" href="/images/favicon.png" />
   <link href="/images/favicon.png" rel="shortcut icon" type="image/png">
@@ -24,8 +24,8 @@
   <link rel="stylesheet" href="/css/main.css">
   <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
 
-  <link rel="canonical" href="https://wowkingah.github.io/2017/04/redis_cluster_install/">
-  <link rel="alternate" type="application/rss+xml" title="Wowking" href="https://wowkingah.github.io/feed.xml">
+  <link rel="canonical" href="http://0.0.0.0:4000/2017/04/redis_cluster_install/">
+  <link rel="alternate" type="application/rss+xml" title="Wowking" href="http://0.0.0.0:4000/feed.xml">
   
   <meta name="google-site-verification" content="1-1ZlHoRvM0T2FqPbW2S-qLgYXN6rsn52kErlMPd_gw" />
 
@@ -166,15 +166,15 @@
   </header>
 
   <section class="post">
-    <h3 id="section">简述</h3>
+    <h3 id="简述">简述</h3>
 <p>从Redis 3.x开始，一直单机的Redis终于步入Cluster大时代。<br />
 Redis从一个单纯的NoSQL内存数据库变成了分布式NoSQL数据库，CAP模型也从CP变成了AP。</p>
 
-<h3 id="section-1">架构</h3>
-<p>#### 架构图
-<img src="/images/posts/sa/redis_cluster_install/redis_cluster_architecture.jpg" alt="" /></p>
+<h3 id="架构">架构</h3>
+<h4 id="架构图">架构图</h4>
+<p><img src="/images/posts/sa/redis_cluster_install/redis_cluster_architecture.jpg" alt="" /></p>
 
-<h4 id="section-2">架构细节</h4>
+<h4 id="架构细节">架构细节</h4>
 <blockquote>
   <ul>
     <li>所有 redis 结点彼此互联（PING-PONG 机制），内部使用二进制协议优化传输速度和带宽（客户端与结点之间的通信还是正常的ascii协议）；</li>
@@ -185,25 +185,42 @@ Redis从一个单纯的NoSQL内存数据库变成了分布式NoSQL数据库，CA
   </ul>
 </blockquote>
 
-<h4 id="section-3">选举与容错</h4>
-<p><img src="/images/posts/sa/redis_cluster_install/fail.jpg" alt="" />
-##### 选举
-&gt;* 选举过程是集群中所有 master 参与，如果半数以上 master 节点与 master 节点通信超过 (cluster-node-timeout)，认为当前 master 节点挂掉；</p>
+<h4 id="选举与容错">选举与容错</h4>
+<p><img src="/images/posts/sa/redis_cluster_install/fail.jpg" alt="" /></p>
+<h5 id="选举">选举</h5>
+<blockquote>
+  <ul>
+    <li>选举过程是集群中所有 master 参与，如果半数以上 master 节点与 master 节点通信超过 (cluster-node-timeout)，认为当前 master 节点挂掉；</li>
+  </ul>
+</blockquote>
 
-<h5 id="section-4">容错</h5>
-<p>什么时候整个集群不可用(cluster_state:fail)？
-&gt;* 如果集群任意 master 挂掉，且当前 master 没有 slave，集群进入 fail 状态，也可以理解成集群的 slot 映射[0-16383]不完成时进入 fail 状态。
-&gt; &gt;* redis-3.0.0.rc1 加入 cluster-require-full-coverage 参数，默认关闭，打开集群兼容部分失败。
-&gt;* 如果集群超过半数以上 master 挂掉，无论是否有 slave 集群进入 fail 状态。
-&gt; &gt;* 当集群不可用时，所有对集群的操作做都不可用，收到((error) CLUSTERDOWN The cluster is down) 错误。</p>
+<h5 id="容错">容错</h5>
+<p>什么时候整个集群不可用(cluster_state:fail)？</p>
+<blockquote>
+  <ul>
+    <li>如果集群任意 master 挂掉，且当前 master 没有 slave，集群进入 fail 状态，也可以理解成集群的 slot 映射[0-16383]不完成时进入 fail 状态。
+      <blockquote>
+        <ul>
+          <li>redis-3.0.0.rc1 加入 cluster-require-full-coverage 参数，默认关闭，打开集群兼容部分失败。</li>
+        </ul>
+      </blockquote>
+    </li>
+    <li>如果集群超过半数以上 master 挂掉，无论是否有 slave 集群进入 fail 状态。
+      <blockquote>
+        <ul>
+          <li>当集群不可用时，所有对集群的操作做都不可用，收到((error) CLUSTERDOWN The cluster is down) 错误。</li>
+        </ul>
+      </blockquote>
+    </li>
+  </ul>
+</blockquote>
 
-<h3 id="redis">Redis安装</h3>
-<p>#### 安装redis
-Redis<a href="https://redis.io/download">官网</a>下载并安装最新稳定版Redis。</p>
+<h3 id="redis安装">Redis安装</h3>
+<h4 id="安装redis">安装redis</h4>
+<p>Redis<a href="https://redis.io/download">官网</a>下载并安装最新稳定版Redis。</p>
 
-<h4 id="redis-cluster">redis cluster配置</h4>
-<p><code class="highlighter-rouge">bash
-[root@Wowking-001 ~]# cat /etc/redis/6379.conf |grep -vE '^#|^$'
+<h4 id="redis-cluster配置">redis cluster配置</h4>
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code><span class="o">[</span>root@Wowking-001 ~]# cat /etc/redis/6379.conf |grep -vE <span class="s1">'^#|^$'</span>
 daemonize yes
 pidfile /var/run/redis_6379.pid
 port 6379
@@ -225,7 +242,7 @@ repl-diskless-sync-delay 5
 repl-disable-tcp-nodelay no
 slave-priority 100
 appendonly no
-appendfilename "appendonly.aof"
+appendfilename <span class="s2">"appendonly.aof"</span>
 appendfsync everysec
 no-appendfsync-on-rewrite no
 auto-aof-rewrite-percentage 100
@@ -240,12 +257,12 @@ lua-time-limit 5000
 slowlog-log-slower-than 10000
 slowlog-max-len 128
 latency-monitor-threshold 0
-notify-keyspace-events ""
-hash-max-ziplist-entries 512
-hash-max-ziplist-value 64
+notify-keyspace-events <span class="s2">""</span>
+<span class="nb">hash</span>-max-ziplist-entries 512
+<span class="nb">hash</span>-max-ziplist-value 64
 list-max-ziplist-entries 512
 list-max-ziplist-value 64
-set-max-intset-entries 512
+<span class="nb">set</span>-max-intset-entries 512
 zset-max-ziplist-entries 128
 zset-max-ziplist-value 64
 hll-sparse-max-bytes 3000
@@ -255,119 +272,128 @@ client-output-buffer-limit slave 256mb 64mb 60
 client-output-buffer-limit pubsub 32mb 8mb 60
 hz 10
 aof-rewrite-incremental-fsync yes
-</code>
-<em>tips</em>
+</code></pre>
+</div>
+<p><em>tips</em>
 关闭了持久化。</p>
 
-<h3 id="section-5">系统相关参数调整</h3>
-<p><code class="highlighter-rouge">bash
-[root@Wowking-001 ~]# cat /etc/sysctl.conf
-##Redis
-vm.overcommit_memory = 1
-net.core.somaxconn = 2048
-net.ipv4.tcp_timestamps=1
-net.ipv4.tcp_syncookies = 1
-net.ipv4.tcp_tw_reuse = 1
-net.ipv4.tcp_tw_recycle = 1
-net.ipv4.tcp_fin_timeout = 30
-net.ipv4.tcp_keepalive_time = 1200
-net.ipv4.tcp_max_syn_backlog = 8192
-net.ipv4.tcp_max_tw_buckets = 5000
-net.ipv4.tcp_keepalive_probes = 3
-net.ipv4.tcp_keepalive_intvl =15
-net.ipv4.tcp_wmem = 8192 131072 16777216
-net.ipv4.tcp_rmem = 32768 131072 16777216
-[root@Wowking-001 ~]# sysctl -p
-[root@Wowking-001 ~]# echo never &gt; /sys/kernel/mm/transparent_hugepage/enabled  #禁用Linux内核特性transparent huge pages，不然日志会报WARNING
-</code></p>
+<h3 id="系统相关参数调整">系统相关参数调整</h3>
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code><span class="o">[</span>root@Wowking-001 ~]# cat /etc/sysctl.conf
+<span class="c">##Redis</span>
+vm.overcommit_memory <span class="o">=</span> 1
+net.core.somaxconn <span class="o">=</span> 2048
+net.ipv4.tcp_timestamps<span class="o">=</span>1
+net.ipv4.tcp_syncookies <span class="o">=</span> 1
+net.ipv4.tcp_tw_reuse <span class="o">=</span> 1
+net.ipv4.tcp_tw_recycle <span class="o">=</span> 1
+net.ipv4.tcp_fin_timeout <span class="o">=</span> 30
+net.ipv4.tcp_keepalive_time <span class="o">=</span> 1200
+net.ipv4.tcp_max_syn_backlog <span class="o">=</span> 8192
+net.ipv4.tcp_max_tw_buckets <span class="o">=</span> 5000
+net.ipv4.tcp_keepalive_probes <span class="o">=</span> 3
+net.ipv4.tcp_keepalive_intvl <span class="o">=</span>15
+net.ipv4.tcp_wmem <span class="o">=</span> 8192 131072 16777216
+net.ipv4.tcp_rmem <span class="o">=</span> 32768 131072 16777216
+<span class="o">[</span>root@Wowking-001 ~]# sysctl -p
+<span class="o">[</span>root@Wowking-001 ~]# <span class="nb">echo </span>never &gt; /sys/kernel/mm/transparent_hugepage/enabled  <span class="c">#禁用Linux内核特性transparent huge pages，不然日志会报WARNING</span>
+</code></pre>
+</div>
 
-<h3 id="redis-1">启动Redis</h3>
-<p>测试使用，在本机启3个不同端口的实例。
-<code class="highlighter-rouge">bash
-[root@Wowking-001 ~]# mkdir -p /data/logs/redis
-[root@Wowking-001 ~]# mkdir -p /data/redis/data/6{3,4,5}79
-[root@Wowking-001 ~]# redis-server /etc/redis/6379.conf
-[root@Wowking-001 ~]# redis-server /etc/redis/6479.conf
-[root@Wowking-001 ~]# redis-server /etc/redis/6579.conf
-</code></p>
+<h3 id="启动redis">启动Redis</h3>
+<p>测试使用，在本机启3个不同端口的实例。</p>
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code><span class="o">[</span>root@Wowking-001 ~]# mkdir -p /data/logs/redis
+<span class="o">[</span>root@Wowking-001 ~]# mkdir -p /data/redis/data/6<span class="o">{</span>3,4,5<span class="o">}</span>79
+<span class="o">[</span>root@Wowking-001 ~]# redis-server /etc/redis/6379.conf
+<span class="o">[</span>root@Wowking-001 ~]# redis-server /etc/redis/6479.conf
+<span class="o">[</span>root@Wowking-001 ~]# redis-server /etc/redis/6579.conf
+</code></pre>
+</div>
 
-<h3 id="cluster">cluster部署</h3>
-<p>#### 安装ruby及ruby的redis模块
-<code class="highlighter-rouge">bash
-[root@Wowking-001 ~]# yum -y install ruby rubygems
-[root@Wowking-001 ~]# gem install redis
-</code></p>
+<h3 id="cluster部署">cluster部署</h3>
+<h4 id="安装ruby及ruby的redis模块">安装ruby及ruby的redis模块</h4>
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code><span class="o">[</span>root@Wowking-001 ~]# yum -y install ruby rubygems
+<span class="o">[</span>root@Wowking-001 ~]# gem install redis
+</code></pre>
+</div>
 
-<h4 id="cluster-1">cluster初始化</h4>
-<p><code class="highlighter-rouge">bash
-[root@Wowking-001 ~]# redis-trib.rb create --replicas 0 192.168.1.1:6379 192.168.1.1:6479 192.168.1.1:6579
-&gt;&gt;&gt; Creating cluster
-&gt;&gt;&gt; Performing hash slots allocation on 3 nodes...
+<h4 id="cluster初始化">cluster初始化</h4>
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code><span class="o">[</span>root@Wowking-001 ~]# redis-trib.rb create --replicas 0 192.168.1.1:6379 192.168.1.1:6479 192.168.1.1:6579
+<span class="gp">&gt;&gt;&gt; </span>Creating cluster
+<span class="gp">&gt;&gt;&gt; </span>Performing <span class="nb">hash </span>slots allocation on 3 nodes...
 Using 3 masters:
 192.168.1.1:6379
 192.168.1.1:6479
 192.168.1.1:6579
 M: 5d6519a85e2795f0eeb7566031eb6be47c97efbf 192.168.1.1:6379
-   slots:0-5460 (5461 slots) master
+   slots:0-5460 <span class="o">(</span>5461 slots<span class="o">)</span> master
 M: fc82bf9de8adba9886b0cb62ad8a99e8d4495f35 192.168.1.1:6479
-   slots:5461-10922 (5462 slots) master
+   slots:5461-10922 <span class="o">(</span>5462 slots<span class="o">)</span> master
 M: 35586851e194755ca82e660010b930987adfde6d 192.168.1.1:6579
-   slots:10923-16383 (5461 slots) master
-Can I set the above configuration? (type 'yes' to accept): yes
-&gt;&gt;&gt; Nodes configuration updated
-&gt;&gt;&gt; Assign a different config epoch to each node
-&gt;&gt;&gt; Sending CLUSTER MEET messages to join the cluster
-Waiting for the cluster to join..
-&gt;&gt;&gt; Performing Cluster Check (using node 192.168.1.1:6379)
+   slots:10923-16383 <span class="o">(</span>5461 slots<span class="o">)</span> master
+Can I <span class="nb">set </span>the above configuration? <span class="o">(</span><span class="nb">type</span> <span class="s1">'yes'</span> to accept<span class="o">)</span>: yes
+<span class="gp">&gt;&gt;&gt; </span>Nodes configuration updated
+<span class="gp">&gt;&gt;&gt; </span>Assign a different config epoch to each node
+<span class="gp">&gt;&gt;&gt; </span>Sending CLUSTER MEET messages to join the cluster
+Waiting <span class="k">for </span>the cluster to join..
+<span class="gp">&gt;&gt;&gt; </span>Performing Cluster Check <span class="o">(</span>using node 192.168.1.1:6379<span class="o">)</span>
 M: 5d6519a85e2795f0eeb7566031eb6be47c97efbf 192.168.1.1:6379
-   slots:0-5460 (5461 slots) master
+   slots:0-5460 <span class="o">(</span>5461 slots<span class="o">)</span> master
 M: fc82bf9de8adba9886b0cb62ad8a99e8d4495f35 192.168.1.1:6479
-   slots:5461-10922 (5462 slots) master
+   slots:5461-10922 <span class="o">(</span>5462 slots<span class="o">)</span> master
 M: 35586851e194755ca82e660010b930987adfde6d 192.168.1.1:6579
-   slots:10923-16383 (5461 slots) master
-[OK] All nodes agree about slots configuration.
-&gt;&gt;&gt; Check for open slots...
-&gt;&gt;&gt; Check slots coverage...
-[OK] All 16384 slots covered.
-</code>
-<em>tips</em>
-&gt;* –replicas：指定复本数，这是cluster最小复本要求。推荐2个以上复本，不然没法测试failover。</p>
+   slots:10923-16383 <span class="o">(</span>5461 slots<span class="o">)</span> master
+<span class="o">[</span>OK] All nodes agree about slots configuration.
+<span class="gp">&gt;&gt;&gt; </span>Check <span class="k">for </span>open slots...
+<span class="gp">&gt;&gt;&gt; </span>Check slots coverage...
+<span class="o">[</span>OK] All 16384 slots covered.
+</code></pre>
+</div>
+<p><em>tips</em></p>
+<blockquote>
+  <ul>
+    <li>–replicas：指定复本数，这是cluster最小复本要求。推荐2个以上复本，不然没法测试failover。</li>
+  </ul>
+</blockquote>
 
-<h4 id="cluster-2">查看cluster状态</h4>
-<p><code class="highlighter-rouge">bash
-[root@Wowking-001 ~]# redis-trib.rb check 192.168.1.1:6379
-&gt;&gt;&gt; Performing Cluster Check (using node 192.168.1.1:6379)
+<h4 id="查看cluster状态">查看cluster状态</h4>
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code><span class="o">[</span>root@Wowking-001 ~]# redis-trib.rb check 192.168.1.1:6379
+<span class="gp">&gt;&gt;&gt; </span>Performing Cluster Check <span class="o">(</span>using node 192.168.1.1:6379<span class="o">)</span>
 M: 5d6519a85e2795f0eeb7566031eb6be47c97efbf 192.168.1.1:6379
-   slots:0-5460 (5461 slots) master
-   0 additional replica(s)
+   slots:0-5460 <span class="o">(</span>5461 slots<span class="o">)</span> master
+   0 additional replica<span class="o">(</span>s<span class="o">)</span>
 M: 35586851e194755ca82e660010b930987adfde6d 192.168.1.1:6579
-   slots:10923-16383 (5461 slots) master
-   0 additional replica(s)
+   slots:10923-16383 <span class="o">(</span>5461 slots<span class="o">)</span> master
+   0 additional replica<span class="o">(</span>s<span class="o">)</span>
 M: fc82bf9de8adba9886b0cb62ad8a99e8d4495f35 192.168.1.1:6479
-   slots:5461-10922 (5462 slots) master
-   0 additional replica(s)
-[OK] All nodes agree about slots configuration.
-&gt;&gt;&gt; Check for open slots...
-&gt;&gt;&gt; Check slots coverage...
-[OK] All 16384 slots covered.
-</code></p>
+   slots:5461-10922 <span class="o">(</span>5462 slots<span class="o">)</span> master
+   0 additional replica<span class="o">(</span>s<span class="o">)</span>
+<span class="o">[</span>OK] All nodes agree about slots configuration.
+<span class="gp">&gt;&gt;&gt; </span>Check <span class="k">for </span>open slots...
+<span class="gp">&gt;&gt;&gt; </span>Check slots coverage...
+<span class="o">[</span>OK] All 16384 slots covered.
+</code></pre>
+</div>
 
-<h3 id="cluster-3">cluster测试</h3>
-<p><code class="highlighter-rouge">bash
-#任意结点写key
-[root@Wowking-001 ~]# redis-cli -p 6379
-127.0.0.1:6379&gt; set aa 11
+<h3 id="cluster测试">cluster测试</h3>
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code><span class="c">#任意结点写key</span>
+<span class="o">[</span>root@Wowking-001 ~]# redis-cli -p 6379
+<span class="gp">127.0.0.1:6379&gt; </span><span class="nb">set </span>aa 11
 OK
-127.0.0.1:6379&gt; get aa
-"11"
-#任意结点get
-[root@Wowking-001 ~]# redis-cli -p 6579 -c
-127.0.0.1:6579&gt; get aa
--&gt; Redirected to slot [1180] located at 192.168.1.1:6379
-"11"
-</code>
-<em>tips</em>
-&gt;* -c：指定cluster模式。</p>
+<span class="gp">127.0.0.1:6379&gt; </span>get aa
+<span class="s2">"11"</span>
+<span class="c">#任意结点get</span>
+<span class="o">[</span>root@Wowking-001 ~]# redis-cli -p 6579 -c
+<span class="gp">127.0.0.1:6579&gt; </span>get aa
+<span class="gp">-&gt; </span>Redirected to slot <span class="o">[</span>1180] located at 192.168.1.1:6379
+<span class="s2">"11"</span>
+</code></pre>
+</div>
+<p><em>tips</em></p>
+<blockquote>
+  <ul>
+    <li>-c：指定cluster模式。</li>
+  </ul>
+</blockquote>
 
 <h3 id="reference">reference</h3>
 <p>https://redis.io/topics/cluster-tutorial <br />
@@ -458,22 +484,27 @@ http://www.ttlsa.com/redis/redis-cluster-theoretical-knowledge</p>
 
 <section class="post-comments">
 
-
-    <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
-    <script src="https://img1.cache.netease.com/f2e/tie/yun/sdk/loader.js"></script>
-    <script>
-    var cloudTieConfig = {
-      url: document.location.href, 
-      sourceId: "",
-      productKey: "aa395cf7778f458492060f3f53301b7c",
-      target: "cloud-tie-wrapper"
-    };
-    var yunManualLoad = true;
-    Tie.loader("aHR0cHM6Ly9hcGkuZ2VudGllLjE2My5jb20vcGMvbGl2ZXNjcmlwdC5odG1s", true);
-    </script>
-
-
   
+    <div id="disqus_thread"></div>
+    <script>
+    
+    var disqus_config = function () {
+        this.page.url = "http://0.0.0.0:4000/2017/04/redis_cluster_install/";
+        this.page.identifier = "/2017/04/redis_cluster_install/";
+    };
+    var disqus_shortname = 'Wowking';
+    
+    (function() { // DON'T EDIT BELOW THIS LINE
+        var d = document, s = d.createElement('script');
+        s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+        })();
+    </script>
+    <noscript>要查看<a href="http://disqus.com/?ref_noscript"> Disqus </a>评论，请启用 JavaScript</noscript>
+    
+  
+
 </section>
 
 

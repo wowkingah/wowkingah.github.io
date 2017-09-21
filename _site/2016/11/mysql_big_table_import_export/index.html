@@ -6,17 +6,17 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-  <title>Oracle 超过最大进程数</title>
-  <meta name="description" content="I don't really know where I'm going, but I hope I go far.">
+  <title>MySQL大表快速导入导出</title>
+  <meta name="description" content="MySQL大表快速导出常用两种方式：      mysqldump    INTO OUTFILE  ">
   <meta name="author" content="Wowking">
 
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="Oracle 超过最大进程数">
-  <meta name="twitter:description" content="I don't really know where I'm going, but I hope I go far.">
+  <meta name="twitter:title" content="MySQL大表快速导入导出">
+  <meta name="twitter:description" content="MySQL大表快速导出常用两种方式：      mysqldump    INTO OUTFILE  ">
   
   <meta property="og:type" content="article">
-  <meta property="og:title" content="Oracle 超过最大进程数">
-  <meta property="og:description" content="I don't really know where I'm going, but I hope I go far.">
+  <meta property="og:title" content="MySQL大表快速导入导出">
+  <meta property="og:description" content="MySQL大表快速导出常用两种方式：      mysqldump    INTO OUTFILE  ">
   
   <link rel="icon" type="image/png" href="/images/favicon.png" />
   <link href="/images/favicon.png" rel="shortcut icon" type="image/png">
@@ -24,8 +24,8 @@
   <link rel="stylesheet" href="/css/main.css">
   <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
 
-  <link rel="canonical" href="https://wowkingah.github.io/2017-09-01-oracle_maximum_number_of_processes/">
-  <link rel="alternate" type="application/rss+xml" title="Wowking" href="https://wowkingah.github.io/feed.xml">
+  <link rel="canonical" href="http://0.0.0.0:4000/2016/11/mysql_big_table_import_export/">
+  <link rel="alternate" type="application/rss+xml" title="Wowking" href="http://0.0.0.0:4000/feed.xml">
   
   <meta name="google-site-verification" content="1-1ZlHoRvM0T2FqPbW2S-qLgYXN6rsn52kErlMPd_gw" />
 
@@ -155,10 +155,10 @@
         <div class="content-wrapper__inner">
             <article class="post-container post-container--single" itemscope itemtype="http://schema.org/BlogPosting">
   <header class="post-header">
-    <h1 class="post-title">Oracle 超过最大进程数</h1>
+    <h1 class="post-title">MySQL大表快速导入导出</h1>
     <div class="post-meta">
       <img src="/images/calendar.png" width="20px"/> 
-      <time datetime="2017-09-01" itemprop="datePublished" class="post-meta__date date">2017-09-01</time>  
+      <time datetime="2016-11-30 00:00:00 +0800" itemprop="datePublished" class="post-meta__date date">2016-11-30</time>  
          
       <span id="busuanzi_container_page_pv"> | 阅读：<span id="busuanzi_value_page_pv"></span>次</span>
     </p>
@@ -166,46 +166,78 @@
   </header>
 
   <section class="post">
-    <h3 id="section">简述</h3>
-<p>Oracle超过最大进程数。</p>
-
-<h3 id="section-1">报错</h3>
-<p>#### a.客户端连接报错 <br />
-ORA-12519: TNS:no appropriate service handler found</p>
-
-<h4 id="b">b.命令行连接报错</h4>
-<p><code class="highlighter-rouge">shell
-SQL&gt; conn /as sysdba;  
-ERROR:  
-ORA-00020: maximum number of processes (150) exceeded  
-</code></p>
-
-<h3 id="section-2">解决方案</h3>
+    <p>MySQL大表快速导出常用两种方式：</p>
 <blockquote>
-  <p>1.重启或停止问题客户端（如问题Tomcat/Nginx），释放几个空闲连接；<br />
-2.查看当前进程数；<br />
-```shell
-SQL&gt; select count(1) from v$process;</p>
-
-  <h2 id="count1">COUNT(1)</h2>
-  <div class="highlighter-rouge"><pre class="highlight"><code>   147   ``` 3.查看最大进程数；   ```shell SQL&gt; select value from v$parameter where name = 'processes';  
-</code></pre>
-  </div>
-
-  <h2 id="value">VALUE</h2>
-  <p>150<br />
-<code class="highlighter-rouge">
-4.修改最大进程数；  
-</code>shell
-SQL&gt; alter system set processes = 512 scope = spfile;<br />
-<code class="highlighter-rouge">
-5.重启数据库。  
-</code>shell
-SQL&gt; conn /as sysdba;<br />
-SQL&gt; shutdown immediate;<br />
-SQL&gt; startup;<br />
-```</p>
+  <ul>
+    <li>mysqldump</li>
+    <li>INTO OUTFILE</li>
+  </ul>
 </blockquote>
+
+<h3 id="mysqldump">mysqldump</h3>
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code><span class="o">[</span>root@db_node01 ~]# mysqldump --opt -uxxx -pxxx <span class="nb">test </span>t1 &gt; /tmp/t1.sql
+</code></pre>
+</div>
+<p><strong><em>tips</em></strong></p>
+<blockquote>
+  <p>适合整库或整表导出。<br />
+–opt：默认包含–add-drop-table –add-locks –create-options –disable-keys –extended-insert –lock-tables –quick –set-charset</p>
+</blockquote>
+
+<h3 id="into-outfile">INTO OUTFILE</h3>
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code><span class="gp">mysql&gt;  </span>SELECT xxx FROM t1 WHERE xx INTO OUTFILE <span class="s1">'/tmp/t1.sql'</span>;
+</code></pre>
+</div>
+<p><strong><em>tips</em></strong></p>
+<blockquote>
+  <p>适合按指定条件导出表。 
+可以通过FIELDS TERMINATED BY ‘字符串’ 来指定字段之间的分隔符，可以为单个或多个字符。默认为’\t’。<br />
+可以通过FIELDS ENCLOSED BY ‘字符’ 来指定括住字段的值，只能为单个字符。默认情况下不使用任何符号，即当表中值为 TEST 时，导出后为 字符TEST符。</p>
+</blockquote>
+
+<h2 id="根据以上导出方式有两种快速导入方式">根据以上导出方式，有两种快速导入方式：</h2>
+<blockquote>
+  <ul>
+    <li>SOURCE</li>
+    <li>LOAD DATA INFILE</li>
+  </ul>
+</blockquote>
+
+<h3 id="source">SOURCE</h3>
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code><span class="gp">mysql&gt; </span>use db_name; <span class="nb">source</span> /tmp/t1.sql;
+</code></pre>
+</div>
+
+<h3 id="load-data-infile">LOAD DATA INFILE</h3>
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code><span class="gp">mysql&gt; </span>use db_name; LOAD DATA INFILE <span class="s1">'/tmp/t1.sql'</span> INTO TABLE t1;
+</code></pre>
+</div>
+<p><strong><em>tips</em></strong></p>
+<blockquote>
+  <p>如果SELECT … INTO OUTFILE时有指定FIELDS TERMINATED等参数，这里也需要指定。</p>
+</blockquote>
+
+<p>对于其它方式导入大表数据，可根据表ENGINE类型加以下参数：</p>
+<h3 id="myisam">MyISAM</h3>
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code><span class="gp">mysql&gt; </span>ALTER TABLE t_name DISABLE KEYS;
+<span class="gp">mysql&gt; </span>LOADING THE DATA ALTER TABLE t_name ENABLE KEYS;
+</code></pre>
+</div>
+<p><strong><em>tips</em></strong></p>
+<blockquote>
+  <p>这两个命令用来打开或者关闭Myisam表非唯一索引的更新。对于导入大量数据到一个空MyISAM表，默认就是先导入数据然后才创建索引的，故不用进行设置。</p>
+</blockquote>
+
+<h3 id="innodb">InnoDB</h3>
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code><span class="gp">mysql&gt; </span>SET <span class="nv">UNIQUE_CHECKS</span><span class="o">=</span>0;
+<span class="gp">mysql&gt; </span>SET <span class="nv">AUTOCOMMIT</span><span class="o">=</span>0;
+</code></pre>
+</div>
+<p><strong><em>tips</em></strong></p>
+<blockquote>
+  <p>一个关闭唯一性校验，一个关闭自动提交。数据导完后，得改回来。</p>
+</blockquote>
+
 
 
   </section>
@@ -274,28 +306,43 @@ SQL&gt; startup;<br />
 
        <ul class="pager">
         
+        <li class="previous">
+            <a href="/2016/10/mysql_password_encryption_in_script/" data-toggle="tooltip" data-placement="top" title="加密脚本中MySQL用户密码">上一篇：  <span>加密脚本中MySQL用户密码</span>
+            </a>
+        </li>
+        
+        
+        <li class="next">
+            <a href="/2016/12/mysql_update/" data-toggle="tooltip" data-placement="top" title="MySQL版本升级">下一篇：  <span>MySQL版本升级</span>
+            </a>
+        </li>
         
     </ul>
 </section>
 
 <section class="post-comments">
 
-
-    <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
-    <script src="https://img1.cache.netease.com/f2e/tie/yun/sdk/loader.js"></script>
-    <script>
-    var cloudTieConfig = {
-      url: document.location.href, 
-      sourceId: "",
-      productKey: "aa395cf7778f458492060f3f53301b7c",
-      target: "cloud-tie-wrapper"
-    };
-    var yunManualLoad = true;
-    Tie.loader("aHR0cHM6Ly9hcGkuZ2VudGllLjE2My5jb20vcGMvbGl2ZXNjcmlwdC5odG1s", true);
-    </script>
-
-
   
+    <div id="disqus_thread"></div>
+    <script>
+    
+    var disqus_config = function () {
+        this.page.url = "http://0.0.0.0:4000/2016/11/mysql_big_table_import_export/";
+        this.page.identifier = "/2016/11/mysql_big_table_import_export/";
+    };
+    var disqus_shortname = 'Wowking';
+    
+    (function() { // DON'T EDIT BELOW THIS LINE
+        var d = document, s = d.createElement('script');
+        s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+        })();
+    </script>
+    <noscript>要查看<a href="http://disqus.com/?ref_noscript"> Disqus </a>评论，请启用 JavaScript</noscript>
+    
+  
+
 </section>
 
 

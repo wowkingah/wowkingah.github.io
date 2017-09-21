@@ -7,16 +7,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
   <title>MySQL INSERT条件判断</title>
-  <meta name="description" content="简述INSERT条件判断：如果不存在则插入。REPLACE判断：如果存在则替换。对于普通的 INSERT 插入，如果想要保证不插入重复记录，可以通过唯一索引实现。那有没有不创建唯一索引，仅通过 INSERT 一条语句实现的方案呢？ INSERT INTO IF EXISTS就来了。语法sqlINSERT INTO...">
+  <meta name="description" content="简述INSERT条件判断：如果不存在则插入。REPLACE判断：如果存在则替换。对于普通的 INSERT 插入，如果想要保证不插入重复记录，可以通过唯一索引实现。那有没有不创建唯一索引，仅通过 INSERT 一条语句实现的方案呢？ INSERT INTO IF EXISTS就来了。语法INSERT INTO t_...">
   <meta name="author" content="Wowking">
 
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="MySQL INSERT条件判断">
-  <meta name="twitter:description" content="简述INSERT条件判断：如果不存在则插入。REPLACE判断：如果存在则替换。对于普通的 INSERT 插入，如果想要保证不插入重复记录，可以通过唯一索引实现。那有没有不创建唯一索引，仅通过 INSERT 一条语句实现的方案呢？ INSERT INTO IF EXISTS就来了。语法sqlINSERT INTO...">
+  <meta name="twitter:description" content="简述INSERT条件判断：如果不存在则插入。REPLACE判断：如果存在则替换。对于普通的 INSERT 插入，如果想要保证不插入重复记录，可以通过唯一索引实现。那有没有不创建唯一索引，仅通过 INSERT 一条语句实现的方案呢？ INSERT INTO IF EXISTS就来了。语法INSERT INTO t_...">
   
   <meta property="og:type" content="article">
   <meta property="og:title" content="MySQL INSERT条件判断">
-  <meta property="og:description" content="简述INSERT条件判断：如果不存在则插入。REPLACE判断：如果存在则替换。对于普通的 INSERT 插入，如果想要保证不插入重复记录，可以通过唯一索引实现。那有没有不创建唯一索引，仅通过 INSERT 一条语句实现的方案呢？ INSERT INTO IF EXISTS就来了。语法sqlINSERT INTO...">
+  <meta property="og:description" content="简述INSERT条件判断：如果不存在则插入。REPLACE判断：如果存在则替换。对于普通的 INSERT 插入，如果想要保证不插入重复记录，可以通过唯一索引实现。那有没有不创建唯一索引，仅通过 INSERT 一条语句实现的方案呢？ INSERT INTO IF EXISTS就来了。语法INSERT INTO t_...">
   
   <link rel="icon" type="image/png" href="/images/favicon.png" />
   <link href="/images/favicon.png" rel="shortcut icon" type="image/png">
@@ -24,8 +24,8 @@
   <link rel="stylesheet" href="/css/main.css">
   <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
 
-  <link rel="canonical" href="https://wowkingah.github.io/2017/08/mysql_insert_condition/">
-  <link rel="alternate" type="application/rss+xml" title="Wowking" href="https://wowkingah.github.io/feed.xml">
+  <link rel="canonical" href="http://0.0.0.0:4000/2017/08/mysql_insert_condition/">
+  <link rel="alternate" type="application/rss+xml" title="Wowking" href="http://0.0.0.0:4000/feed.xml">
   
   <meta name="google-site-verification" content="1-1ZlHoRvM0T2FqPbW2S-qLgYXN6rsn52kErlMPd_gw" />
 
@@ -166,77 +166,77 @@
   </header>
 
   <section class="post">
-    <h3 id="section">简述</h3>
+    <h3 id="简述">简述</h3>
 <p>INSERT条件判断：如果不存在则插入。REPLACE判断：如果存在则替换。<br />
 对于普通的 INSERT 插入，如果想要保证不插入重复记录，可以通过唯一索引实现。<br />
 那有没有不创建唯一索引，仅通过 INSERT 一条语句实现的方案呢？ INSERT INTO IF EXISTS就来了。</p>
 
-<h3 id="section-1">语法</h3>
-<p><code class="highlighter-rouge">sql
-INSERT INTO t_name(c1, c2, cn) SELECT 'v1', 'v2', 'vn' FROM DUAL WHERE NOT EXISTS(SELECT c1 FROM t_name WHERE c1 = ?);
-</code>
-<em>tips: DUAL 为临时表，无需创建。</em></p>
+<h3 id="语法">语法</h3>
+<div class="language-sql highlighter-rouge"><pre class="highlight"><code><span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">t_name</span><span class="p">(</span><span class="n">c1</span><span class="p">,</span> <span class="n">c2</span><span class="p">,</span> <span class="n">cn</span><span class="p">)</span> <span class="k">SELECT</span> <span class="s1">'v1'</span><span class="p">,</span> <span class="s1">'v2'</span><span class="p">,</span> <span class="s1">'vn'</span> <span class="k">FROM</span> <span class="n">DUAL</span> <span class="k">WHERE</span> <span class="k">NOT</span> <span class="k">EXISTS</span><span class="p">(</span><span class="k">SELECT</span> <span class="n">c1</span> <span class="k">FROM</span> <span class="n">t_name</span> <span class="k">WHERE</span> <span class="n">c1</span> <span class="o">=</span> <span class="o">?</span><span class="p">);</span>
+</code></pre>
+</div>
+<p><em>tips: DUAL 为临时表，无需创建。</em></p>
 
-<h3 id="section-2">示例</h3>
-<p>#### 环境<br />
-```shell
-mysql&gt; DROP TABLE IF EXISTS t1;
-Query OK, 0 rows affected (0.20 sec)</p>
+<h3 id="示例">示例</h3>
+<h4 id="环境">环境</h4>
+<div class="language-shell highlighter-rouge"><pre class="highlight"><code><span class="gp">mysql&gt; </span>DROP TABLE IF EXISTS t1;
+Query OK, 0 rows affected <span class="o">(</span>0.20 sec<span class="o">)</span>
 
-<p>mysql&gt; CREATE TABLE <code class="highlighter-rouge">t1</code> (
-    -&gt;   <code class="highlighter-rouge">id</code> int(11) unsigned NOT NULL AUTO_INCREMENT,
-    -&gt;   <code class="highlighter-rouge">name</code> varchar(8) NULL,
-    -&gt;   PRIMARY KEY (<code class="highlighter-rouge">id</code>)
-    -&gt; );
-Query OK, 0 rows affected (0.78 sec)</p>
+<span class="gp">mysql&gt; </span>CREATE TABLE <span class="sb">`</span>t1<span class="sb">`</span> <span class="o">(</span>
+    -&gt;   <span class="sb">`</span>id<span class="sb">`</span> int<span class="o">(</span>11<span class="o">)</span> unsigned NOT NULL AUTO_INCREMENT,
+    -&gt;   <span class="sb">`</span>name<span class="sb">`</span> varchar<span class="o">(</span>8<span class="o">)</span> NULL,
+    -&gt;   PRIMARY KEY <span class="o">(</span><span class="sb">`</span>id<span class="sb">`</span><span class="o">)</span>
+    -&gt; <span class="o">)</span>;
+Query OK, 0 rows affected <span class="o">(</span>0.78 sec<span class="o">)</span>
 
-<p>mysql&gt; INSERT INTO t1(name) VALUES (‘aa’),(‘bb’);
-Query OK, 2 rows affected (0.06 sec)
-Records: 2  Duplicates: 0  Warnings: 0</p>
+<span class="gp">mysql&gt; </span>INSERT INTO t1<span class="o">(</span>name<span class="o">)</span> VALUES <span class="o">(</span><span class="s1">'aa'</span><span class="o">)</span>,<span class="o">(</span><span class="s1">'bb'</span><span class="o">)</span>;
+Query OK, 2 rows affected <span class="o">(</span>0.06 sec<span class="o">)</span>
+Records: 2  Duplicates: 0  Warnings: 0
 
-<p>mysql&gt; SELECT * FROM t1;
-+—-+——+
+<span class="gp">mysql&gt; </span>SELECT <span class="k">*</span> FROM t1;
++----+------+
 | id | name |
-+—-+——+
++----+------+
 |  1 | aa   |
 |  2 | bb   |
-+—-+——+
-2 rows in set (0.00 sec)
-```</p>
++----+------+
+2 rows <span class="k">in </span><span class="nb">set</span> <span class="o">(</span>0.00 sec<span class="o">)</span>
+</code></pre>
+</div>
 
-<h4 id="section-3">测试</h4>
-<p>```sql
-mysql&gt; INSERT INTO t1(name) VALUES(‘aa’);
-Query OK, 1 row affected (0.08 sec)</p>
+<h4 id="测试">测试</h4>
+<div class="language-sql highlighter-rouge"><pre class="highlight"><code><span class="n">mysql</span><span class="o">&gt;</span> <span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">t1</span><span class="p">(</span><span class="n">name</span><span class="p">)</span> <span class="k">VALUES</span><span class="p">(</span><span class="s1">'aa'</span><span class="p">);</span>
+<span class="n">Query</span> <span class="n">OK</span><span class="p">,</span> <span class="mi">1</span> <span class="k">row</span> <span class="n">affected</span> <span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">08</span> <span class="n">sec</span><span class="p">)</span>
 
-<p>mysql&gt; SELECT * FROM t1;
-+—-+——+
-| id | name |
-+—-+——+
-|  1 | aa   |
-|  2 | bb   |
-|  3 | aa   |
-+—-+——+
-3 rows in set (0.00 sec)
-```
-<em>tips: 因name列无唯一索引，故aa可以插入。</em></p>
+<span class="n">mysql</span><span class="o">&gt;</span> <span class="k">SELECT</span> <span class="o">*</span> <span class="k">FROM</span> <span class="n">t1</span><span class="p">;</span>
+<span class="o">+</span><span class="c1">----+------+</span>
+<span class="o">|</span> <span class="n">id</span> <span class="o">|</span> <span class="n">name</span> <span class="o">|</span>
+<span class="o">+</span><span class="c1">----+------+</span>
+<span class="o">|</span>  <span class="mi">1</span> <span class="o">|</span> <span class="n">aa</span>   <span class="o">|</span>
+<span class="o">|</span>  <span class="mi">2</span> <span class="o">|</span> <span class="n">bb</span>   <span class="o">|</span>
+<span class="o">|</span>  <span class="mi">3</span> <span class="o">|</span> <span class="n">aa</span>   <span class="o">|</span>
+<span class="o">+</span><span class="c1">----+------+</span>
+<span class="mi">3</span> <span class="k">rows</span> <span class="k">in</span> <span class="k">set</span> <span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span> <span class="n">sec</span><span class="p">)</span>
+</code></pre>
+</div>
+<p><em>tips: 因name列无唯一索引，故aa可以插入。</em></p>
 
-<p>```sql
-mysql&gt; INSERT INTO t1(name) SELECT ‘bb’ FROM DUAL WHERE NOT EXISTS(SELECT name FROM t1 WHERE name=’bb’);
-Query OK, 0 rows affected (0.00 sec)
-Records: 0  Duplicates: 0  Warnings: 0</p>
+<div class="language-sql highlighter-rouge"><pre class="highlight"><code><span class="n">mysql</span><span class="o">&gt;</span> <span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">t1</span><span class="p">(</span><span class="n">name</span><span class="p">)</span> <span class="k">SELECT</span> <span class="s1">'bb'</span> <span class="k">FROM</span> <span class="n">DUAL</span> <span class="k">WHERE</span> <span class="k">NOT</span> <span class="k">EXISTS</span><span class="p">(</span><span class="k">SELECT</span> <span class="n">name</span> <span class="k">FROM</span> <span class="n">t1</span> <span class="k">WHERE</span> <span class="n">name</span><span class="o">=</span><span class="s1">'bb'</span><span class="p">);</span>
+<span class="n">Query</span> <span class="n">OK</span><span class="p">,</span> <span class="mi">0</span> <span class="k">rows</span> <span class="n">affected</span> <span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span> <span class="n">sec</span><span class="p">)</span>
+<span class="n">Records</span><span class="p">:</span> <span class="mi">0</span>  <span class="n">Duplicates</span><span class="p">:</span> <span class="mi">0</span>  <span class="n">Warnings</span><span class="p">:</span> <span class="mi">0</span>
 
-<p>mysql&gt; SELECT * FROM t1;
-+—-+——+
-| id | name |
-+—-+——+
-|  1 | aa   |
-|  2 | bb   |
-|  3 | aa   |
-+—-+——+
-3 rows in set (0.00 sec)
-```
-<em>tips: bb未插入。</em></p>
+<span class="n">mysql</span><span class="o">&gt;</span> <span class="k">SELECT</span> <span class="o">*</span> <span class="k">FROM</span> <span class="n">t1</span><span class="p">;</span>
+<span class="o">+</span><span class="c1">----+------+</span>
+<span class="o">|</span> <span class="n">id</span> <span class="o">|</span> <span class="n">name</span> <span class="o">|</span>
+<span class="o">+</span><span class="c1">----+------+</span>
+<span class="o">|</span>  <span class="mi">1</span> <span class="o">|</span> <span class="n">aa</span>   <span class="o">|</span>
+<span class="o">|</span>  <span class="mi">2</span> <span class="o">|</span> <span class="n">bb</span>   <span class="o">|</span>
+<span class="o">|</span>  <span class="mi">3</span> <span class="o">|</span> <span class="n">aa</span>   <span class="o">|</span>
+<span class="o">+</span><span class="c1">----+------+</span>
+<span class="mi">3</span> <span class="k">rows</span> <span class="k">in</span> <span class="k">set</span> <span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span> <span class="n">sec</span><span class="p">)</span>
+</code></pre>
+</div>
+<p><em>tips: bb未插入。</em></p>
 
 <h3 id="reference">reference</h3>
 <p>https://my.oschina.net/jsan/blog/270161/</p>
@@ -324,22 +324,27 @@ Records: 0  Duplicates: 0  Warnings: 0</p>
 
 <section class="post-comments">
 
-
-    <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
-    <script src="https://img1.cache.netease.com/f2e/tie/yun/sdk/loader.js"></script>
-    <script>
-    var cloudTieConfig = {
-      url: document.location.href, 
-      sourceId: "",
-      productKey: "aa395cf7778f458492060f3f53301b7c",
-      target: "cloud-tie-wrapper"
-    };
-    var yunManualLoad = true;
-    Tie.loader("aHR0cHM6Ly9hcGkuZ2VudGllLjE2My5jb20vcGMvbGl2ZXNjcmlwdC5odG1s", true);
-    </script>
-
-
   
+    <div id="disqus_thread"></div>
+    <script>
+    
+    var disqus_config = function () {
+        this.page.url = "http://0.0.0.0:4000/2017/08/mysql_insert_condition/";
+        this.page.identifier = "/2017/08/mysql_insert_condition/";
+    };
+    var disqus_shortname = 'Wowking';
+    
+    (function() { // DON'T EDIT BELOW THIS LINE
+        var d = document, s = d.createElement('script');
+        s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+        })();
+    </script>
+    <noscript>要查看<a href="http://disqus.com/?ref_noscript"> Disqus </a>评论，请启用 JavaScript</noscript>
+    
+  
+
 </section>
 
 

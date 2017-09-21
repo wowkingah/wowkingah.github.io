@@ -7,16 +7,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
   <title>MySQL支持Emoji表情</title>
-  <meta name="description" content="简述MySQL 5.5.3开始通过修改字符集来支持Emoji表情。查看当前字符集shellmysql&gt; SHOW VARIABLES WHERE Variable_name LIKE 'character\_set\_%' OR Variable_name LIKE 'collation%';+------...">
+  <meta name="description" content="简述MySQL 5.5.3开始通过修改字符集来支持Emoji表情。查看当前字符集mysql&gt; SHOW VARIABLES WHERE Variable_name LIKE 'character\_set\_%' OR Variable_name LIKE 'collation%';+-----------...">
   <meta name="author" content="Wowking">
 
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="MySQL支持Emoji表情">
-  <meta name="twitter:description" content="简述MySQL 5.5.3开始通过修改字符集来支持Emoji表情。查看当前字符集shellmysql&gt; SHOW VARIABLES WHERE Variable_name LIKE 'character\_set\_%' OR Variable_name LIKE 'collation%';+------...">
+  <meta name="twitter:description" content="简述MySQL 5.5.3开始通过修改字符集来支持Emoji表情。查看当前字符集mysql&gt; SHOW VARIABLES WHERE Variable_name LIKE 'character\_set\_%' OR Variable_name LIKE 'collation%';+-----------...">
   
   <meta property="og:type" content="article">
   <meta property="og:title" content="MySQL支持Emoji表情">
-  <meta property="og:description" content="简述MySQL 5.5.3开始通过修改字符集来支持Emoji表情。查看当前字符集shellmysql&gt; SHOW VARIABLES WHERE Variable_name LIKE 'character\_set\_%' OR Variable_name LIKE 'collation%';+------...">
+  <meta property="og:description" content="简述MySQL 5.5.3开始通过修改字符集来支持Emoji表情。查看当前字符集mysql&gt; SHOW VARIABLES WHERE Variable_name LIKE 'character\_set\_%' OR Variable_name LIKE 'collation%';+-----------...">
   
   <link rel="icon" type="image/png" href="/images/favicon.png" />
   <link href="/images/favicon.png" rel="shortcut icon" type="image/png">
@@ -24,8 +24,8 @@
   <link rel="stylesheet" href="/css/main.css">
   <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
 
-  <link rel="canonical" href="https://wowkingah.github.io/2017/06/mysql_emoji/">
-  <link rel="alternate" type="application/rss+xml" title="Wowking" href="https://wowkingah.github.io/feed.xml">
+  <link rel="canonical" href="http://0.0.0.0:4000/2017/06/mysql_emoji/">
+  <link rel="alternate" type="application/rss+xml" title="Wowking" href="http://0.0.0.0:4000/feed.xml">
   
   <meta name="google-site-verification" content="1-1ZlHoRvM0T2FqPbW2S-qLgYXN6rsn52kErlMPd_gw" />
 
@@ -166,12 +166,11 @@
   </header>
 
   <section class="post">
-    <h3 id="section">简述</h3>
+    <h3 id="简述">简述</h3>
 <p>MySQL 5.5.3开始通过修改字符集来支持Emoji表情。</p>
 
-<h3 id="section-1">查看当前字符集</h3>
-<p><code class="highlighter-rouge">shell
-mysql&gt; SHOW VARIABLES WHERE Variable_name LIKE 'character\_set\_%' OR Variable_name LIKE 'collation%';
+<h3 id="查看当前字符集">查看当前字符集</h3>
+<div class="language-shell highlighter-rouge"><pre class="highlight"><code><span class="gp">mysql&gt; </span>SHOW VARIABLES WHERE Variable_name LIKE <span class="s1">'character\_set\_%'</span> OR Variable_name LIKE <span class="s1">'collation%'</span>;
 +--------------------------+-----------------+
 | Variable_name            | Value           |
 +--------------------------+-----------------+
@@ -186,30 +185,30 @@ mysql&gt; SHOW VARIABLES WHERE Variable_name LIKE 'character\_set\_%' OR Variabl
 | collation_database       | utf8_general_ci |
 | collation_server         | utf8_general_ci |
 +--------------------------+-----------------+
-10 rows in set (0.01 sec)
-</code></p>
+10 rows <span class="k">in </span><span class="nb">set</span> <span class="o">(</span>0.01 sec<span class="o">)</span>
+</code></pre>
+</div>
 
-<h3 id="section-2">相关配置</h3>
-<p>#### 修改字符集<br />
-```shell
-[root@test ~]# cat /etc/my.cnf
-[client]
-default_character_set=utf8mb4</p>
+<h3 id="相关配置">相关配置</h3>
+<h4 id="修改字符集">修改字符集</h4>
+<div class="language-shell highlighter-rouge"><pre class="highlight"><code><span class="o">[</span>root@test ~]# cat /etc/my.cnf
+<span class="o">[</span>client]
+<span class="nv">default_character_set</span><span class="o">=</span>utf8mb4
 
-<p>[mysql]
-default_character_set=utf8mb4</p>
+<span class="o">[</span>mysql]
+<span class="nv">default_character_set</span><span class="o">=</span>utf8mb4
 
-<p>[mysqld]
-##Character settings
-init_connect=’SET NAMES utf8mb4’
-character_set_server=utf8mb4
-collation_server=utf8mb4_general_ci
+<span class="o">[</span>mysqld]
+<span class="c">##Character settings</span>
+<span class="nv">init_connect</span><span class="o">=</span><span class="s1">'SET NAMES utf8mb4'</span>
+<span class="nv">character_set_server</span><span class="o">=</span>utf8mb4
+<span class="nv">collation_server</span><span class="o">=</span>utf8mb4_general_ci
 skip_character_set_client_handshake
-```</p>
+</code></pre>
+</div>
 
-<h4 id="section-3">查看字符集</h4>
-<p><code class="highlighter-rouge">shell
-mysql&gt; SHOW VARIABLES WHERE Variable_name LIKE 'character\_set\_%' OR Variable_name LIKE 'collation%';
+<h4 id="查看字符集">查看字符集</h4>
+<div class="language-shell highlighter-rouge"><pre class="highlight"><code><span class="gp">mysql&gt; </span>SHOW VARIABLES WHERE Variable_name LIKE <span class="s1">'character\_set\_%'</span> OR Variable_name LIKE <span class="s1">'collation%'</span>;
 +--------------------------+--------------------+
 | Variable_name            | Value              |
 +--------------------------+--------------------+
@@ -224,55 +223,56 @@ mysql&gt; SHOW VARIABLES WHERE Variable_name LIKE 'character\_set\_%' OR Variabl
 | collation_database       | utf8mb4_general_ci |
 | collation_server         | utf8mb4_general_ci |
 +--------------------------+--------------------+
-10 rows in set (0.00 sec)
-</code></p>
+10 rows <span class="k">in </span><span class="nb">set</span> <span class="o">(</span>0.00 sec<span class="o">)</span>
+</code></pre>
+</div>
 
 <p><strong>已有库表字段修改</strong><br />
 对于已有实例、表、字段如果需支持Emoji表情，可按需修改字符集。如果只是某个字段需要，只需修改对应字段的字符集即可。</p>
 
-<p><strong>修改数据库字符集</strong><br />
-<code class="highlighter-rouge">shell
-ALTER DATABASE database_name CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
-</code></p>
+<p><strong>修改数据库字符集</strong></p>
+<div class="language-shell highlighter-rouge"><pre class="highlight"><code>ALTER DATABASE database_name CHARACTER SET <span class="o">=</span> utf8mb4 COLLATE <span class="o">=</span> utf8mb4_unicode_ci;
+</code></pre>
+</div>
 
-<p><strong>修改表的字符集</strong><br />
-<code class="highlighter-rouge">shell
-ALTER TABLE table_name CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-</code></p>
+<p><strong>修改表的字符集</strong></p>
+<div class="language-shell highlighter-rouge"><pre class="highlight"><code>ALTER TABLE table_name CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+</code></pre>
+</div>
 
-<p><strong>修改字段的字符集</strong><br />
-<code class="highlighter-rouge">shell
-ALTER TABLE table_name CHANGE column_name column_name VARCHAR(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-</code></p>
+<p><strong>修改字段的字符集</strong></p>
+<div class="language-shell highlighter-rouge"><pre class="highlight"><code>ALTER TABLE table_name CHANGE column_name column_name VARCHAR<span class="o">(</span>191<span class="o">)</span> CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+</code></pre>
+</div>
 
-<h3 id="section-4">注意事项</h3>
+<h3 id="注意事项">注意事项</h3>
 <p>如果通过以上配置还不支持Emoji表情，请Connector/J版本或查看sql_mode参数。</p>
 
 <h4 id="connector">Connector</h4>
 <p>connector版本大于5.1.13的不能加characterEncoding=utf8参数（未测试）。</p>
 
-<h4 id="sqlmode">sql_mode</h4>
-<p><code class="highlighter-rouge">shell
-mysql&gt; show variables like 'sql_mode';
+<h4 id="sql_mode">sql_mode</h4>
+<div class="language-shell highlighter-rouge"><pre class="highlight"><code><span class="gp">mysql&gt; </span>show variables like <span class="s1">'sql_mode'</span>;
 +---------------+----------------------------------------------------------------+
 | Variable_name | Value                                                          |
 +---------------+----------------------------------------------------------------+
 | sql_mode      | STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION |
 +---------------+----------------------------------------------------------------+
-1 row in set (0.00 sec)
-</code>
-若返回结果中带有STRICT_TRANS_TABLES，去掉即可。<br />
-<strong>动态配置</strong><br />
-<code class="highlighter-rouge">shell
-mysql&gt; set global sql_mode = 'NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION';
-</code></p>
+1 row <span class="k">in </span><span class="nb">set</span> <span class="o">(</span>0.00 sec<span class="o">)</span>
+</code></pre>
+</div>
+<p>若返回结果中带有STRICT_TRANS_TABLES，去掉即可。<br />
+<strong>动态配置</strong></p>
+<div class="language-shell highlighter-rouge"><pre class="highlight"><code><span class="gp">mysql&gt; </span><span class="nb">set </span>global sql_mode <span class="o">=</span> <span class="s1">'NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION'</span>;
+</code></pre>
+</div>
 
-<p><strong>永久配置</strong><br />
-<code class="highlighter-rouge">shell
-[root@test ~]# cat /etc/my.cnf
-[mysqld]
-sql_mode="NO_ENGINE_SUBSTITUTION,NO_AUTO_CREATE_USER"
-</code></p>
+<p><strong>永久配置</strong></p>
+<div class="language-shell highlighter-rouge"><pre class="highlight"><code><span class="o">[</span>root@test ~]# cat /etc/my.cnf
+<span class="o">[</span>mysqld]
+<span class="nv">sql_mode</span><span class="o">=</span><span class="s2">"NO_ENGINE_SUBSTITUTION,NO_AUTO_CREATE_USER"</span>
+</code></pre>
+</div>
 
 
 
@@ -358,22 +358,27 @@ sql_mode="NO_ENGINE_SUBSTITUTION,NO_AUTO_CREATE_USER"
 
 <section class="post-comments">
 
-
-    <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
-    <script src="https://img1.cache.netease.com/f2e/tie/yun/sdk/loader.js"></script>
-    <script>
-    var cloudTieConfig = {
-      url: document.location.href, 
-      sourceId: "",
-      productKey: "aa395cf7778f458492060f3f53301b7c",
-      target: "cloud-tie-wrapper"
-    };
-    var yunManualLoad = true;
-    Tie.loader("aHR0cHM6Ly9hcGkuZ2VudGllLjE2My5jb20vcGMvbGl2ZXNjcmlwdC5odG1s", true);
-    </script>
-
-
   
+    <div id="disqus_thread"></div>
+    <script>
+    
+    var disqus_config = function () {
+        this.page.url = "http://0.0.0.0:4000/2017/06/mysql_emoji/";
+        this.page.identifier = "/2017/06/mysql_emoji/";
+    };
+    var disqus_shortname = 'Wowking';
+    
+    (function() { // DON'T EDIT BELOW THIS LINE
+        var d = document, s = d.createElement('script');
+        s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+        })();
+    </script>
+    <noscript>要查看<a href="http://disqus.com/?ref_noscript"> Disqus </a>评论，请启用 JavaScript</noscript>
+    
+  
+
 </section>
 
 

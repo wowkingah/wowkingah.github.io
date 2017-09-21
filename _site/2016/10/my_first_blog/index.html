@@ -7,16 +7,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
   <title>My first blog for Jekyll~</title>
-  <meta name="description" content="Welcome ~##    This is my first blog for Jekyll.简单记录Jekyll安装步骤。">
+  <meta name="description" content="Welcome ~This is my first blog for Jekyll.简单记录Jekyll安装步骤。">
   <meta name="author" content="Wowking">
 
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="My first blog for Jekyll~">
-  <meta name="twitter:description" content="Welcome ~##    This is my first blog for Jekyll.简单记录Jekyll安装步骤。">
+  <meta name="twitter:description" content="Welcome ~This is my first blog for Jekyll.简单记录Jekyll安装步骤。">
   
   <meta property="og:type" content="article">
   <meta property="og:title" content="My first blog for Jekyll~">
-  <meta property="og:description" content="Welcome ~##    This is my first blog for Jekyll.简单记录Jekyll安装步骤。">
+  <meta property="og:description" content="Welcome ~This is my first blog for Jekyll.简单记录Jekyll安装步骤。">
   
   <link rel="icon" type="image/png" href="/images/favicon.png" />
   <link href="/images/favicon.png" rel="shortcut icon" type="image/png">
@@ -24,8 +24,8 @@
   <link rel="stylesheet" href="/css/main.css">
   <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
 
-  <link rel="canonical" href="https://wowkingah.github.io/2016/10/my_first_blog/">
-  <link rel="alternate" type="application/rss+xml" title="Wowking" href="https://wowkingah.github.io/feed.xml">
+  <link rel="canonical" href="http://0.0.0.0:4000/2016/10/my_first_blog/">
+  <link rel="alternate" type="application/rss+xml" title="Wowking" href="http://0.0.0.0:4000/feed.xml">
   
   <meta name="google-site-verification" content="1-1ZlHoRvM0T2FqPbW2S-qLgYXN6rsn52kErlMPd_gw" />
 
@@ -167,49 +167,49 @@
 
   <section class="post">
     <h1 id="welcome-">Welcome ~</h1>
-<p>##    This is my first blog for Jekyll.</p>
+<h2 id="this-is-my-first-blog-for-jekyll">This is my first blog for Jekyll.</h2>
 
 <p>简单记录Jekyll安装步骤。</p>
 
 <h3 id="ruby">Ruby</h3>
-<p>```bash
-[root@db_node01 srv]# yum -y install gcc
-[root@db_node01 srv]# curl -L get.rvm.io| bash -s stable
-[root@db_node01 srv]# source /etc/profile
-[root@db_node01 srv]# gem sources –remove https://rubygems.org/
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code><span class="o">[</span>root@db_node01 srv]# yum -y install gcc
+<span class="o">[</span>root@db_node01 srv]# curl -L get.rvm.io| bash -s stable
+<span class="o">[</span>root@db_node01 srv]# <span class="nb">source</span> /etc/profile
+<span class="o">[</span>root@db_node01 srv]# gem sources --remove https://rubygems.org/
 https://rubygems.org/ removed from sources
-[root@db_node01 srv]# gem sources -a https://ruby.taobao.org/
+<span class="o">[</span>root@db_node01 srv]# gem sources -a https://ruby.taobao.org/
 https://ruby.taobao.org/ added to sources
-[root@db_node01 srv]# gem sources -l
-<em>** CURRENT SOURCES **</em></p>
+<span class="o">[</span>root@db_node01 srv]# gem sources -l
+<span class="k">***</span> CURRENT SOURCES <span class="k">***</span>
 
-<p>https://ruby.taobao.org/
-[root@db_node01 srv]# rvm list known 
-[root@db_node01 srv]# rvm install 2.4</p>
+https://ruby.taobao.org/
+<span class="o">[</span>root@db_node01 srv]# rvm list known 
+<span class="o">[</span>root@db_node01 srv]# rvm install 2.4
 
-<h1 id="rubygems">RubyGems</h1>
-<p>[root@db_node01 ~]# wget https://rubygems.org/rubygems/rubygems-2.6.11.tgz
-–2017-04-21 21:37:43–  https://rubygems.org/rubygems/rubygems-2.6.11.tgz
-Resolving rubygems.org… 151.101.192.70, 151.101.64.70, 151.101.0.70, …
-Connecting to rubygems.org|151.101.192.70|:443… connected.
+<span class="c">#RubyGems</span>
+<span class="o">[</span>root@db_node01 ~]# wget https://rubygems.org/rubygems/rubygems-2.6.11.tgz
+--2017-04-21 21:37:43--  https://rubygems.org/rubygems/rubygems-2.6.11.tgz
+Resolving rubygems.org... 151.101.192.70, 151.101.64.70, 151.101.0.70, ...
+Connecting to rubygems.org|151.101.192.70|:443... connected.
 ERROR: certificate common name “l.ssl.fastly.net” doesn’t match requested host name “rubygems.org”.
-To connect to rubygems.org insecurely, use ‘–no-check-certificate’.
-[root@db_node01 ~]# wget –no-check-certificate https://rubygems.org/rubygems/rubygems-2.6.11.tgz
-[root@db_node01 ~]# tar -zxvf rubygems-2.6.11.tgz
-[root@db_node01 ~]# cd rubygems-2.6.11
-[root@db_node01 rubygems-2.6.11]# ruby setup.rb
-```</p>
+To connect to rubygems.org insecurely, use ‘--no-check-certificate’.
+<span class="o">[</span>root@db_node01 ~]# wget --no-check-certificate https://rubygems.org/rubygems/rubygems-2.6.11.tgz
+<span class="o">[</span>root@db_node01 ~]# tar -zxvf rubygems-2.6.11.tgz
+<span class="o">[</span>root@db_node01 ~]# <span class="nb">cd </span>rubygems-2.6.11
+<span class="o">[</span>root@db_node01 rubygems-2.6.11]# ruby setup.rb
+</code></pre>
+</div>
 
 <h3 id="jekyll">Jekyll</h3>
-<p><code class="highlighter-rouge">bash
-[root@db_node01 rubygems-2.6.11]# gem install jekyll bundler 
-[root@db_node01 wowkingah.github.io]# jekyll serve
-Could not find proper version of jekyll (3.1.1) in any of the sources
-Run `bundle install` to install missing gems.
-[root@db_node01 wowkingah.github.io]# bundle install
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code><span class="o">[</span>root@db_node01 rubygems-2.6.11]# gem install jekyll bundler 
+<span class="o">[</span>root@db_node01 wowkingah.github.io]# jekyll serve
+Could not find proper version of jekyll <span class="o">(</span>3.1.1<span class="o">)</span> <span class="k">in </span>any of the sources
+Run <span class="sb">`</span>bundle install<span class="sb">`</span> to install missing gems.
+<span class="o">[</span>root@db_node01 wowkingah.github.io]# bundle install
 bundle install
-[root@db_node01 wowkingah.github.io]# jekyll serve
-</code></p>
+<span class="o">[</span>root@db_node01 wowkingah.github.io]# jekyll serve
+</code></pre>
+</div>
 
 
 
@@ -281,7 +281,7 @@ bundle install
         
         
         <li class="next">
-            <a href="/2016/10/%E5%8A%A0%E5%AF%86%E8%84%9A%E6%9C%AC%E4%B8%ADMySQL%E7%94%A8%E6%88%B7%E5%AF%86%E7%A0%81/" data-toggle="tooltip" data-placement="top" title="加密脚本中MySQL用户密码">下一篇：  <span>加密脚本中MySQL用户密码</span>
+            <a href="/2016/10/mysql_password_encryption_in_script/" data-toggle="tooltip" data-placement="top" title="加密脚本中MySQL用户密码">下一篇：  <span>加密脚本中MySQL用户密码</span>
             </a>
         </li>
         
@@ -290,22 +290,27 @@ bundle install
 
 <section class="post-comments">
 
-
-    <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
-    <script src="https://img1.cache.netease.com/f2e/tie/yun/sdk/loader.js"></script>
-    <script>
-    var cloudTieConfig = {
-      url: document.location.href, 
-      sourceId: "",
-      productKey: "aa395cf7778f458492060f3f53301b7c",
-      target: "cloud-tie-wrapper"
-    };
-    var yunManualLoad = true;
-    Tie.loader("aHR0cHM6Ly9hcGkuZ2VudGllLjE2My5jb20vcGMvbGl2ZXNjcmlwdC5odG1s", true);
-    </script>
-
-
   
+    <div id="disqus_thread"></div>
+    <script>
+    
+    var disqus_config = function () {
+        this.page.url = "http://0.0.0.0:4000/2016/10/my_first_blog/";
+        this.page.identifier = "/2016/10/my_first_blog/";
+    };
+    var disqus_shortname = 'Wowking';
+    
+    (function() { // DON'T EDIT BELOW THIS LINE
+        var d = document, s = d.createElement('script');
+        s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+        })();
+    </script>
+    <noscript>要查看<a href="http://disqus.com/?ref_noscript"> Disqus </a>评论，请启用 JavaScript</noscript>
+    
+  
+
 </section>
 
 

@@ -2,59 +2,187 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Wowking</title>
-    <description>I don&#39;t really know where I&#39;m going, but I hope I go far.</description>
-    <link>https://wowkingah.github.io/</link>
-    <atom:link href="https://wowkingah.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Fri, 01 Sep 2017 17:48:42 +0800</pubDate>
-    <lastBuildDate>Fri, 01 Sep 2017 17:48:42 +0800</lastBuildDate>
-    <generator>Jekyll v3.1.1</generator>
+    <description>I don't really know where I'm going, but I hope I go far.</description>
+    <link>http://0.0.0.0:4000/</link>
+    <atom:link href="http://0.0.0.0:4000/feed.xml" rel="self" type="application/rss+xml"/>
+    <pubDate>Thu, 21 Sep 2017 17:43:38 +0800</pubDate>
+    <lastBuildDate>Thu, 21 Sep 2017 17:43:38 +0800</lastBuildDate>
+    <generator>Jekyll v3.5.2</generator>
+    
+      <item>
+        <title>MySQL server has gone away</title>
+        <description>&lt;h3 id=&quot;简述&quot;&gt;简述&lt;/h3&gt;
+&lt;p&gt;比较常见的一个报错日志：&lt;br /&gt;
+&lt;code class=&quot;highlighter-rouge&quot;&gt;ERROR 2006 (HY000): MySQL server has gone away&lt;/code&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;原因&quot;&gt;原因&lt;/h3&gt;
+&lt;h4 id=&quot;原因一mysql-服务宕了&quot;&gt;原因一：MySQL 服务宕了&lt;/h4&gt;
+&lt;h5 id=&quot;排查方法&quot;&gt;排查方法：&lt;/h5&gt;
+&lt;p&gt;&lt;strong&gt;1.1 查看MySQL运行时长&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;mysql&amp;gt; &lt;/span&gt;show global status like &lt;span class=&quot;s1&quot;&gt;'uptime'&lt;/span&gt;;  
++---------------+-------+  
+| Variable_name | Value |  
++---------------+-------+  
+| Uptime        | 138   |  
++---------------+-------+  
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;1.2 查看MySQL日志&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;root@ZTEST-218 ~]# tail /data/logs/mysql/mysqld.log 
+2017-09-21 11:12:47 7f13935fe700 InnoDB: Loading buffer pool&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;s&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; from .//ib_buffer_pool
+2017-09-21 11:12:48 9744 &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;Note] Server hostname &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;bind&lt;/span&gt;-address&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;: &lt;span class=&quot;s1&quot;&gt;'*'&lt;/span&gt;; port: 63306
+2017-09-21 11:12:48 9744 &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;Note] IPv6 is available.
+2017-09-21 11:12:48 9744 &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;Note]   - &lt;span class=&quot;s1&quot;&gt;'::'&lt;/span&gt; resolves to &lt;span class=&quot;s1&quot;&gt;'::'&lt;/span&gt;;
+2017-09-21 11:12:48 9744 &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;Note] Server socket created on IP: &lt;span class=&quot;s1&quot;&gt;'::'&lt;/span&gt;.
+2017-09-21 11:12:48 9744 &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;Warning] &lt;span class=&quot;s1&quot;&gt;'proxies_priv'&lt;/span&gt; entry &lt;span class=&quot;s1&quot;&gt;'@ root@ztest-217'&lt;/span&gt; ignored &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt; --skip-name-resolve mode.
+2017-09-21 11:12:48 9744 &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;Note] Event Scheduler: Loaded 0 events
+2017-09-21 11:12:48 9744 &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;Note] /usr/sbin/mysqld: ready &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;connections.
+Version: &lt;span class=&quot;s1&quot;&gt;'5.6.34-log'&lt;/span&gt;  socket: &lt;span class=&quot;s1&quot;&gt;'/var/lib/mysql/mysql.sock'&lt;/span&gt;  port: 63306  MySQL Community Server &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;GPL&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+2017-09-21 11:12:50 7f13935fe700 InnoDB: Buffer pool&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;s&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; load completed at 170921 11:12:50
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;p&gt;如果Uptime的值比较大，说明MySQL运行时间长，最近一段时间内没有重启服务之类的。&lt;br /&gt;
+如果MySQL错误日志中没有相关日志记录，也说明MySQL最近未重启。&lt;/p&gt;
+
+&lt;h4 id=&quot;原因二连接超时&quot;&gt;原因二：连接超时&lt;/h4&gt;
+&lt;h5 id=&quot;排查方法-1&quot;&gt;排查方法：&lt;/h5&gt;
+&lt;p&gt;如果程序使用的是长连接，则这种情况的可能性会比较大。&lt;br /&gt;
+即某个长连接很久没有活动，达到了MySQL Server端的time out，被Server强行关闭。此后再通过这个Client发起查询的时候，就会报错&lt;code class=&quot;highlighter-rouge&quot;&gt;MySQL server has gone away&lt;/code&gt;。&lt;/p&gt;
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;mysql&amp;gt; &lt;/span&gt;show global variables like &lt;span class=&quot;s1&quot;&gt;'wait_timeout'&lt;/span&gt;;
++---------------+-------+
+| Variable_name | Value |
++---------------+-------+
+| wait_timeout  | 3600  |
++---------------+-------+
+1 row &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;set&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.00 sec&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;gp&quot;&gt;mysql&amp;gt; &lt;/span&gt;&lt;span class=&quot;k&quot;&gt;select &lt;/span&gt;now&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;;
++---------------------+
+| now&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;               |
++---------------------+
+| 2017-09-21 11:27:31 |
++---------------------+
+1 row &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;set&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.00 sec&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;gp&quot;&gt;mysql&amp;gt; &lt;/span&gt;SET SESSION &lt;span class=&quot;nv&quot;&gt;wait_timeout&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;5;		&lt;span class=&quot;c&quot;&gt;#将wait_timeout修改为5s&lt;/span&gt;
+Query OK, 0 rows affected &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.00 sec&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;gp&quot;&gt;mysql&amp;gt; &lt;/span&gt;&lt;span class=&quot;k&quot;&gt;select &lt;/span&gt;now&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;;		&lt;span class=&quot;c&quot;&gt;#等待一段时间后，再次执行SQL&lt;/span&gt;
+ERROR 2006 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;HY000&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;: MySQL server has gone away
+No connection. Trying to reconnect...
+Connection id:    7
+Current database: &lt;span class=&quot;k&quot;&gt;***&lt;/span&gt; NONE &lt;span class=&quot;k&quot;&gt;***&lt;/span&gt;
+
++---------------------+
+| now&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;               |
++---------------------+
+| 2017-09-21 11:27:53 |
++---------------------+
+1 row &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;set&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.00 sec&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;p&gt;当连接sleep时间超过wait_timeout时间后，再次发起活动查询时，就会报这个错。&lt;/p&gt;
+
+&lt;h4 id=&quot;原因三进程在server端被主动kill&quot;&gt;原因三：进程在Server端被主动&lt;code class=&quot;highlighter-rouge&quot;&gt;kill&lt;/code&gt;&lt;/h4&gt;
+&lt;h5 id=&quot;排查方法-2&quot;&gt;排查方法：&lt;/h5&gt;
+&lt;p&gt;这种原因和第2种原因比较相似，只是发起者是DBA，或者其他job，发现有长时间的慢查询执行kill xxx导致。&lt;/p&gt;
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;mysql&amp;gt; &lt;/span&gt;show global status like &lt;span class=&quot;s1&quot;&gt;'com_kill'&lt;/span&gt;;
++---------------+-------+
+| Variable_name | Value |
++---------------+-------+
+| Com_kill      | 1     |
++---------------+-------+
+1 row &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;set&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.00 sec&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h4 id=&quot;原因三your-sql-statement-was-too-large&quot;&gt;原因三：Your SQL statement was too large&lt;/h4&gt;
+&lt;h5 id=&quot;排查方法-3&quot;&gt;排查方法：&lt;/h5&gt;
+&lt;p&gt;当查询的结果集超过&lt;code class=&quot;highlighter-rouge&quot;&gt;max_allowed_packet&lt;/code&gt;也会出现这样的报错，定位方法是打出相关报错的语句。 用 &lt;code class=&quot;highlighter-rouge&quot;&gt;select * into outfile&lt;/code&gt; 的方式导出到文件，查看文件大小是否超过 &lt;code class=&quot;highlighter-rouge&quot;&gt;max_allowed_packet&lt;/code&gt;，如果超过则需要调整参数，或者优化语句。&lt;/p&gt;
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;mysql&amp;gt; &lt;/span&gt;show global variables like &lt;span class=&quot;s1&quot;&gt;'max_allowed_packet'&lt;/span&gt;;
++--------------------+----------+
+| Variable_name      | Value    |
++--------------------+----------+
+| max_allowed_packet | 16777216 |
++--------------------+----------+
+1 row &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;set&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.00 sec&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;  
+
+&lt;span class=&quot;gp&quot;&gt;mysql&amp;gt; &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;set &lt;/span&gt;global &lt;span class=&quot;nv&quot;&gt;max_allowed_packet&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1024&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;1024&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;32;		&lt;span class=&quot;c&quot;&gt;#修改参数&lt;/span&gt;
+Query OK, 0 rows affected &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.00 sec&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;gp&quot;&gt;mysql&amp;gt; &lt;/span&gt;show global variables like &lt;span class=&quot;s1&quot;&gt;'max_allowed_packet'&lt;/span&gt;;
++--------------------+----------+
+| Variable_name      | Value    |
++--------------------+----------+
+| max_allowed_packet | 33554432 |
++--------------------+----------+
+1 row &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;set&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.00 sec&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h3 id=&quot;reference&quot;&gt;reference&lt;/h3&gt;
+&lt;p&gt;http://cenalulu.github.io/mysql/mysql-has-gone-away/&lt;/p&gt;
+</description>
+        <pubDate>Thu, 21 Sep 2017 00:00:00 +0800</pubDate>
+        <link>http://0.0.0.0:4000/2017/09/mysql_server_has_gone_away/</link>
+        <guid isPermaLink="true">http://0.0.0.0:4000/2017/09/mysql_server_has_gone_away/</guid>
+        
+        <category>MySQL</category>
+        
+        
+      </item>
     
       <item>
         <title>Oracle 超过最大进程数</title>
-        <description>&lt;h3 id=&quot;section&quot;&gt;简述&lt;/h3&gt;
+        <description>&lt;h3 id=&quot;简述&quot;&gt;简述&lt;/h3&gt;
 &lt;p&gt;Oracle超过最大进程数。&lt;/p&gt;
 
-&lt;h3 id=&quot;section-1&quot;&gt;报错&lt;/h3&gt;
-&lt;p&gt;#### a.客户端连接报错 &lt;br /&gt;
-ORA-12519: TNS:no appropriate service handler found&lt;/p&gt;
+&lt;h3 id=&quot;报错&quot;&gt;报错&lt;/h3&gt;
+&lt;h4 id=&quot;a客户端连接报错&quot;&gt;a.客户端连接报错&lt;/h4&gt;
+&lt;p&gt;ORA-12519: TNS:no appropriate service handler found&lt;/p&gt;
 
-&lt;h4 id=&quot;b&quot;&gt;b.命令行连接报错&lt;/h4&gt;
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;shell
-SQL&amp;gt; conn /as sysdba;  
+&lt;h4 id=&quot;b命令行连接报错&quot;&gt;b.命令行连接报错&lt;/h4&gt;
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;SQL&amp;gt; &lt;/span&gt;conn /as sysdba;  
 ERROR:  
-ORA-00020: maximum number of processes (150) exceeded  
-&lt;/code&gt;&lt;/p&gt;
+ORA-00020: maximum number of processes &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;150&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; exceeded  
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
-&lt;h3 id=&quot;section-2&quot;&gt;解决方案&lt;/h3&gt;
+&lt;h3 id=&quot;解决方案&quot;&gt;解决方案&lt;/h3&gt;
 &lt;blockquote&gt;
   &lt;p&gt;1.重启或停止问题客户端（如问题Tomcat/Nginx），释放几个空闲连接；&lt;br /&gt;
-2.查看当前进程数；&lt;br /&gt;
-```shell
-SQL&amp;gt; select count(1) from v$process;&lt;/p&gt;
+2.查看当前进程数；&lt;/p&gt;
+  &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;SQL&amp;gt; &lt;/span&gt;&lt;span class=&quot;k&quot;&gt;select &lt;/span&gt;count&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; from v&lt;span class=&quot;nv&quot;&gt;$process&lt;/span&gt;;  
 
-  &lt;h2 id=&quot;count1&quot;&gt;COUNT(1)&lt;/h2&gt;
-  &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;   147   ``` 3.查看最大进程数；   ```shell SQL&amp;gt; select value from v$parameter where name = &#39;processes&#39;;  
+  COUNT&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;  
+----------  
+       147  
 &lt;/code&gt;&lt;/pre&gt;
   &lt;/div&gt;
+  &lt;p&gt;3.查看最大进程数；&lt;/p&gt;
+  &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;SQL&amp;gt; &lt;/span&gt;&lt;span class=&quot;k&quot;&gt;select &lt;/span&gt;value from v&lt;span class=&quot;nv&quot;&gt;$parameter&lt;/span&gt; where name &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'processes'&lt;/span&gt;;  
 
-  &lt;h2 id=&quot;value&quot;&gt;VALUE&lt;/h2&gt;
-  &lt;p&gt;150&lt;br /&gt;
-&lt;code class=&quot;highlighter-rouge&quot;&gt;
-4.修改最大进程数；  
-&lt;/code&gt;shell
-SQL&amp;gt; alter system set processes = 512 scope = spfile;&lt;br /&gt;
-&lt;code class=&quot;highlighter-rouge&quot;&gt;
-5.重启数据库。  
-&lt;/code&gt;shell
-SQL&amp;gt; conn /as sysdba;&lt;br /&gt;
-SQL&amp;gt; shutdown immediate;&lt;br /&gt;
-SQL&amp;gt; startup;&lt;br /&gt;
-```&lt;/p&gt;
+VALUE  
+--------------------------------------------------------------------------------  
+150  
+&lt;/code&gt;&lt;/pre&gt;
+  &lt;/div&gt;
+  &lt;p&gt;4.修改最大进程数；&lt;/p&gt;
+  &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;SQL&amp;gt; &lt;/span&gt;alter system &lt;span class=&quot;nb&quot;&gt;set &lt;/span&gt;processes &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 512 scope &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; spfile;  
+&lt;/code&gt;&lt;/pre&gt;
+  &lt;/div&gt;
+  &lt;p&gt;5.重启数据库。&lt;/p&gt;
+  &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;SQL&amp;gt; &lt;/span&gt;conn /as sysdba;  
+&lt;span class=&quot;gp&quot;&gt;SQL&amp;gt; &lt;/span&gt;shutdown immediate;  
+&lt;span class=&quot;gp&quot;&gt;SQL&amp;gt; &lt;/span&gt;startup;  
+&lt;/code&gt;&lt;/pre&gt;
+  &lt;/div&gt;
 &lt;/blockquote&gt;
 </description>
         <pubDate>Fri, 01 Sep 2017 00:00:00 +0800</pubDate>
-        <link>https://wowkingah.github.io/2017/09/oracle_maximum_number_of_processes/</link>
-        <guid isPermaLink="true">https://wowkingah.github.io/2017/09/oracle_maximum_number_of_processes/</guid>
+        <link>http://0.0.0.0:4000/2017/09/oracle_maximum_number_of_processes/</link>
+        <guid isPermaLink="true">http://0.0.0.0:4000/2017/09/oracle_maximum_number_of_processes/</guid>
         
         <category>Oracle</category>
         
@@ -63,84 +191,84 @@ SQL&amp;gt; startup;&lt;br /&gt;
     
       <item>
         <title>MySQL INSERT条件判断</title>
-        <description>&lt;h3 id=&quot;section&quot;&gt;简述&lt;/h3&gt;
+        <description>&lt;h3 id=&quot;简述&quot;&gt;简述&lt;/h3&gt;
 &lt;p&gt;INSERT条件判断：如果不存在则插入。REPLACE判断：如果存在则替换。&lt;br /&gt;
 对于普通的 INSERT 插入，如果想要保证不插入重复记录，可以通过唯一索引实现。&lt;br /&gt;
 那有没有不创建唯一索引，仅通过 INSERT 一条语句实现的方案呢？ INSERT INTO IF EXISTS就来了。&lt;/p&gt;
 
-&lt;h3 id=&quot;section-1&quot;&gt;语法&lt;/h3&gt;
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;sql
-INSERT INTO t_name(c1, c2, cn) SELECT &#39;v1&#39;, &#39;v2&#39;, &#39;vn&#39; FROM DUAL WHERE NOT EXISTS(SELECT c1 FROM t_name WHERE c1 = ?);
-&lt;/code&gt;
-&lt;em&gt;tips: DUAL 为临时表，无需创建。&lt;/em&gt;&lt;/p&gt;
+&lt;h3 id=&quot;语法&quot;&gt;语法&lt;/h3&gt;
+&lt;div class=&quot;language-sql highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;INSERT&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;INTO&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;t_name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;c1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;c2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;SELECT&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'v1'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'v2'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'vn'&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;FROM&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;DUAL&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;WHERE&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;NOT&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;EXISTS&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;SELECT&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;c1&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;FROM&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;t_name&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;WHERE&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;c1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;?&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;p&gt;&lt;em&gt;tips: DUAL 为临时表，无需创建。&lt;/em&gt;&lt;/p&gt;
 
-&lt;h3 id=&quot;section-2&quot;&gt;示例&lt;/h3&gt;
-&lt;p&gt;#### 环境&lt;br /&gt;
-```shell
-mysql&amp;gt; DROP TABLE IF EXISTS t1;
-Query OK, 0 rows affected (0.20 sec)&lt;/p&gt;
+&lt;h3 id=&quot;示例&quot;&gt;示例&lt;/h3&gt;
+&lt;h4 id=&quot;环境&quot;&gt;环境&lt;/h4&gt;
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;mysql&amp;gt; &lt;/span&gt;DROP TABLE IF EXISTS t1;
+Query OK, 0 rows affected &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.20 sec&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
 
-&lt;p&gt;mysql&amp;gt; CREATE TABLE &lt;code class=&quot;highlighter-rouge&quot;&gt;t1&lt;/code&gt; (
-    -&amp;gt;   &lt;code class=&quot;highlighter-rouge&quot;&gt;id&lt;/code&gt; int(11) unsigned NOT NULL AUTO_INCREMENT,
-    -&amp;gt;   &lt;code class=&quot;highlighter-rouge&quot;&gt;name&lt;/code&gt; varchar(8) NULL,
-    -&amp;gt;   PRIMARY KEY (&lt;code class=&quot;highlighter-rouge&quot;&gt;id&lt;/code&gt;)
-    -&amp;gt; );
-Query OK, 0 rows affected (0.78 sec)&lt;/p&gt;
+&lt;span class=&quot;gp&quot;&gt;mysql&amp;gt; &lt;/span&gt;CREATE TABLE &lt;span class=&quot;sb&quot;&gt;`&lt;/span&gt;t1&lt;span class=&quot;sb&quot;&gt;`&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;
+    -&amp;gt;   &lt;span class=&quot;sb&quot;&gt;`&lt;/span&gt;id&lt;span class=&quot;sb&quot;&gt;`&lt;/span&gt; int&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;11&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; unsigned NOT NULL AUTO_INCREMENT,
+    -&amp;gt;   &lt;span class=&quot;sb&quot;&gt;`&lt;/span&gt;name&lt;span class=&quot;sb&quot;&gt;`&lt;/span&gt; varchar&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;8&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; NULL,
+    -&amp;gt;   PRIMARY KEY &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;sb&quot;&gt;`&lt;/span&gt;id&lt;span class=&quot;sb&quot;&gt;`&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+    -&amp;gt; &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;;
+Query OK, 0 rows affected &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.78 sec&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
 
-&lt;p&gt;mysql&amp;gt; INSERT INTO t1(name) VALUES (‘aa’),(‘bb’);
-Query OK, 2 rows affected (0.06 sec)
-Records: 2  Duplicates: 0  Warnings: 0&lt;/p&gt;
+&lt;span class=&quot;gp&quot;&gt;mysql&amp;gt; &lt;/span&gt;INSERT INTO t1&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;name&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; VALUES &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'aa'&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;,&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'bb'&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;;
+Query OK, 2 rows affected &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.06 sec&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+Records: 2  Duplicates: 0  Warnings: 0
 
-&lt;p&gt;mysql&amp;gt; SELECT * FROM t1;
-+—-+——+
+&lt;span class=&quot;gp&quot;&gt;mysql&amp;gt; &lt;/span&gt;SELECT &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; FROM t1;
++----+------+
 | id | name |
-+—-+——+
++----+------+
 |  1 | aa   |
 |  2 | bb   |
-+—-+——+
-2 rows in set (0.00 sec)
-```&lt;/p&gt;
++----+------+
+2 rows &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;set&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.00 sec&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
-&lt;h4 id=&quot;section-3&quot;&gt;测试&lt;/h4&gt;
-&lt;p&gt;```sql
-mysql&amp;gt; INSERT INTO t1(name) VALUES(‘aa’);
-Query OK, 1 row affected (0.08 sec)&lt;/p&gt;
+&lt;h4 id=&quot;测试&quot;&gt;测试&lt;/h4&gt;
+&lt;div class=&quot;language-sql highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;mysql&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;INSERT&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;INTO&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;t1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;VALUES&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'aa'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;Query&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;OK&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;row&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;affected&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;08&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sec&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
 
-&lt;p&gt;mysql&amp;gt; SELECT * FROM t1;
-+—-+——+
-| id | name |
-+—-+——+
-|  1 | aa   |
-|  2 | bb   |
-|  3 | aa   |
-+—-+——+
-3 rows in set (0.00 sec)
-```
-&lt;em&gt;tips: 因name列无唯一索引，故aa可以插入。&lt;/em&gt;&lt;/p&gt;
+&lt;span class=&quot;n&quot;&gt;mysql&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;SELECT&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;FROM&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;t1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;----+------+&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;id&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;name&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;----+------+&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;  &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;aa&lt;/span&gt;   &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;  &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;bb&lt;/span&gt;   &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;  &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;aa&lt;/span&gt;   &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;----+------+&lt;/span&gt;
+&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;rows&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;set&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;00&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sec&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;p&gt;&lt;em&gt;tips: 因name列无唯一索引，故aa可以插入。&lt;/em&gt;&lt;/p&gt;
 
-&lt;p&gt;```sql
-mysql&amp;gt; INSERT INTO t1(name) SELECT ‘bb’ FROM DUAL WHERE NOT EXISTS(SELECT name FROM t1 WHERE name=’bb’);
-Query OK, 0 rows affected (0.00 sec)
-Records: 0  Duplicates: 0  Warnings: 0&lt;/p&gt;
+&lt;div class=&quot;language-sql highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;mysql&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;INSERT&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;INTO&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;t1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;SELECT&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'bb'&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;FROM&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;DUAL&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;WHERE&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;NOT&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;EXISTS&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;SELECT&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;name&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;FROM&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;t1&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;WHERE&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'bb'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;Query&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;OK&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;rows&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;affected&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;00&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sec&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;Records&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;Duplicates&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;Warnings&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;
 
-&lt;p&gt;mysql&amp;gt; SELECT * FROM t1;
-+—-+——+
-| id | name |
-+—-+——+
-|  1 | aa   |
-|  2 | bb   |
-|  3 | aa   |
-+—-+——+
-3 rows in set (0.00 sec)
-```
-&lt;em&gt;tips: bb未插入。&lt;/em&gt;&lt;/p&gt;
+&lt;span class=&quot;n&quot;&gt;mysql&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;SELECT&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;FROM&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;t1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;----+------+&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;id&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;name&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;----+------+&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;  &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;aa&lt;/span&gt;   &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;  &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;bb&lt;/span&gt;   &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;  &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;aa&lt;/span&gt;   &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;----+------+&lt;/span&gt;
+&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;rows&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;set&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;00&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sec&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;p&gt;&lt;em&gt;tips: bb未插入。&lt;/em&gt;&lt;/p&gt;
 
 &lt;h3 id=&quot;reference&quot;&gt;reference&lt;/h3&gt;
 &lt;p&gt;https://my.oschina.net/jsan/blog/270161/&lt;/p&gt;
 </description>
         <pubDate>Tue, 08 Aug 2017 00:00:00 +0800</pubDate>
-        <link>https://wowkingah.github.io/2017/08/mysql_insert_condition/</link>
-        <guid isPermaLink="true">https://wowkingah.github.io/2017/08/mysql_insert_condition/</guid>
+        <link>http://0.0.0.0:4000/2017/08/mysql_insert_condition/</link>
+        <guid isPermaLink="true">http://0.0.0.0:4000/2017/08/mysql_insert_condition/</guid>
         
         <category>MySQL</category>
         
@@ -149,10 +277,10 @@ Records: 0  Duplicates: 0  Warnings: 0&lt;/p&gt;
     
       <item>
         <title>Redis性能测试</title>
-        <description>&lt;h3 id=&quot;section&quot;&gt;简述&lt;/h3&gt;
+        <description>&lt;h3 id=&quot;简述&quot;&gt;简述&lt;/h3&gt;
 &lt;p&gt;简单压一把Redis在VM和Docker下性能如何。&lt;/p&gt;
 
-&lt;h3 id=&quot;section-1&quot;&gt;环境&lt;/h3&gt;
+&lt;h3 id=&quot;环境&quot;&gt;环境&lt;/h3&gt;
 &lt;p&gt;&lt;strong&gt;VM&lt;/strong&gt;&lt;br /&gt;
 CPU: 2C&lt;br /&gt;
 Mem: 2G&lt;br /&gt;
@@ -163,7 +291,7 @@ CPU: 2C&lt;br /&gt;
 Mem: 2G&lt;br /&gt;
 OS: CentOS release 6.9 (Final)&lt;/p&gt;
 
-&lt;h3 id=&quot;section-2&quot;&gt;测试基准值&lt;/h3&gt;
+&lt;h3 id=&quot;测试基准值&quot;&gt;测试基准值&lt;/h3&gt;
 &lt;blockquote&gt;
   &lt;ul&gt;
     &lt;li&gt;tools: redis-benchmark&lt;/li&gt;
@@ -175,36 +303,44 @@ OS: CentOS release 6.9 (Final)&lt;/p&gt;
   &lt;/ul&gt;
 &lt;/blockquote&gt;
 
-&lt;h3 id=&quot;section-3&quot;&gt;测试结果&lt;/h3&gt;
-&lt;p&gt;#### SET&lt;br /&gt;
-&lt;img src=&quot;/images/posts/dba/redis_performance_test/qps_set.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;h3 id=&quot;测试结果&quot;&gt;测试结果&lt;/h3&gt;
+&lt;h4 id=&quot;set&quot;&gt;SET&lt;/h4&gt;
+&lt;p&gt;&lt;img src=&quot;/images/posts/dba/redis_performance_test/qps_set.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;h4 id=&quot;get&quot;&gt;GET&lt;/h4&gt;
 &lt;p&gt;&lt;img src=&quot;/images/posts/dba/redis_performance_test/qps_get.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
-&lt;h3 id=&quot;section-4&quot;&gt;测试结论&lt;/h3&gt;
+&lt;h3 id=&quot;测试结论&quot;&gt;测试结论&lt;/h3&gt;
 &lt;p&gt;由于Docker很多内核参数不能调整，该测试结果建立在环境尽量一致的前提下。&lt;br /&gt;
 从上图测试结果看，并发数小于256时，VM读写QPS要高于Docker；并发数大于512后，Docker读写QPS要高于VM。&lt;/p&gt;
 
-&lt;h3 id=&quot;section-5&quot;&gt;其它&lt;/h3&gt;
+&lt;h3 id=&quot;其它&quot;&gt;其它&lt;/h3&gt;
 &lt;p&gt;-P: 使用管道，默认值”1”。
-Redis是一种基于客户端-服务端模型以及请求响应协议的TCP服务。这意味着通常情况下一个请求会遵循以下步骤：&lt;br /&gt;
-&amp;gt;* 客户端向服务端发送一个查询请求，并监听Socket返回，通常是以阻塞模式，等待服务端响应。&lt;br /&gt;
-&amp;gt;* 服务端处理命令，并将结果返回给客户端。&lt;/p&gt;
+Redis是一种基于客户端-服务端模型以及请求响应协议的TCP服务。这意味着通常情况下一个请求会遵循以下步骤：&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;ul&gt;
+    &lt;li&gt;客户端向服务端发送一个查询请求，并监听Socket返回，通常是以阻塞模式，等待服务端响应。&lt;/li&gt;
+    &lt;li&gt;服务端处理命令，并将结果返回给客户端。&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/blockquote&gt;
 
 &lt;p&gt;Redis管道技术可以在服务端未响应时，客户端可以继续向服务端发送请求，并最终一次性读取所有服务端的响应。管道技术最显著的优势是提高了redis服务的性能。&lt;/p&gt;
 
 &lt;p&gt;-r：不是request，而是random。后面跟的一个正整数M的含义是：0 ~ M之间的一个随机数，例如：-r 10，意思是随机0~9之间的一个数字。&lt;/p&gt;
 
 &lt;p&gt;PING_INLINE和PING_BULK&lt;br /&gt;
-在统一请求协议之前，Redis使用一个不同的协议来发送命令，这个协议仍然被支持因为通过telnet它很容易手写。在这个协议中存在两种命令：&lt;br /&gt;
-&amp;gt; 1. ?inline命令:命令很简单，就是用空格把参数分隔开来的字符串。二进制安全是不可能的。
-&amp;gt; 2. ?bulk命令: bulk命令和inline命令几乎是一样的，但是最后一个参数为了能够接受二进制安全的内容，所以需要以特殊的方式进行处理。&lt;/p&gt;
+在统一请求协议之前，Redis使用一个不同的协议来发送命令，这个协议仍然被支持因为通过telnet它很容易手写。在这个协议中存在两种命令：&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;ol&gt;
+    &lt;li&gt;?inline命令:命令很简单，就是用空格把参数分隔开来的字符串。二进制安全是不可能的。&lt;/li&gt;
+    &lt;li&gt;?bulk命令: bulk命令和inline命令几乎是一样的，但是最后一个参数为了能够接受二进制安全的内容，所以需要以特殊的方式进行处理。&lt;/li&gt;
+  &lt;/ol&gt;
+&lt;/blockquote&gt;
 
 </description>
         <pubDate>Thu, 13 Jul 2017 00:00:00 +0800</pubDate>
-        <link>https://wowkingah.github.io/2017/07/redis_performance_test/</link>
-        <guid isPermaLink="true">https://wowkingah.github.io/2017/07/redis_performance_test/</guid>
+        <link>http://0.0.0.0:4000/2017/07/redis_performance_test/</link>
+        <guid isPermaLink="true">http://0.0.0.0:4000/2017/07/redis_performance_test/</guid>
         
         <category>Redis</category>
         
@@ -217,10 +353,10 @@ Redis是一种基于客户端-服务端模型以及请求响应协议的TCP服�
     
       <item>
         <title>MySQL清理binary日志</title>
-        <description>&lt;h3 id=&quot;section&quot;&gt;简述&lt;/h3&gt;
+        <description>&lt;h3 id=&quot;简述&quot;&gt;简述&lt;/h3&gt;
 &lt;p&gt;当MySQL开启binary log（二进制日志）后，会产生大量日志文件，时间久了会占用不少磁盘空间。&lt;/p&gt;
 
-&lt;h3 id=&quot;section-1&quot;&gt;解决方案&lt;/h3&gt;
+&lt;h3 id=&quot;解决方案&quot;&gt;解决方案&lt;/h3&gt;
 &lt;blockquote&gt;
   &lt;ol&gt;
     &lt;li&gt;自动清理：expire_logs_days&lt;/li&gt;
@@ -229,62 +365,59 @@ Redis是一种基于客户端-服务端模型以及请求响应协议的TCP服�
   &lt;/ol&gt;
 &lt;/blockquote&gt;
 
-&lt;h4 id=&quot;section-2&quot;&gt;自动清理&lt;/h4&gt;
-&lt;p&gt;自动清理可通过expire_logs_days参数来实现。&lt;br /&gt;
-* MySQL中动态修改&lt;br /&gt;
-&lt;code class=&quot;highlighter-rouge&quot;&gt;shell
-mysql&amp;gt; SHOW GLOBAL VARIABLES LIKE &#39;expire_logs_days&#39;;  
-mysql&amp;gt; SET GLOBAL expire_logs_days =15;  
-&lt;/code&gt;&lt;/p&gt;
-
+&lt;h4 id=&quot;自动清理&quot;&gt;自动清理&lt;/h4&gt;
+&lt;p&gt;自动清理可通过expire_logs_days参数来实现。&lt;/p&gt;
 &lt;ul&gt;
+  &lt;li&gt;MySQL中动态修改
+    &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;mysql&amp;gt; &lt;/span&gt;SHOW GLOBAL VARIABLES LIKE &lt;span class=&quot;s1&quot;&gt;'expire_logs_days'&lt;/span&gt;;  
+&lt;span class=&quot;gp&quot;&gt;mysql&amp;gt; &lt;/span&gt;SET GLOBAL expire_logs_days &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;15;  
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
   &lt;li&gt;写入my.cnf配置文件&lt;br /&gt;
 &lt;code class=&quot;highlighter-rouge&quot;&gt;expire_logs_days =15&lt;/code&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h4 id=&quot;section-3&quot;&gt;手动清理&lt;/h4&gt;
-&lt;p&gt;&lt;strong&gt;语法&lt;/strong&gt;&lt;br /&gt;
-&lt;code class=&quot;highlighter-rouge&quot;&gt;shell
-PURGE {MASTER | BINARY} LOGS TO &#39;binary_log_name&#39;   
-PURGE {MASTER | BINARY} LOGS BEFORE &#39;date&#39;   
-&lt;/code&gt;
-&lt;em&gt;tips: 删除二进制日志索引（index）中指定日志或日期之前的二进制日志。&lt;/em&gt;&lt;/p&gt;
+&lt;h4 id=&quot;手动清理&quot;&gt;手动清理&lt;/h4&gt;
+&lt;p&gt;&lt;strong&gt;语法&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;PURGE &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;MASTER | BINARY&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt; LOGS TO &lt;span class=&quot;s1&quot;&gt;'binary_log_name'&lt;/span&gt;   
+PURGE &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;MASTER | BINARY&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt; LOGS BEFORE &lt;span class=&quot;s1&quot;&gt;'date'&lt;/span&gt;   
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;p&gt;&lt;em&gt;tips: 删除二进制日志索引（index）中指定日志或日期之前的二进制日志。&lt;/em&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;strong&gt;实例&lt;/strong&gt;&lt;br /&gt;
-&lt;code class=&quot;highlighter-rouge&quot;&gt;shell
-mysql&amp;gt; SHOW MASTER LOGS;  
-# 15天前  
-mysql&amp;gt; PURGE MASTER LOGS BEFORE DATE_SUB(CURRENT_DATE, INTERVAL 15 DAY);  
-#删除日志文件到mysql-bin.000152  
-mysql&amp;gt; PURGE MASTER LOGS TO &#39;mysql-bin.000152&#39;;   
-&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;实例&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;mysql&amp;gt; &lt;/span&gt;SHOW MASTER LOGS;  
+&lt;span class=&quot;c&quot;&gt;# 15天前  &lt;/span&gt;
+&lt;span class=&quot;gp&quot;&gt;mysql&amp;gt; &lt;/span&gt;PURGE MASTER LOGS BEFORE DATE_SUB&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;CURRENT_DATE, INTERVAL 15 DAY&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;;  
+&lt;span class=&quot;c&quot;&gt;#删除日志文件到mysql-bin.000152  &lt;/span&gt;
+&lt;span class=&quot;gp&quot;&gt;mysql&amp;gt; &lt;/span&gt;PURGE MASTER LOGS TO &lt;span class=&quot;s1&quot;&gt;'mysql-bin.000152'&lt;/span&gt;;   
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
-&lt;h4 id=&quot;section-4&quot;&gt;重置日志&lt;/h4&gt;
-&lt;p&gt;高危命令，会清理所有要清理的日志，一般不常用。&lt;br /&gt;
-&lt;code class=&quot;highlighter-rouge&quot;&gt;shell
-mysql&amp;gt; RESET MASTER;  
-&lt;/code&gt;&lt;/p&gt;
+&lt;h4 id=&quot;重置日志&quot;&gt;重置日志&lt;/h4&gt;
+&lt;p&gt;高危命令，会清理所有要清理的日志，一般不常用。&lt;/p&gt;
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;mysql&amp;gt; &lt;/span&gt;RESET MASTER;  
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
 </description>
         <pubDate>Tue, 27 Jun 2017 00:00:00 +0800</pubDate>
-        <link>https://wowkingah.github.io/2017/06/clean_binary_log_for_mysql/</link>
-        <guid isPermaLink="true">https://wowkingah.github.io/2017/06/clean_binary_log_for_mysql/</guid>
+        <link>http://0.0.0.0:4000/2017/06/clean_binary_log_for_mysql/</link>
+        <guid isPermaLink="true">http://0.0.0.0:4000/2017/06/clean_binary_log_for_mysql/</guid>
         
         <category>MySQL</category>
-        
-        <category>binary</category>
         
         
       </item>
     
       <item>
         <title>MySQL支持Emoji表情</title>
-        <description>&lt;h3 id=&quot;section&quot;&gt;简述&lt;/h3&gt;
+        <description>&lt;h3 id=&quot;简述&quot;&gt;简述&lt;/h3&gt;
 &lt;p&gt;MySQL 5.5.3开始通过修改字符集来支持Emoji表情。&lt;/p&gt;
 
-&lt;h3 id=&quot;section-1&quot;&gt;查看当前字符集&lt;/h3&gt;
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;shell
-mysql&amp;gt; SHOW VARIABLES WHERE Variable_name LIKE &#39;character\_set\_%&#39; OR Variable_name LIKE &#39;collation%&#39;;
+&lt;h3 id=&quot;查看当前字符集&quot;&gt;查看当前字符集&lt;/h3&gt;
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;mysql&amp;gt; &lt;/span&gt;SHOW VARIABLES WHERE Variable_name LIKE &lt;span class=&quot;s1&quot;&gt;'character\_set\_%'&lt;/span&gt; OR Variable_name LIKE &lt;span class=&quot;s1&quot;&gt;'collation%'&lt;/span&gt;;
 +--------------------------+-----------------+
 | Variable_name            | Value           |
 +--------------------------+-----------------+
@@ -299,30 +432,30 @@ mysql&amp;gt; SHOW VARIABLES WHERE Variable_name LIKE &#39;character\_set\_%&#39
 | collation_database       | utf8_general_ci |
 | collation_server         | utf8_general_ci |
 +--------------------------+-----------------+
-10 rows in set (0.01 sec)
-&lt;/code&gt;&lt;/p&gt;
+10 rows &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;set&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.01 sec&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
-&lt;h3 id=&quot;section-2&quot;&gt;相关配置&lt;/h3&gt;
-&lt;p&gt;#### 修改字符集&lt;br /&gt;
-```shell
-[root@test ~]# cat /etc/my.cnf
-[client]
-default_character_set=utf8mb4&lt;/p&gt;
+&lt;h3 id=&quot;相关配置&quot;&gt;相关配置&lt;/h3&gt;
+&lt;h4 id=&quot;修改字符集&quot;&gt;修改字符集&lt;/h4&gt;
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;root@test ~]# cat /etc/my.cnf
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;client]
+&lt;span class=&quot;nv&quot;&gt;default_character_set&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;utf8mb4
 
-&lt;p&gt;[mysql]
-default_character_set=utf8mb4&lt;/p&gt;
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;mysql]
+&lt;span class=&quot;nv&quot;&gt;default_character_set&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;utf8mb4
 
-&lt;p&gt;[mysqld]
-##Character settings
-init_connect=’SET NAMES utf8mb4’
-character_set_server=utf8mb4
-collation_server=utf8mb4_general_ci
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;mysqld]
+&lt;span class=&quot;c&quot;&gt;##Character settings&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;init_connect&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'SET NAMES utf8mb4'&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;character_set_server&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;utf8mb4
+&lt;span class=&quot;nv&quot;&gt;collation_server&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;utf8mb4_general_ci
 skip_character_set_client_handshake
-```&lt;/p&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
-&lt;h4 id=&quot;section-3&quot;&gt;查看字符集&lt;/h4&gt;
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;shell
-mysql&amp;gt; SHOW VARIABLES WHERE Variable_name LIKE &#39;character\_set\_%&#39; OR Variable_name LIKE &#39;collation%&#39;;
+&lt;h4 id=&quot;查看字符集&quot;&gt;查看字符集&lt;/h4&gt;
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;mysql&amp;gt; &lt;/span&gt;SHOW VARIABLES WHERE Variable_name LIKE &lt;span class=&quot;s1&quot;&gt;'character\_set\_%'&lt;/span&gt; OR Variable_name LIKE &lt;span class=&quot;s1&quot;&gt;'collation%'&lt;/span&gt;;
 +--------------------------+--------------------+
 | Variable_name            | Value              |
 +--------------------------+--------------------+
@@ -337,60 +470,61 @@ mysql&amp;gt; SHOW VARIABLES WHERE Variable_name LIKE &#39;character\_set\_%&#39
 | collation_database       | utf8mb4_general_ci |
 | collation_server         | utf8mb4_general_ci |
 +--------------------------+--------------------+
-10 rows in set (0.00 sec)
-&lt;/code&gt;&lt;/p&gt;
+10 rows &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;set&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.00 sec&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
 &lt;p&gt;&lt;strong&gt;已有库表字段修改&lt;/strong&gt;&lt;br /&gt;
 对于已有实例、表、字段如果需支持Emoji表情，可按需修改字符集。如果只是某个字段需要，只需修改对应字段的字符集即可。&lt;/p&gt;
 
-&lt;p&gt;&lt;strong&gt;修改数据库字符集&lt;/strong&gt;&lt;br /&gt;
-&lt;code class=&quot;highlighter-rouge&quot;&gt;shell
-ALTER DATABASE database_name CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
-&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;修改数据库字符集&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ALTER DATABASE database_name CHARACTER SET &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; utf8mb4 COLLATE &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; utf8mb4_unicode_ci;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
-&lt;p&gt;&lt;strong&gt;修改表的字符集&lt;/strong&gt;&lt;br /&gt;
-&lt;code class=&quot;highlighter-rouge&quot;&gt;shell
-ALTER TABLE table_name CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;修改表的字符集&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ALTER TABLE table_name CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
-&lt;p&gt;&lt;strong&gt;修改字段的字符集&lt;/strong&gt;&lt;br /&gt;
-&lt;code class=&quot;highlighter-rouge&quot;&gt;shell
-ALTER TABLE table_name CHANGE column_name column_name VARCHAR(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;修改字段的字符集&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ALTER TABLE table_name CHANGE column_name column_name VARCHAR&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;191&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
-&lt;h3 id=&quot;section-4&quot;&gt;注意事项&lt;/h3&gt;
+&lt;h3 id=&quot;注意事项&quot;&gt;注意事项&lt;/h3&gt;
 &lt;p&gt;如果通过以上配置还不支持Emoji表情，请Connector/J版本或查看sql_mode参数。&lt;/p&gt;
 
 &lt;h4 id=&quot;connector&quot;&gt;Connector&lt;/h4&gt;
 &lt;p&gt;connector版本大于5.1.13的不能加characterEncoding=utf8参数（未测试）。&lt;/p&gt;
 
-&lt;h4 id=&quot;sqlmode&quot;&gt;sql_mode&lt;/h4&gt;
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;shell
-mysql&amp;gt; show variables like &#39;sql_mode&#39;;
+&lt;h4 id=&quot;sql_mode&quot;&gt;sql_mode&lt;/h4&gt;
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;mysql&amp;gt; &lt;/span&gt;show variables like &lt;span class=&quot;s1&quot;&gt;'sql_mode'&lt;/span&gt;;
 +---------------+----------------------------------------------------------------+
 | Variable_name | Value                                                          |
 +---------------+----------------------------------------------------------------+
 | sql_mode      | STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION |
 +---------------+----------------------------------------------------------------+
-1 row in set (0.00 sec)
-&lt;/code&gt;
-若返回结果中带有STRICT_TRANS_TABLES，去掉即可。&lt;br /&gt;
-&lt;strong&gt;动态配置&lt;/strong&gt;&lt;br /&gt;
-&lt;code class=&quot;highlighter-rouge&quot;&gt;shell
-mysql&amp;gt; set global sql_mode = &#39;NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION&#39;;
-&lt;/code&gt;&lt;/p&gt;
+1 row &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;set&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.00 sec&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;p&gt;若返回结果中带有STRICT_TRANS_TABLES，去掉即可。&lt;br /&gt;
+&lt;strong&gt;动态配置&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;mysql&amp;gt; &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;set &lt;/span&gt;global sql_mode &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION'&lt;/span&gt;;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
-&lt;p&gt;&lt;strong&gt;永久配置&lt;/strong&gt;&lt;br /&gt;
-&lt;code class=&quot;highlighter-rouge&quot;&gt;shell
-[root@test ~]# cat /etc/my.cnf
-[mysqld]
-sql_mode=&quot;NO_ENGINE_SUBSTITUTION,NO_AUTO_CREATE_USER&quot;
-&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;永久配置&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;root@test ~]# cat /etc/my.cnf
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;mysqld]
+&lt;span class=&quot;nv&quot;&gt;sql_mode&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;NO_ENGINE_SUBSTITUTION,NO_AUTO_CREATE_USER&quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
 </description>
         <pubDate>Wed, 14 Jun 2017 00:00:00 +0800</pubDate>
-        <link>https://wowkingah.github.io/2017/06/mysql_emoji/</link>
-        <guid isPermaLink="true">https://wowkingah.github.io/2017/06/mysql_emoji/</guid>
+        <link>http://0.0.0.0:4000/2017/06/mysql_emoji/</link>
+        <guid isPermaLink="true">http://0.0.0.0:4000/2017/06/mysql_emoji/</guid>
         
         <category>MySQL</category>
         
@@ -413,24 +547,24 @@ sql_mode=&quot;NO_ENGINE_SUBSTITUTION,NO_AUTO_CREATE_USER&quot;
 &lt;img src=&quot;/images/posts/personal/coffee_life/coffee_02.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 </description>
         <pubDate>Sat, 06 May 2017 00:00:00 +0800</pubDate>
-        <link>https://wowkingah.github.io/2017/05/coffee_and_life/</link>
-        <guid isPermaLink="true">https://wowkingah.github.io/2017/05/coffee_and_life/</guid>
+        <link>http://0.0.0.0:4000/2017/05/coffee_and_life/</link>
+        <guid isPermaLink="true">http://0.0.0.0:4000/2017/05/coffee_and_life/</guid>
         
-        <category>coffee</category>
+        <category>Coffee</category>
         
-        <category>life</category>
+        <category>Life</category>
         
         
       </item>
     
       <item>
         <title>VMWare安装macOS Sierra 10.12.4</title>
-        <description>&lt;h3 id=&quot;section&quot;&gt;简述&lt;/h3&gt;
+        <description>&lt;h3 id=&quot;简述&quot;&gt;简述&lt;/h3&gt;
 &lt;p&gt;突然之间又想倒腾一把MacOS，懒得找驱动，于是就在VMWare下开工，听闻10.12.4发布了~_~&lt;/p&gt;
 
-&lt;h3 id=&quot;section-1&quot;&gt;准备软件&lt;/h3&gt;
-&lt;p&gt;#### securable
-检测宿主机CPU是否支持虚拟化。
+&lt;h3 id=&quot;准备软件&quot;&gt;准备软件&lt;/h3&gt;
+&lt;h4 id=&quot;securable&quot;&gt;securable&lt;/h4&gt;
+&lt;p&gt;检测宿主机CPU是否支持虚拟化。
 &lt;a href=&quot;https://securable.en.softonic.com&quot;&gt;securable官网&lt;/a&gt;&lt;/p&gt;
 
 &lt;h4 id=&quot;unlocker&quot;&gt;unlocker&lt;/h4&gt;
@@ -449,26 +583,28 @@ sql_mode=&quot;NO_ENGINE_SUBSTITUTION,NO_AUTO_CREATE_USER&quot;
 &lt;a href=&quot;http://pan.baidu.com/s/1i4Jd3OL&quot;&gt;送你去百度云&lt;/a&gt;
 密码：i74b&lt;/p&gt;
 
-&lt;h3 id=&quot;section-2&quot;&gt;开工&lt;/h3&gt;
-&lt;p&gt;#### 1. securable
-运行securable，检测CPU是否支持虚拟化。如下图显示，若不为YES，自行解决。
+&lt;h3 id=&quot;开工&quot;&gt;开工&lt;/h3&gt;
+&lt;h4 id=&quot;1-securable&quot;&gt;1. securable&lt;/h4&gt;
+&lt;p&gt;运行securable，检测CPU是否支持虚拟化。如下图显示，若不为YES，自行解决。
 &lt;img src=&quot;/images/posts/sa/install_macos_for_vmware/securable.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
-&lt;h4 id=&quot;vmware-1&quot;&gt;2. VMWare&lt;/h4&gt;
+&lt;h4 id=&quot;2-vmware&quot;&gt;2. VMWare&lt;/h4&gt;
 &lt;p&gt;下载安装VMware Workstation Player，也可以用VMware Workstation，只要你开心。&lt;br /&gt;
 这时候VMWare新建虚拟机的时候，操作系统没有MAC OS类型可选，所以需要通过unlocker先解锁。&lt;/p&gt;
 
-&lt;h4 id=&quot;unlocker-1&quot;&gt;3. unlocker&lt;/h4&gt;
-&lt;p&gt;3.1. 停止vmware相关服务；
- &amp;gt; a.windows下运行services.msc：
+&lt;h4 id=&quot;3-unlocker&quot;&gt;3. unlocker&lt;/h4&gt;
+&lt;p&gt;3.1. 停止vmware相关服务；&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;a.windows下运行services.msc：
   &lt;img src=&quot;/images/posts/sa/install_macos_for_vmware/services_1.jpg&quot; alt=&quot;&quot; /&gt;
- &amp;gt; b.停止服务：
+b.停止服务：
   &lt;img src=&quot;/images/posts/sa/install_macos_for_vmware/services_2.jpg&quot; alt=&quot;&quot; /&gt;
 3.2. 下载unlocker并解压；
 3.3. 以管理员身份运行。
  &lt;img src=&quot;/images/posts/sa/install_macos_for_vmware/unlocker.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
 
-&lt;h4 id=&quot;section-3&quot;&gt;4. 新建虚拟机&lt;/h4&gt;
+&lt;h4 id=&quot;4-新建虚拟机&quot;&gt;4. 新建虚拟机&lt;/h4&gt;
 &lt;p&gt;记下图二中虚拟机名称与位置，之后要使用。&lt;br /&gt;
 图一
 &lt;img src=&quot;/images/posts/sa/install_macos_for_vmware/create_vm_1.jpg&quot; alt=&quot;&quot; /&gt;
@@ -477,7 +613,7 @@ sql_mode=&quot;NO_ENGINE_SUBSTITUTION,NO_AUTO_CREATE_USER&quot;
 图三
 &lt;img src=&quot;/images/posts/sa/install_macos_for_vmware/create_vm_3.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
-&lt;h4 id=&quot;section-4&quot;&gt;5. 启动虚拟机&lt;/h4&gt;
+&lt;h4 id=&quot;5-启动虚拟机&quot;&gt;5. 启动虚拟机&lt;/h4&gt;
 &lt;p&gt;这时候启动虚拟机会报错，如下图：
 &lt;img src=&quot;/images/posts/sa/install_macos_for_vmware/start_vm_1.jpg&quot; alt=&quot;&quot; /&gt;
 修改虚拟机参数可解决。&lt;br /&gt;
@@ -486,11 +622,11 @@ sql_mode=&quot;NO_ENGINE_SUBSTITUTION,NO_AUTO_CREATE_USER&quot;
 5.2 以记事本打开，在smc.present = “TRUE” 添加一行&lt;code class=&quot;highlighter-rouge&quot;&gt;smc.version = 0&lt;/code&gt;
  &lt;img src=&quot;/images/posts/sa/install_macos_for_vmware/vmx_2.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
-&lt;h4 id=&quot;section-5&quot;&gt;6. 又一次启动虚拟机&lt;/h4&gt;
+&lt;h4 id=&quot;6-又一次启动虚拟机&quot;&gt;6. 又一次启动虚拟机&lt;/h4&gt;
 &lt;p&gt;华丽的成功了。
 &lt;img src=&quot;/images/posts/sa/install_macos_for_vmware/install_macos_1.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
-&lt;h4 id=&quot;section-6&quot;&gt;7. 系统安装&lt;/h4&gt;
+&lt;h4 id=&quot;7-系统安装&quot;&gt;7. 系统安装&lt;/h4&gt;
 &lt;p&gt;7.1 实用工具 =&amp;gt; 磁盘工具
  &lt;img src=&quot;/images/posts/sa/install_macos_for_vmware/install_macos_2.jpg&quot; alt=&quot;&quot; /&gt;
 7.2 选择虚拟磁盘 =&amp;gt; 抹除
@@ -507,8 +643,8 @@ sql_mode=&quot;NO_ENGINE_SUBSTITUTION,NO_AUTO_CREATE_USER&quot;
 
 </description>
         <pubDate>Fri, 05 May 2017 00:00:00 +0800</pubDate>
-        <link>https://wowkingah.github.io/2017/05/install_macos_for_vmware/</link>
-        <guid isPermaLink="true">https://wowkingah.github.io/2017/05/install_macos_for_vmware/</guid>
+        <link>http://0.0.0.0:4000/2017/05/install_macos_for_vmware/</link>
+        <guid isPermaLink="true">http://0.0.0.0:4000/2017/05/install_macos_for_vmware/</guid>
         
         <category>Mac</category>
         
@@ -519,15 +655,15 @@ sql_mode=&quot;NO_ENGINE_SUBSTITUTION,NO_AUTO_CREATE_USER&quot;
     
       <item>
         <title>Redis Cluster安装部署</title>
-        <description>&lt;h3 id=&quot;section&quot;&gt;简述&lt;/h3&gt;
+        <description>&lt;h3 id=&quot;简述&quot;&gt;简述&lt;/h3&gt;
 &lt;p&gt;从Redis 3.x开始，一直单机的Redis终于步入Cluster大时代。&lt;br /&gt;
 Redis从一个单纯的NoSQL内存数据库变成了分布式NoSQL数据库，CAP模型也从CP变成了AP。&lt;/p&gt;
 
-&lt;h3 id=&quot;section-1&quot;&gt;架构&lt;/h3&gt;
-&lt;p&gt;#### 架构图
-&lt;img src=&quot;/images/posts/sa/redis_cluster_install/redis_cluster_architecture.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;h3 id=&quot;架构&quot;&gt;架构&lt;/h3&gt;
+&lt;h4 id=&quot;架构图&quot;&gt;架构图&lt;/h4&gt;
+&lt;p&gt;&lt;img src=&quot;/images/posts/sa/redis_cluster_install/redis_cluster_architecture.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
-&lt;h4 id=&quot;section-2&quot;&gt;架构细节&lt;/h4&gt;
+&lt;h4 id=&quot;架构细节&quot;&gt;架构细节&lt;/h4&gt;
 &lt;blockquote&gt;
   &lt;ul&gt;
     &lt;li&gt;所有 redis 结点彼此互联（PING-PONG 机制），内部使用二进制协议优化传输速度和带宽（客户端与结点之间的通信还是正常的ascii协议）；&lt;/li&gt;
@@ -538,25 +674,42 @@ Redis从一个单纯的NoSQL内存数据库变成了分布式NoSQL数据库，CA
   &lt;/ul&gt;
 &lt;/blockquote&gt;
 
-&lt;h4 id=&quot;section-3&quot;&gt;选举与容错&lt;/h4&gt;
-&lt;p&gt;&lt;img src=&quot;/images/posts/sa/redis_cluster_install/fail.jpg&quot; alt=&quot;&quot; /&gt;
-##### 选举
-&amp;gt;* 选举过程是集群中所有 master 参与，如果半数以上 master 节点与 master 节点通信超过 (cluster-node-timeout)，认为当前 master 节点挂掉；&lt;/p&gt;
+&lt;h4 id=&quot;选举与容错&quot;&gt;选举与容错&lt;/h4&gt;
+&lt;p&gt;&lt;img src=&quot;/images/posts/sa/redis_cluster_install/fail.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;h5 id=&quot;选举&quot;&gt;选举&lt;/h5&gt;
+&lt;blockquote&gt;
+  &lt;ul&gt;
+    &lt;li&gt;选举过程是集群中所有 master 参与，如果半数以上 master 节点与 master 节点通信超过 (cluster-node-timeout)，认为当前 master 节点挂掉；&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/blockquote&gt;
 
-&lt;h5 id=&quot;section-4&quot;&gt;容错&lt;/h5&gt;
-&lt;p&gt;什么时候整个集群不可用(cluster_state:fail)？
-&amp;gt;* 如果集群任意 master 挂掉，且当前 master 没有 slave，集群进入 fail 状态，也可以理解成集群的 slot 映射[0-16383]不完成时进入 fail 状态。
-&amp;gt; &amp;gt;* redis-3.0.0.rc1 加入 cluster-require-full-coverage 参数，默认关闭，打开集群兼容部分失败。
-&amp;gt;* 如果集群超过半数以上 master 挂掉，无论是否有 slave 集群进入 fail 状态。
-&amp;gt; &amp;gt;* 当集群不可用时，所有对集群的操作做都不可用，收到((error) CLUSTERDOWN The cluster is down) 错误。&lt;/p&gt;
+&lt;h5 id=&quot;容错&quot;&gt;容错&lt;/h5&gt;
+&lt;p&gt;什么时候整个集群不可用(cluster_state:fail)？&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;ul&gt;
+    &lt;li&gt;如果集群任意 master 挂掉，且当前 master 没有 slave，集群进入 fail 状态，也可以理解成集群的 slot 映射[0-16383]不完成时进入 fail 状态。
+      &lt;blockquote&gt;
+        &lt;ul&gt;
+          &lt;li&gt;redis-3.0.0.rc1 加入 cluster-require-full-coverage 参数，默认关闭，打开集群兼容部分失败。&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/blockquote&gt;
+    &lt;/li&gt;
+    &lt;li&gt;如果集群超过半数以上 master 挂掉，无论是否有 slave 集群进入 fail 状态。
+      &lt;blockquote&gt;
+        &lt;ul&gt;
+          &lt;li&gt;当集群不可用时，所有对集群的操作做都不可用，收到((error) CLUSTERDOWN The cluster is down) 错误。&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/blockquote&gt;
+    &lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/blockquote&gt;
 
-&lt;h3 id=&quot;redis&quot;&gt;Redis安装&lt;/h3&gt;
-&lt;p&gt;#### 安装redis
-Redis&lt;a href=&quot;https://redis.io/download&quot;&gt;官网&lt;/a&gt;下载并安装最新稳定版Redis。&lt;/p&gt;
+&lt;h3 id=&quot;redis安装&quot;&gt;Redis安装&lt;/h3&gt;
+&lt;h4 id=&quot;安装redis&quot;&gt;安装redis&lt;/h4&gt;
+&lt;p&gt;Redis&lt;a href=&quot;https://redis.io/download&quot;&gt;官网&lt;/a&gt;下载并安装最新稳定版Redis。&lt;/p&gt;
 
-&lt;h4 id=&quot;redis-cluster&quot;&gt;redis cluster配置&lt;/h4&gt;
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;bash
-[root@Wowking-001 ~]# cat /etc/redis/6379.conf |grep -vE &#39;^#|^$&#39;
+&lt;h4 id=&quot;redis-cluster配置&quot;&gt;redis cluster配置&lt;/h4&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;root@Wowking-001 ~]# cat /etc/redis/6379.conf |grep -vE &lt;span class=&quot;s1&quot;&gt;'^#|^$'&lt;/span&gt;
 daemonize yes
 pidfile /var/run/redis_6379.pid
 port 6379
@@ -578,7 +731,7 @@ repl-diskless-sync-delay 5
 repl-disable-tcp-nodelay no
 slave-priority 100
 appendonly no
-appendfilename &quot;appendonly.aof&quot;
+appendfilename &lt;span class=&quot;s2&quot;&gt;&quot;appendonly.aof&quot;&lt;/span&gt;
 appendfsync everysec
 no-appendfsync-on-rewrite no
 auto-aof-rewrite-percentage 100
@@ -593,12 +746,12 @@ lua-time-limit 5000
 slowlog-log-slower-than 10000
 slowlog-max-len 128
 latency-monitor-threshold 0
-notify-keyspace-events &quot;&quot;
-hash-max-ziplist-entries 512
-hash-max-ziplist-value 64
+notify-keyspace-events &lt;span class=&quot;s2&quot;&gt;&quot;&quot;&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;hash&lt;/span&gt;-max-ziplist-entries 512
+&lt;span class=&quot;nb&quot;&gt;hash&lt;/span&gt;-max-ziplist-value 64
 list-max-ziplist-entries 512
 list-max-ziplist-value 64
-set-max-intset-entries 512
+&lt;span class=&quot;nb&quot;&gt;set&lt;/span&gt;-max-intset-entries 512
 zset-max-ziplist-entries 128
 zset-max-ziplist-value 64
 hll-sparse-max-bytes 3000
@@ -608,119 +761,128 @@ client-output-buffer-limit slave 256mb 64mb 60
 client-output-buffer-limit pubsub 32mb 8mb 60
 hz 10
 aof-rewrite-incremental-fsync yes
-&lt;/code&gt;
-&lt;em&gt;tips&lt;/em&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;p&gt;&lt;em&gt;tips&lt;/em&gt;
 关闭了持久化。&lt;/p&gt;
 
-&lt;h3 id=&quot;section-5&quot;&gt;系统相关参数调整&lt;/h3&gt;
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;bash
-[root@Wowking-001 ~]# cat /etc/sysctl.conf
-##Redis
-vm.overcommit_memory = 1
-net.core.somaxconn = 2048
-net.ipv4.tcp_timestamps=1
-net.ipv4.tcp_syncookies = 1
-net.ipv4.tcp_tw_reuse = 1
-net.ipv4.tcp_tw_recycle = 1
-net.ipv4.tcp_fin_timeout = 30
-net.ipv4.tcp_keepalive_time = 1200
-net.ipv4.tcp_max_syn_backlog = 8192
-net.ipv4.tcp_max_tw_buckets = 5000
-net.ipv4.tcp_keepalive_probes = 3
-net.ipv4.tcp_keepalive_intvl =15
-net.ipv4.tcp_wmem = 8192 131072 16777216
-net.ipv4.tcp_rmem = 32768 131072 16777216
-[root@Wowking-001 ~]# sysctl -p
-[root@Wowking-001 ~]# echo never &amp;gt; /sys/kernel/mm/transparent_hugepage/enabled  #禁用Linux内核特性transparent huge pages，不然日志会报WARNING
-&lt;/code&gt;&lt;/p&gt;
+&lt;h3 id=&quot;系统相关参数调整&quot;&gt;系统相关参数调整&lt;/h3&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;root@Wowking-001 ~]# cat /etc/sysctl.conf
+&lt;span class=&quot;c&quot;&gt;##Redis&lt;/span&gt;
+vm.overcommit_memory &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 1
+net.core.somaxconn &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 2048
+net.ipv4.tcp_timestamps&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1
+net.ipv4.tcp_syncookies &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 1
+net.ipv4.tcp_tw_reuse &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 1
+net.ipv4.tcp_tw_recycle &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 1
+net.ipv4.tcp_fin_timeout &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 30
+net.ipv4.tcp_keepalive_time &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 1200
+net.ipv4.tcp_max_syn_backlog &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 8192
+net.ipv4.tcp_max_tw_buckets &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 5000
+net.ipv4.tcp_keepalive_probes &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 3
+net.ipv4.tcp_keepalive_intvl &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;15
+net.ipv4.tcp_wmem &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 8192 131072 16777216
+net.ipv4.tcp_rmem &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 32768 131072 16777216
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;root@Wowking-001 ~]# sysctl -p
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;root@Wowking-001 ~]# &lt;span class=&quot;nb&quot;&gt;echo &lt;/span&gt;never &amp;gt; /sys/kernel/mm/transparent_hugepage/enabled  &lt;span class=&quot;c&quot;&gt;#禁用Linux内核特性transparent huge pages，不然日志会报WARNING&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
-&lt;h3 id=&quot;redis-1&quot;&gt;启动Redis&lt;/h3&gt;
-&lt;p&gt;测试使用，在本机启3个不同端口的实例。
-&lt;code class=&quot;highlighter-rouge&quot;&gt;bash
-[root@Wowking-001 ~]# mkdir -p /data/logs/redis
-[root@Wowking-001 ~]# mkdir -p /data/redis/data/6{3,4,5}79
-[root@Wowking-001 ~]# redis-server /etc/redis/6379.conf
-[root@Wowking-001 ~]# redis-server /etc/redis/6479.conf
-[root@Wowking-001 ~]# redis-server /etc/redis/6579.conf
-&lt;/code&gt;&lt;/p&gt;
+&lt;h3 id=&quot;启动redis&quot;&gt;启动Redis&lt;/h3&gt;
+&lt;p&gt;测试使用，在本机启3个不同端口的实例。&lt;/p&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;root@Wowking-001 ~]# mkdir -p /data/logs/redis
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;root@Wowking-001 ~]# mkdir -p /data/redis/data/6&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;3,4,5&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;79
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;root@Wowking-001 ~]# redis-server /etc/redis/6379.conf
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;root@Wowking-001 ~]# redis-server /etc/redis/6479.conf
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;root@Wowking-001 ~]# redis-server /etc/redis/6579.conf
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
-&lt;h3 id=&quot;cluster&quot;&gt;cluster部署&lt;/h3&gt;
-&lt;p&gt;#### 安装ruby及ruby的redis模块
-&lt;code class=&quot;highlighter-rouge&quot;&gt;bash
-[root@Wowking-001 ~]# yum -y install ruby rubygems
-[root@Wowking-001 ~]# gem install redis
-&lt;/code&gt;&lt;/p&gt;
+&lt;h3 id=&quot;cluster部署&quot;&gt;cluster部署&lt;/h3&gt;
+&lt;h4 id=&quot;安装ruby及ruby的redis模块&quot;&gt;安装ruby及ruby的redis模块&lt;/h4&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;root@Wowking-001 ~]# yum -y install ruby rubygems
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;root@Wowking-001 ~]# gem install redis
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
-&lt;h4 id=&quot;cluster-1&quot;&gt;cluster初始化&lt;/h4&gt;
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;bash
-[root@Wowking-001 ~]# redis-trib.rb create --replicas 0 192.168.1.1:6379 192.168.1.1:6479 192.168.1.1:6579
-&amp;gt;&amp;gt;&amp;gt; Creating cluster
-&amp;gt;&amp;gt;&amp;gt; Performing hash slots allocation on 3 nodes...
+&lt;h4 id=&quot;cluster初始化&quot;&gt;cluster初始化&lt;/h4&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;root@Wowking-001 ~]# redis-trib.rb create --replicas 0 192.168.1.1:6379 192.168.1.1:6479 192.168.1.1:6579
+&lt;span class=&quot;gp&quot;&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;Creating cluster
+&lt;span class=&quot;gp&quot;&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;Performing &lt;span class=&quot;nb&quot;&gt;hash &lt;/span&gt;slots allocation on 3 nodes...
 Using 3 masters:
 192.168.1.1:6379
 192.168.1.1:6479
 192.168.1.1:6579
 M: 5d6519a85e2795f0eeb7566031eb6be47c97efbf 192.168.1.1:6379
-   slots:0-5460 (5461 slots) master
+   slots:0-5460 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;5461 slots&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; master
 M: fc82bf9de8adba9886b0cb62ad8a99e8d4495f35 192.168.1.1:6479
-   slots:5461-10922 (5462 slots) master
+   slots:5461-10922 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;5462 slots&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; master
 M: 35586851e194755ca82e660010b930987adfde6d 192.168.1.1:6579
-   slots:10923-16383 (5461 slots) master
-Can I set the above configuration? (type &#39;yes&#39; to accept): yes
-&amp;gt;&amp;gt;&amp;gt; Nodes configuration updated
-&amp;gt;&amp;gt;&amp;gt; Assign a different config epoch to each node
-&amp;gt;&amp;gt;&amp;gt; Sending CLUSTER MEET messages to join the cluster
-Waiting for the cluster to join..
-&amp;gt;&amp;gt;&amp;gt; Performing Cluster Check (using node 192.168.1.1:6379)
+   slots:10923-16383 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;5461 slots&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; master
+Can I &lt;span class=&quot;nb&quot;&gt;set &lt;/span&gt;the above configuration? &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;type&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'yes'&lt;/span&gt; to accept&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;: yes
+&lt;span class=&quot;gp&quot;&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;Nodes configuration updated
+&lt;span class=&quot;gp&quot;&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;Assign a different config epoch to each node
+&lt;span class=&quot;gp&quot;&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;Sending CLUSTER MEET messages to join the cluster
+Waiting &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;the cluster to join..
+&lt;span class=&quot;gp&quot;&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;Performing Cluster Check &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;using node 192.168.1.1:6379&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
 M: 5d6519a85e2795f0eeb7566031eb6be47c97efbf 192.168.1.1:6379
-   slots:0-5460 (5461 slots) master
+   slots:0-5460 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;5461 slots&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; master
 M: fc82bf9de8adba9886b0cb62ad8a99e8d4495f35 192.168.1.1:6479
-   slots:5461-10922 (5462 slots) master
+   slots:5461-10922 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;5462 slots&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; master
 M: 35586851e194755ca82e660010b930987adfde6d 192.168.1.1:6579
-   slots:10923-16383 (5461 slots) master
-[OK] All nodes agree about slots configuration.
-&amp;gt;&amp;gt;&amp;gt; Check for open slots...
-&amp;gt;&amp;gt;&amp;gt; Check slots coverage...
-[OK] All 16384 slots covered.
-&lt;/code&gt;
-&lt;em&gt;tips&lt;/em&gt;
-&amp;gt;* –replicas：指定复本数，这是cluster最小复本要求。推荐2个以上复本，不然没法测试failover。&lt;/p&gt;
+   slots:10923-16383 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;5461 slots&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; master
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;OK] All nodes agree about slots configuration.
+&lt;span class=&quot;gp&quot;&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;Check &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;open slots...
+&lt;span class=&quot;gp&quot;&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;Check slots coverage...
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;OK] All 16384 slots covered.
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;p&gt;&lt;em&gt;tips&lt;/em&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;ul&gt;
+    &lt;li&gt;–replicas：指定复本数，这是cluster最小复本要求。推荐2个以上复本，不然没法测试failover。&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/blockquote&gt;
 
-&lt;h4 id=&quot;cluster-2&quot;&gt;查看cluster状态&lt;/h4&gt;
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;bash
-[root@Wowking-001 ~]# redis-trib.rb check 192.168.1.1:6379
-&amp;gt;&amp;gt;&amp;gt; Performing Cluster Check (using node 192.168.1.1:6379)
+&lt;h4 id=&quot;查看cluster状态&quot;&gt;查看cluster状态&lt;/h4&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;root@Wowking-001 ~]# redis-trib.rb check 192.168.1.1:6379
+&lt;span class=&quot;gp&quot;&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;Performing Cluster Check &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;using node 192.168.1.1:6379&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
 M: 5d6519a85e2795f0eeb7566031eb6be47c97efbf 192.168.1.1:6379
-   slots:0-5460 (5461 slots) master
-   0 additional replica(s)
+   slots:0-5460 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;5461 slots&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; master
+   0 additional replica&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;s&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
 M: 35586851e194755ca82e660010b930987adfde6d 192.168.1.1:6579
-   slots:10923-16383 (5461 slots) master
-   0 additional replica(s)
+   slots:10923-16383 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;5461 slots&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; master
+   0 additional replica&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;s&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
 M: fc82bf9de8adba9886b0cb62ad8a99e8d4495f35 192.168.1.1:6479
-   slots:5461-10922 (5462 slots) master
-   0 additional replica(s)
-[OK] All nodes agree about slots configuration.
-&amp;gt;&amp;gt;&amp;gt; Check for open slots...
-&amp;gt;&amp;gt;&amp;gt; Check slots coverage...
-[OK] All 16384 slots covered.
-&lt;/code&gt;&lt;/p&gt;
+   slots:5461-10922 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;5462 slots&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; master
+   0 additional replica&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;s&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;OK] All nodes agree about slots configuration.
+&lt;span class=&quot;gp&quot;&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;Check &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;open slots...
+&lt;span class=&quot;gp&quot;&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;Check slots coverage...
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;OK] All 16384 slots covered.
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
-&lt;h3 id=&quot;cluster-3&quot;&gt;cluster测试&lt;/h3&gt;
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;bash
-#任意结点写key
-[root@Wowking-001 ~]# redis-cli -p 6379
-127.0.0.1:6379&amp;gt; set aa 11
+&lt;h3 id=&quot;cluster测试&quot;&gt;cluster测试&lt;/h3&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;#任意结点写key&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;root@Wowking-001 ~]# redis-cli -p 6379
+&lt;span class=&quot;gp&quot;&gt;127.0.0.1:6379&amp;gt; &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;set &lt;/span&gt;aa 11
 OK
-127.0.0.1:6379&amp;gt; get aa
-&quot;11&quot;
-#任意结点get
-[root@Wowking-001 ~]# redis-cli -p 6579 -c
-127.0.0.1:6579&amp;gt; get aa
--&amp;gt; Redirected to slot [1180] located at 192.168.1.1:6379
-&quot;11&quot;
-&lt;/code&gt;
-&lt;em&gt;tips&lt;/em&gt;
-&amp;gt;* -c：指定cluster模式。&lt;/p&gt;
+&lt;span class=&quot;gp&quot;&gt;127.0.0.1:6379&amp;gt; &lt;/span&gt;get aa
+&lt;span class=&quot;s2&quot;&gt;&quot;11&quot;&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;#任意结点get&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;root@Wowking-001 ~]# redis-cli -p 6579 -c
+&lt;span class=&quot;gp&quot;&gt;127.0.0.1:6579&amp;gt; &lt;/span&gt;get aa
+&lt;span class=&quot;gp&quot;&gt;-&amp;gt; &lt;/span&gt;Redirected to slot &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;1180] located at 192.168.1.1:6379
+&lt;span class=&quot;s2&quot;&gt;&quot;11&quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;p&gt;&lt;em&gt;tips&lt;/em&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;ul&gt;
+    &lt;li&gt;-c：指定cluster模式。&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/blockquote&gt;
 
 &lt;h3 id=&quot;reference&quot;&gt;reference&lt;/h3&gt;
 &lt;p&gt;https://redis.io/topics/cluster-tutorial &lt;br /&gt;
@@ -729,8 +891,8 @@ http://www.ttlsa.com/redis/redis-cluster-theoretical-knowledge&lt;/p&gt;
 
 </description>
         <pubDate>Tue, 25 Apr 2017 00:00:00 +0800</pubDate>
-        <link>https://wowkingah.github.io/2017/04/redis_cluster_install/</link>
-        <guid isPermaLink="true">https://wowkingah.github.io/2017/04/redis_cluster_install/</guid>
+        <link>http://0.0.0.0:4000/2017/04/redis_cluster_install/</link>
+        <guid isPermaLink="true">http://0.0.0.0:4000/2017/04/redis_cluster_install/</guid>
         
         <category>Redis</category>
         
@@ -739,10 +901,10 @@ http://www.ttlsa.com/redis/redis-cluster-theoretical-knowledge&lt;/p&gt;
     
       <item>
         <title>Markdown常用语法</title>
-        <description>&lt;h3 id=&quot;markdown&quot;&gt;什么是 Markdown&lt;/h3&gt;
+        <description>&lt;h3 id=&quot;什么是-markdown&quot;&gt;什么是 Markdown&lt;/h3&gt;
 &lt;p&gt;Markdown 是一种方便记忆、书写的纯文本标记语言，用户可以使用这些标记符号以最小的输入代价生成极富表现力的文档。&lt;/p&gt;
 
-&lt;h3 id=&quot;section&quot;&gt;标题&lt;/h3&gt;
+&lt;h3 id=&quot;标题&quot;&gt;标题&lt;/h3&gt;
 &lt;p&gt;一级标题：&lt;code class=&quot;highlighter-rouge&quot;&gt;# Header 1&lt;/code&gt;&lt;br /&gt;
 二级标题：&lt;code class=&quot;highlighter-rouge&quot;&gt;## Header 2&lt;/code&gt;         &lt;br /&gt;
 三级标题：&lt;code class=&quot;highlighter-rouge&quot;&gt;### Header 3&lt;/code&gt;         &lt;br /&gt;
@@ -751,22 +913,22 @@ http://www.ttlsa.com/redis/redis-cluster-theoretical-knowledge&lt;/p&gt;
 六级标题：&lt;code class=&quot;highlighter-rouge&quot;&gt;###### Header 6&lt;/code&gt;&lt;br /&gt;
 &lt;img src=&quot;/images/posts/sa/markdown_syntax/header.jpg&quot; alt=&quot;标题&quot; /&gt;&lt;/p&gt;
 
-&lt;h3 id=&quot;section-1&quot;&gt;字体&lt;/h3&gt;
+&lt;h3 id=&quot;字体&quot;&gt;字体&lt;/h3&gt;
 &lt;p&gt;斜体：&lt;code class=&quot;highlighter-rouge&quot;&gt;*斜体*&lt;/code&gt;&lt;br /&gt;
 粗体：&lt;code class=&quot;highlighter-rouge&quot;&gt;**粗体**&lt;/code&gt;&lt;br /&gt;
 粗斜体：&lt;code class=&quot;highlighter-rouge&quot;&gt;***粗斜体***&lt;/code&gt;&lt;br /&gt;
 删除线：&lt;code class=&quot;highlighter-rouge&quot;&gt;~~删除线~~&lt;/code&gt;&lt;br /&gt;
 &lt;img src=&quot;/images/posts/sa/markdown_syntax/font.jpg&quot; alt=&quot;字体&quot; /&gt;&lt;/p&gt;
 
-&lt;h3 id=&quot;section-2&quot;&gt;目录&lt;/h3&gt;
+&lt;h3 id=&quot;目录&quot;&gt;目录&lt;/h3&gt;
 &lt;p&gt;在段落中填写 &lt;code class=&quot;highlighter-rouge&quot;&gt;[TOC]&lt;/code&gt; 以显示全文内容的目录结构。
 &lt;img src=&quot;/images/posts/sa/markdown_syntax/catalogue.jpg&quot; alt=&quot;目录&quot; /&gt;&lt;/p&gt;
 
-&lt;h3 id=&quot;section-3&quot;&gt;段与行&lt;/h3&gt;
+&lt;h3 id=&quot;段与行&quot;&gt;段与行&lt;/h3&gt;
 &lt;p&gt;段落：&lt;code class=&quot;highlighter-rouge&quot;&gt;段落之间空一行&lt;/code&gt;&lt;br /&gt;
 换行：&lt;code class=&quot;highlighter-rouge&quot;&gt;一行结束时输入两个空格&lt;/code&gt;&lt;/p&gt;
 
-&lt;h3 id=&quot;section-4&quot;&gt;列表项&lt;/h3&gt;
+&lt;h3 id=&quot;列表项&quot;&gt;列表项&lt;/h3&gt;
 &lt;p&gt;列表项1：&lt;code class=&quot;highlighter-rouge&quot;&gt;* 列表项1&lt;/code&gt;&lt;br /&gt;
 列表项2：&lt;code class=&quot;highlighter-rouge&quot;&gt;* 列表项2&lt;/code&gt;&lt;br /&gt;
 列表项3：&lt;code class=&quot;highlighter-rouge&quot;&gt;+ 列表项3&lt;/code&gt;&lt;br /&gt;
@@ -779,11 +941,11 @@ http://www.ttlsa.com/redis/redis-cluster-theoretical-knowledge&lt;/p&gt;
 列表项10：&lt;code class=&quot;highlighter-rouge&quot;&gt;- [x] 列表项10&lt;/code&gt;&lt;br /&gt;
 &lt;img src=&quot;/images/posts/sa/markdown_syntax/list.jpg&quot; alt=&quot;列表项&quot; /&gt;&lt;/p&gt;
 
-&lt;h3 id=&quot;section-5&quot;&gt;引用&lt;/h3&gt;
+&lt;h3 id=&quot;引用&quot;&gt;引用&lt;/h3&gt;
 &lt;p&gt;引用：&lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;gt; 引用内容，可结合列表项一起使用&lt;/code&gt;&lt;br /&gt;
 &lt;img src=&quot;/images/posts/sa/markdown_syntax/reference.jpg&quot; alt=&quot;引用&quot; /&gt;&lt;/p&gt;
 
-&lt;h3 id=&quot;section-6&quot;&gt;表格&lt;/h3&gt;
+&lt;h3 id=&quot;表格&quot;&gt;表格&lt;/h3&gt;
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;| 项目 | 价格 | 数量 |
 | -------- | -----: | :----: |
 | 计算机 | 8000 | 10 |
@@ -794,29 +956,29 @@ http://www.ttlsa.com/redis/redis-cluster-theoretical-knowledge&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&quot;/images/posts/sa/markdown_syntax/table.jpg&quot; alt=&quot;表格&quot; /&gt;&lt;/p&gt;
 
-&lt;h3 id=&quot;section-7&quot;&gt;链接与图片&lt;/h3&gt;
+&lt;h3 id=&quot;链接与图片&quot;&gt;链接与图片&lt;/h3&gt;
 &lt;p&gt;链接：&lt;code class=&quot;highlighter-rouge&quot;&gt;[Title](URL)&lt;/code&gt;&lt;br /&gt;
 图片：&lt;code class=&quot;highlighter-rouge&quot;&gt;![](/images/image.jpg)&lt;/code&gt;&lt;br /&gt;
 &lt;img src=&quot;/images/posts/sa/markdown_syntax/link.jpg&quot; alt=&quot;链接&quot; /&gt;&lt;/p&gt;
 
-&lt;h3 id=&quot;section-8&quot;&gt;代码高亮&lt;/h3&gt;
+&lt;h3 id=&quot;代码高亮&quot;&gt;代码高亮&lt;/h3&gt;
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;```python
-print &#39;hello world~&#39;
+print 'hello world~'
  ```
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 
 &lt;p&gt;&lt;img src=&quot;/images/posts/sa/markdown_syntax/code.jpg&quot; alt=&quot;代码&quot; /&gt;&lt;/p&gt;
 
-&lt;h3 id=&quot;section-9&quot;&gt;水平线&lt;/h3&gt;
+&lt;h3 id=&quot;水平线&quot;&gt;水平线&lt;/h3&gt;
 &lt;p&gt;水平线：&lt;code class=&quot;highlighter-rouge&quot;&gt;---&lt;/code&gt;&lt;br /&gt;
 &lt;img src=&quot;/images/posts/sa/markdown_syntax/horizontal_rules.jpg&quot; alt=&quot;水平线&quot; /&gt;&lt;/p&gt;
 
-&lt;h3 id=&quot;section-10&quot;&gt;注脚&lt;/h3&gt;
+&lt;h3 id=&quot;注脚&quot;&gt;注脚&lt;/h3&gt;
 &lt;p&gt;使用 [^keyword] 表示注脚。
 这是一个&lt;em&gt;注脚&lt;/em&gt;&lt;sup id=&quot;fnref:footnote&quot;&gt;&lt;a href=&quot;#fn:footnote&quot; class=&quot;footnote&quot;&gt;1&lt;/a&gt;&lt;/sup&gt;的样例。&lt;/p&gt;
 
-&lt;h3 id=&quot;section-11&quot;&gt;定义型列表&lt;/h3&gt;
+&lt;h3 id=&quot;定义型列表&quot;&gt;定义型列表&lt;/h3&gt;
 
 &lt;dl&gt;
   &lt;dt&gt;名词 1&lt;/dt&gt;
@@ -830,7 +992,7 @@ print &#39;hello world~&#39;
   &lt;/dd&gt;
 &lt;/dl&gt;
 
-&lt;h3 id=&quot;html&quot;&gt;HTML标签&lt;/h3&gt;
+&lt;h3 id=&quot;html标签&quot;&gt;HTML标签&lt;/h3&gt;
 &lt;p&gt;支持在 Markdown 语法中嵌套 Html 标签，譬如，你可以用 Html 写一个纵跨两行的表格：&lt;/p&gt;
 
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;table&amp;gt;
@@ -869,100 +1031,16 @@ print &#39;hello world~&#39;
 &lt;div class=&quot;footnotes&quot;&gt;
   &lt;ol&gt;
     &lt;li id=&quot;fn:footnote&quot;&gt;
-      &lt;p&gt;这是一个 &lt;em&gt;注脚&lt;/em&gt; 的文本。 &lt;a href=&quot;#fnref:footnote&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+      &lt;p&gt;这是一个 &lt;em&gt;注脚&lt;/em&gt; 的文本。&amp;nbsp;&lt;a href=&quot;#fnref:footnote&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
     &lt;/li&gt;
   &lt;/ol&gt;
 &lt;/div&gt;
 </description>
         <pubDate>Sun, 23 Apr 2017 00:00:00 +0800</pubDate>
-        <link>https://wowkingah.github.io/2017/04/markdown_syntax/</link>
-        <guid isPermaLink="true">https://wowkingah.github.io/2017/04/markdown_syntax/</guid>
+        <link>http://0.0.0.0:4000/2017/04/markdown_syntax/</link>
+        <guid isPermaLink="true">http://0.0.0.0:4000/2017/04/markdown_syntax/</guid>
         
-        <category>markdown</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>Sublime Text3编辑markdown文本</title>
-        <description>&lt;p&gt;之前一直使用notepad++写SHELL、SQL，有一天想玩玩markdown的时候，觉得不是那么方便。于是，就有了sublime的出现。&lt;/p&gt;
-
-&lt;p&gt;使用sublime编写markdown需要：
-&amp;gt; 1. 安装sublime
-&amp;gt; 2. 安装markdown相关插件
-» * Package Control：用于管理插件
-» * MarkdownEditing：编辑markdown&lt;br /&gt;
-» * Markdown Preview：预览markdown&lt;/p&gt;
-
-&lt;h3 id=&quot;sublime&quot;&gt;安装sublime&lt;/h3&gt;
-&lt;p&gt;Sublime 官网下载并安装(http://www.sublimetext.com/3)&lt;/p&gt;
-
-&lt;h3 id=&quot;package-control&quot;&gt;安装Package Control&lt;/h3&gt;
-&lt;p&gt;Package Control官网(https://packagecontrol.io/installation)
-#### 安装步骤：
-&amp;gt; 1. 使用快捷键&lt;code class=&quot;highlighter-rouge&quot;&gt;ctrl+~&lt;/code&gt; 或通过菜单栏 &lt;code class=&quot;highlighter-rouge&quot;&gt;View &amp;gt; Show Console&lt;/code&gt;调出console。
-&amp;gt; 2. 复制官网Python code粘贴到console后按回车去执行。
-» * sublime text3选择SUBLIME TEXT3对应的代码
-» &lt;code class=&quot;highlighter-rouge&quot;&gt;python
-&amp;gt;&amp;gt; import urllib.request,os,hashlib; h = &#39;df21e130d211cfc94d9b0905775a7c0f&#39; + &#39;1e3d39e33b79698005270310898eea76&#39;; pf = &#39;Package Control.sublime-package&#39;; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( &#39;http://packagecontrol.io/&#39; + pf.replace(&#39; &#39;, &#39;%20&#39;)).read(); dh = hashlib.sha256(by).hexdigest(); print(&#39;Error validating download (got %s instead of %s), please try manual install&#39; % (dh, h)) if dh != h else open(os.path.join( ipp, pf), &#39;wb&#39; ).write(by)
-&amp;gt;&amp;gt;&lt;/code&gt;
-&amp;gt; &lt;img src=&quot;/images/posts/sublime_text3/console.jpg&quot; alt=&quot;&quot; /&gt;
-&amp;gt; 3. 重启sublime后，可在&lt;code class=&quot;highlighter-rouge&quot;&gt;Preferences -&amp;gt; Package Settings&lt;/code&gt;看到&lt;code class=&quot;highlighter-rouge&quot;&gt;Package Control&lt;/code&gt;。&lt;/p&gt;
-
-&lt;h3 id=&quot;markdowneditingmarkdown-preview&quot;&gt;安装MarkdownEditing与Markdown Preview&lt;/h3&gt;
-&lt;blockquote&gt;
-  &lt;ol&gt;
-    &lt;li&gt;快捷方式&lt;code class=&quot;highlighter-rouge&quot;&gt;Ctrl + Shift + p&lt;/code&gt;或通过菜单栏&lt;code class=&quot;highlighter-rouge&quot;&gt;Preferences -&amp;gt; Package Control&lt;/code&gt;，输入install
- &lt;img src=&quot;/images/posts/sublime_text3/install_package.jpg&quot; alt=&quot;&quot; /&gt;&lt;/li&gt;
-    &lt;li&gt;安装MarkdownEditing 
- &lt;img src=&quot;/images/posts/sublime_text3/install_MarkdownEditing.jpg&quot; alt=&quot;&quot; /&gt;&lt;/li&gt;
-    &lt;li&gt;安装Markdown Preview
- &lt;img src=&quot;/images/posts/sublime_text3/install_MarkdownPreview.jpg&quot; alt=&quot;&quot; /&gt;&lt;/li&gt;
-  &lt;/ol&gt;
-&lt;/blockquote&gt;
-
-&lt;h3 id=&quot;section&quot;&gt;偏好设置&lt;/h3&gt;
-&lt;p&gt;&lt;strong&gt;设置语言平台&lt;/strong&gt;
-&amp;gt; 1. 打开Markdown Editing设置
-&amp;gt; &lt;code class=&quot;highlighter-rouge&quot;&gt;Preferences -&amp;gt; Package Settings -&amp;gt; Markdown Editing -&amp;gt; Markdown GFM Settings User&lt;/code&gt;
-&amp;gt; 2. 增加配置
-&amp;gt; &lt;code class=&quot;highlighter-rouge&quot;&gt;
-// These settings override both User and Default settings for the Markdown syntax  
-{
-    &quot;default_line_ending&quot;: &quot;unix&quot;,
-}
-&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;sublime相关设置&lt;/strong&gt;
-&amp;gt; 1. 打开settings&lt;br /&gt;
-&amp;gt; &lt;code class=&quot;highlighter-rouge&quot;&gt;Preferences -&amp;gt; Settings&lt;/code&gt;
-&amp;gt; 2. 增加配置
-&amp;gt; &lt;code class=&quot;highlighter-rouge&quot;&gt;
-&amp;gt; {
-&amp;gt;     &quot;font_size&quot;: 12,
-&amp;gt;     &quot;line_numbers&quot;: true,
-&amp;gt; }  
-&amp;gt;&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;自定义快捷键，预览markdown&lt;/strong&gt;
-&amp;gt; 1. 打开Key Bindings
-&amp;gt; &lt;code class=&quot;highlighter-rouge&quot;&gt;Preferences -&amp;gt; Key Bindings&lt;/code&gt;&lt;br /&gt;
-&amp;gt; 2. 增加配置
-&amp;gt; &lt;code class=&quot;highlighter-rouge&quot;&gt;
-&amp;gt; {&quot;keys&quot;: [&quot;f6&quot;], &quot;command&quot;: &quot;markdown_preview&quot;, &quot;args&quot;: { &quot;target&quot;: &quot;browser&quot;}}
-&amp;gt;&lt;/code&gt;&lt;br /&gt;
-&lt;strong&gt;&lt;em&gt;tips&lt;/em&gt;&lt;/strong&gt;
-按F6就可以预览markdown文件啦。&lt;/p&gt;
-</description>
-        <pubDate>Sat, 22 Apr 2017 00:00:00 +0800</pubDate>
-        <link>https://wowkingah.github.io/2017/04/sublime%E7%BC%96%E8%BE%91markdown%E6%96%87%E6%9C%AC/</link>
-        <guid isPermaLink="true">https://wowkingah.github.io/2017/04/sublime%E7%BC%96%E8%BE%91markdown%E6%96%87%E6%9C%AC/</guid>
-        
-        <category>tools</category>
-        
-        <category>sublime</category>
-        
-        <category>markdown</category>
+        <category>Markdown</category>
         
         
       </item>

@@ -7,16 +7,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
   <title>Oracle 超过最大进程数</title>
-  <meta name="description" content="简述Oracle超过最大进程数。报错#### a.客户端连接报错 ORA-12519: TNS:no appropriate service handler foundb.命令行连接报错shellSQL&gt; conn /as sysdba;  ERROR:  ORA-00020: maximum number...">
+  <meta name="description" content="简述Oracle超过最大进程数。报错a.客户端连接报错ORA-12519: TNS:no appropriate service handler foundb.命令行连接报错SQL&gt; conn /as sysdba;  ERROR:  ORA-00020: maximum number of process...">
   <meta name="author" content="Wowking">
 
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="Oracle 超过最大进程数">
-  <meta name="twitter:description" content="简述Oracle超过最大进程数。报错#### a.客户端连接报错 ORA-12519: TNS:no appropriate service handler foundb.命令行连接报错shellSQL&gt; conn /as sysdba;  ERROR:  ORA-00020: maximum number...">
+  <meta name="twitter:description" content="简述Oracle超过最大进程数。报错a.客户端连接报错ORA-12519: TNS:no appropriate service handler foundb.命令行连接报错SQL&gt; conn /as sysdba;  ERROR:  ORA-00020: maximum number of process...">
   
   <meta property="og:type" content="article">
   <meta property="og:title" content="Oracle 超过最大进程数">
-  <meta property="og:description" content="简述Oracle超过最大进程数。报错#### a.客户端连接报错 ORA-12519: TNS:no appropriate service handler foundb.命令行连接报错shellSQL&gt; conn /as sysdba;  ERROR:  ORA-00020: maximum number...">
+  <meta property="og:description" content="简述Oracle超过最大进程数。报错a.客户端连接报错ORA-12519: TNS:no appropriate service handler foundb.命令行连接报错SQL&gt; conn /as sysdba;  ERROR:  ORA-00020: maximum number of process...">
   
   <link rel="icon" type="image/png" href="/images/favicon.png" />
   <link href="/images/favicon.png" rel="shortcut icon" type="image/png">
@@ -24,8 +24,8 @@
   <link rel="stylesheet" href="/css/main.css">
   <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
 
-  <link rel="canonical" href="https://wowkingah.github.io/2017/09/oracle_maximum_number_of_processes/">
-  <link rel="alternate" type="application/rss+xml" title="Wowking" href="https://wowkingah.github.io/feed.xml">
+  <link rel="canonical" href="http://0.0.0.0:4000/2017/09/oracle_maximum_number_of_processes/">
+  <link rel="alternate" type="application/rss+xml" title="Wowking" href="http://0.0.0.0:4000/feed.xml">
   
   <meta name="google-site-verification" content="1-1ZlHoRvM0T2FqPbW2S-qLgYXN6rsn52kErlMPd_gw" />
 
@@ -166,45 +166,49 @@
   </header>
 
   <section class="post">
-    <h3 id="section">简述</h3>
+    <h3 id="简述">简述</h3>
 <p>Oracle超过最大进程数。</p>
 
-<h3 id="section-1">报错</h3>
-<p>#### a.客户端连接报错 <br />
-ORA-12519: TNS:no appropriate service handler found</p>
+<h3 id="报错">报错</h3>
+<h4 id="a客户端连接报错">a.客户端连接报错</h4>
+<p>ORA-12519: TNS:no appropriate service handler found</p>
 
-<h4 id="b">b.命令行连接报错</h4>
-<p><code class="highlighter-rouge">shell
-SQL&gt; conn /as sysdba;  
+<h4 id="b命令行连接报错">b.命令行连接报错</h4>
+<div class="language-shell highlighter-rouge"><pre class="highlight"><code><span class="gp">SQL&gt; </span>conn /as sysdba;  
 ERROR:  
-ORA-00020: maximum number of processes (150) exceeded  
-</code></p>
+ORA-00020: maximum number of processes <span class="o">(</span>150<span class="o">)</span> exceeded  
+</code></pre>
+</div>
 
-<h3 id="section-2">解决方案</h3>
+<h3 id="解决方案">解决方案</h3>
 <blockquote>
   <p>1.重启或停止问题客户端（如问题Tomcat/Nginx），释放几个空闲连接；<br />
-2.查看当前进程数；<br />
-```shell
-SQL&gt; select count(1) from v$process;</p>
+2.查看当前进程数；</p>
+  <div class="language-shell highlighter-rouge"><pre class="highlight"><code><span class="gp">SQL&gt; </span><span class="k">select </span>count<span class="o">(</span>1<span class="o">)</span> from v<span class="nv">$process</span>;  
 
-  <h2 id="count1">COUNT(1)</h2>
-  <div class="highlighter-rouge"><pre class="highlight"><code>   147   ``` 3.查看最大进程数；   ```shell SQL&gt; select value from v$parameter where name = 'processes';  
+  COUNT<span class="o">(</span>1<span class="o">)</span>  
+----------  
+       147  
 </code></pre>
   </div>
+  <p>3.查看最大进程数；</p>
+  <div class="language-shell highlighter-rouge"><pre class="highlight"><code><span class="gp">SQL&gt; </span><span class="k">select </span>value from v<span class="nv">$parameter</span> where name <span class="o">=</span> <span class="s1">'processes'</span>;  
 
-  <h2 id="value">VALUE</h2>
-  <p>150<br />
-<code class="highlighter-rouge">
-4.修改最大进程数；  
-</code>shell
-SQL&gt; alter system set processes = 512 scope = spfile;<br />
-<code class="highlighter-rouge">
-5.重启数据库。  
-</code>shell
-SQL&gt; conn /as sysdba;<br />
-SQL&gt; shutdown immediate;<br />
-SQL&gt; startup;<br />
-```</p>
+VALUE  
+--------------------------------------------------------------------------------  
+150  
+</code></pre>
+  </div>
+  <p>4.修改最大进程数；</p>
+  <div class="language-shell highlighter-rouge"><pre class="highlight"><code><span class="gp">SQL&gt; </span>alter system <span class="nb">set </span>processes <span class="o">=</span> 512 scope <span class="o">=</span> spfile;  
+</code></pre>
+  </div>
+  <p>5.重启数据库。</p>
+  <div class="language-shell highlighter-rouge"><pre class="highlight"><code><span class="gp">SQL&gt; </span>conn /as sysdba;  
+<span class="gp">SQL&gt; </span>shutdown immediate;  
+<span class="gp">SQL&gt; </span>startup;  
+</code></pre>
+  </div>
 </blockquote>
 
 
@@ -280,27 +284,37 @@ SQL&gt; startup;<br />
         </li>
         
         
+        <li class="next">
+            <a href="/2017/09/mysql_server_has_gone_away/" data-toggle="tooltip" data-placement="top" title="MySQL server has gone away">下一篇：  <span>MySQL server has gone away</span>
+            </a>
+        </li>
+        
     </ul>
 </section>
 
 <section class="post-comments">
 
-
-    <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
-    <script src="https://img1.cache.netease.com/f2e/tie/yun/sdk/loader.js"></script>
-    <script>
-    var cloudTieConfig = {
-      url: document.location.href, 
-      sourceId: "",
-      productKey: "aa395cf7778f458492060f3f53301b7c",
-      target: "cloud-tie-wrapper"
-    };
-    var yunManualLoad = true;
-    Tie.loader("aHR0cHM6Ly9hcGkuZ2VudGllLjE2My5jb20vcGMvbGl2ZXNjcmlwdC5odG1s", true);
-    </script>
-
-
   
+    <div id="disqus_thread"></div>
+    <script>
+    
+    var disqus_config = function () {
+        this.page.url = "http://0.0.0.0:4000/2017/09/oracle_maximum_number_of_processes/";
+        this.page.identifier = "/2017/09/oracle_maximum_number_of_processes/";
+    };
+    var disqus_shortname = 'Wowking';
+    
+    (function() { // DON'T EDIT BELOW THIS LINE
+        var d = document, s = d.createElement('script');
+        s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+        })();
+    </script>
+    <noscript>要查看<a href="http://disqus.com/?ref_noscript"> Disqus </a>评论，请启用 JavaScript</noscript>
+    
+  
+
 </section>
 
 

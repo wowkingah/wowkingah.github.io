@@ -10,9 +10,8 @@ url: "https://wowkingah.github.io"
 
 # Comment
 comment:
-    # disqus: Wowking
-    duoshuo: Wowking 
-    # cloudTie: Wowking
+     disqus: Wowking
+    # uyan: 2145085  # 友言id,登录有言官网申请
 
 # Social
 social:
@@ -24,7 +23,7 @@ social:
 # 百度统计 
 # 使用博客模板请去掉或者更换 id 
 #baidu:
-#    id: 1  
+#    id: 123456  
 
 # Google Analytics
 # 使用博客模板请去掉或者更换 id
@@ -63,7 +62,7 @@ nav:
     
 
 # Pagination
-gems: [jekyll-paginate]
+plugins: [jekyll-paginate,jekyll-sitemap]
 paginate: 20
 paginate_path: "page/:num/"
 host: 0.0.0.0
