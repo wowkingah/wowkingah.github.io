@@ -81,6 +81,10 @@
 <lastmod>2017-09-21T00:00:00+08:00</lastmod>
 </url>
 <url>
+<loc>http://0.0.0.0:4000/2017/11/the_ideal_operations/</loc>
+<lastmod>2017-11-09T00:00:00+08:00</lastmod>
+</url>
+<url>
 <loc>http://0.0.0.0:4000/about/</loc>
 </url>
 <url>
@@ -91,5 +95,8 @@
 </url>
 <url>
 <loc>http://0.0.0.0:4000/tags/</loc>
+</url>
+<url>
+<loc>http://0.0.0.0:4000/page/2/</loc>
 </url>
 </urlset>

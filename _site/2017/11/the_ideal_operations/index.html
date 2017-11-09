@@ -6,17 +6,17 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-  <title>MySQL server has gone away</title>
-  <meta name="description" content="简述比较常见的一个报错日志：ERROR 2006 (HY000): MySQL server has gone away原因原因一：MySQL 服务宕了排查方法：1.1 查看MySQL运行时长mysql&gt; show global status like 'uptime';  +---------------...">
+  <title>理想中的运维</title>
+  <meta name="description" content="粗浅说下个人对理想中运维的一些想法。首先从字面说起，现在大家说的“运维”，顾名思义一般指“运营+维护”。而英文名不论是“Operation and Maintenance”还是“Operations”字面意思大致都是“操作+维护”。其实不论是中文名的解释，还是英文名的解释，在目前看来，都还停留在传统意义“救火式”...">
   <meta name="author" content="Wowking">
 
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="MySQL server has gone away">
-  <meta name="twitter:description" content="简述比较常见的一个报错日志：ERROR 2006 (HY000): MySQL server has gone away原因原因一：MySQL 服务宕了排查方法：1.1 查看MySQL运行时长mysql&gt; show global status like 'uptime';  +---------------...">
+  <meta name="twitter:title" content="理想中的运维">
+  <meta name="twitter:description" content="粗浅说下个人对理想中运维的一些想法。首先从字面说起，现在大家说的“运维”，顾名思义一般指“运营+维护”。而英文名不论是“Operation and Maintenance”还是“Operations”字面意思大致都是“操作+维护”。其实不论是中文名的解释，还是英文名的解释，在目前看来，都还停留在传统意义“救火式”...">
   
   <meta property="og:type" content="article">
-  <meta property="og:title" content="MySQL server has gone away">
-  <meta property="og:description" content="简述比较常见的一个报错日志：ERROR 2006 (HY000): MySQL server has gone away原因原因一：MySQL 服务宕了排查方法：1.1 查看MySQL运行时长mysql&gt; show global status like 'uptime';  +---------------...">
+  <meta property="og:title" content="理想中的运维">
+  <meta property="og:description" content="粗浅说下个人对理想中运维的一些想法。首先从字面说起，现在大家说的“运维”，顾名思义一般指“运营+维护”。而英文名不论是“Operation and Maintenance”还是“Operations”字面意思大致都是“操作+维护”。其实不论是中文名的解释，还是英文名的解释，在目前看来，都还停留在传统意义“救火式”...">
   
   <link rel="icon" type="image/png" href="/images/favicon.png" />
   <link href="/images/favicon.png" rel="shortcut icon" type="image/png">
@@ -24,7 +24,7 @@
   <link rel="stylesheet" href="/css/main.css">
   <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
 
-  <link rel="canonical" href="http://0.0.0.0:4000/2017/09/mysql_server_has_gone_away/">
+  <link rel="canonical" href="http://0.0.0.0:4000/2017/11/the_ideal_operations/">
   <link rel="alternate" type="application/rss+xml" title="Wowking" href="http://0.0.0.0:4000/feed.xml">
   
   <meta name="google-site-verification" content="1-1ZlHoRvM0T2FqPbW2S-qLgYXN6rsn52kErlMPd_gw" />
@@ -155,10 +155,10 @@
         <div class="content-wrapper__inner">
             <article class="post-container post-container--single" itemscope itemtype="http://schema.org/BlogPosting">
   <header class="post-header">
-    <h1 class="post-title">MySQL server has gone away</h1>
+    <h1 class="post-title">理想中的运维</h1>
     <div class="post-meta">
       <img src="/images/calendar.png" width="20px"/> 
-      <time datetime="2017-09-21 00:00:00 +0800" itemprop="datePublished" class="post-meta__date date">2017-09-21</time>  
+      <time datetime="2017-11-09 00:00:00 +0800" itemprop="datePublished" class="post-meta__date date">2017-11-09</time>  
          
       <span id="busuanzi_container_page_pv"> | 阅读：<span id="busuanzi_value_page_pv"></span>次</span>
     </p>
@@ -166,118 +166,25 @@
   </header>
 
   <section class="post">
-    <h3 id="简述">简述</h3>
-<p>比较常见的一个报错日志：<br />
-<code class="highlighter-rouge">ERROR 2006 (HY000): MySQL server has gone away</code></p>
+    <p>粗浅说下个人对理想中运维的一些想法。</p>
 
-<h3 id="原因">原因</h3>
-<h4 id="原因一mysql-服务宕了">原因一：MySQL 服务宕了</h4>
-<h5 id="排查方法">排查方法：</h5>
-<p><strong>1.1 查看MySQL运行时长</strong></p>
-<div class="language-shell highlighter-rouge"><pre class="highlight"><code><span class="gp">mysql&gt; </span>show global status like <span class="s1">'uptime'</span>;  
-+---------------+-------+  
-| Variable_name | Value |  
-+---------------+-------+  
-| Uptime        | 138   |  
-+---------------+-------+  
-</code></pre>
-</div>
+<p>首先从字面说起，现在大家说的“运维”，顾名思义一般指“运营+维护”。而英文名不论是“Operation and Maintenance”还是“Operations”字面意思大致都是“操作+维护”。</p>
 
-<p><strong>1.2 查看MySQL日志</strong></p>
-<div class="language-shell highlighter-rouge"><pre class="highlight"><code><span class="o">[</span>root@ZTEST-218 ~]# tail /data/logs/mysql/mysqld.log 
-2017-09-21 11:12:47 7f13935fe700 InnoDB: Loading buffer pool<span class="o">(</span>s<span class="o">)</span> from .//ib_buffer_pool
-2017-09-21 11:12:48 9744 <span class="o">[</span>Note] Server hostname <span class="o">(</span><span class="nb">bind</span>-address<span class="o">)</span>: <span class="s1">'*'</span>; port: 63306
-2017-09-21 11:12:48 9744 <span class="o">[</span>Note] IPv6 is available.
-2017-09-21 11:12:48 9744 <span class="o">[</span>Note]   - <span class="s1">'::'</span> resolves to <span class="s1">'::'</span>;
-2017-09-21 11:12:48 9744 <span class="o">[</span>Note] Server socket created on IP: <span class="s1">'::'</span>.
-2017-09-21 11:12:48 9744 <span class="o">[</span>Warning] <span class="s1">'proxies_priv'</span> entry <span class="s1">'@ root@ztest-217'</span> ignored <span class="k">in</span> --skip-name-resolve mode.
-2017-09-21 11:12:48 9744 <span class="o">[</span>Note] Event Scheduler: Loaded 0 events
-2017-09-21 11:12:48 9744 <span class="o">[</span>Note] /usr/sbin/mysqld: ready <span class="k">for </span>connections.
-Version: <span class="s1">'5.6.34-log'</span>  socket: <span class="s1">'/var/lib/mysql/mysql.sock'</span>  port: 63306  MySQL Community Server <span class="o">(</span>GPL<span class="o">)</span>
-2017-09-21 11:12:50 7f13935fe700 InnoDB: Buffer pool<span class="o">(</span>s<span class="o">)</span> load completed at 170921 11:12:50
-</code></pre>
-</div>
-<p>如果Uptime的值比较大，说明MySQL运行时间长，最近一段时间内没有重启服务之类的。<br />
-如果MySQL错误日志中没有相关日志记录，也说明MySQL最近未重启。</p>
+<p>其实不论是中文名的解释，还是英文名的解释，在目前看来，都还停留在传统意义“救火式”的解释上。结合个人在SNS、视频、互金以及电商等各行业的一些经验， 个人觉得理想中的运维不夸张的说，应该是“运筹帷幄”。</p>
 
-<h4 id="原因二连接超时">原因二：连接超时</h4>
-<h5 id="排查方法-1">排查方法：</h5>
-<p>如果程序使用的是长连接，则这种情况的可能性会比较大。<br />
-即某个长连接很久没有活动，达到了MySQL Server端的time out，被Server强行关闭。此后再通过这个Client发起查询的时候，就会报错<code class="highlighter-rouge">MySQL server has gone away</code>。</p>
-<div class="language-shell highlighter-rouge"><pre class="highlight"><code><span class="gp">mysql&gt; </span>show global variables like <span class="s1">'wait_timeout'</span>;
-+---------------+-------+
-| Variable_name | Value |
-+---------------+-------+
-| wait_timeout  | 3600  |
-+---------------+-------+
-1 row <span class="k">in </span><span class="nb">set</span> <span class="o">(</span>0.00 sec<span class="o">)</span>
+<p>所谓运筹帷幄，借鉴当下云计算的思想，即一切能标准化、自动化、平台化与智能化。其中标准化与自动化是基础与铺垫，平台化是当下运维的趋势，至于智能化目前算是一个比较大的挑战吧。</p>
+<blockquote>
+  <ul>
+    <li>标准化：其实没什么好说的，就把所有资源统一规范，形成一个标准。</li>
+    <li>自动化：处于标准化与平台化之间。建立在标准化的基础上，将一些传统的手工操作全部或部分用脚本自动去实现。</li>
+    <li>平台化：有了标准化与自动化作为基础与铺垫，将零散的功能整合，分析数据聚合，形成一套可视化、能简单操作复杂系统的平台。</li>
+    <li>智能化：这个比较复杂，涉及到自动发现，自动愈合，自动适配，流程联动等多方面。用一言蔽之，就是能自动发现问题与自动解决问题。</li>
+  </ul>
+</blockquote>
 
-<span class="gp">mysql&gt; </span><span class="k">select </span>now<span class="o">()</span>;
-+---------------------+
-| now<span class="o">()</span>               |
-+---------------------+
-| 2017-09-21 11:27:31 |
-+---------------------+
-1 row <span class="k">in </span><span class="nb">set</span> <span class="o">(</span>0.00 sec<span class="o">)</span>
+<p>3年前在某公司从事运维工作的时候，一个非技术领导周会上针对故障提出疑问“有没有一个小程序，当网站发生故障时，运行这个小程序，就能自动去检测与修复故障？”。从某种意义上说，这就是理想中运维。</p>
 
-<span class="gp">mysql&gt; </span>SET SESSION <span class="nv">wait_timeout</span><span class="o">=</span>5;		<span class="c">#将wait_timeout修改为5s</span>
-Query OK, 0 rows affected <span class="o">(</span>0.00 sec<span class="o">)</span>
-
-<span class="gp">mysql&gt; </span><span class="k">select </span>now<span class="o">()</span>;		<span class="c">#等待一段时间后，再次执行SQL</span>
-ERROR 2006 <span class="o">(</span>HY000<span class="o">)</span>: MySQL server has gone away
-No connection. Trying to reconnect...
-Connection id:    7
-Current database: <span class="k">***</span> NONE <span class="k">***</span>
-
-+---------------------+
-| now<span class="o">()</span>               |
-+---------------------+
-| 2017-09-21 11:27:53 |
-+---------------------+
-1 row <span class="k">in </span><span class="nb">set</span> <span class="o">(</span>0.00 sec<span class="o">)</span>
-</code></pre>
-</div>
-<p>当连接sleep时间超过wait_timeout时间后，再次发起活动查询时，就会报这个错。</p>
-
-<h4 id="原因三进程在server端被主动kill">原因三：进程在Server端被主动<code class="highlighter-rouge">kill</code></h4>
-<h5 id="排查方法-2">排查方法：</h5>
-<p>这种原因和第2种原因比较相似，只是发起者是DBA，或者其他job，发现有长时间的慢查询执行kill xxx导致。</p>
-<div class="language-shell highlighter-rouge"><pre class="highlight"><code><span class="gp">mysql&gt; </span>show global status like <span class="s1">'com_kill'</span>;
-+---------------+-------+
-| Variable_name | Value |
-+---------------+-------+
-| Com_kill      | 1     |
-+---------------+-------+
-1 row <span class="k">in </span><span class="nb">set</span> <span class="o">(</span>0.00 sec<span class="o">)</span>
-</code></pre>
-</div>
-
-<h4 id="原因三your-sql-statement-was-too-large">原因三：Your SQL statement was too large</h4>
-<h5 id="排查方法-3">排查方法：</h5>
-<p>当查询的结果集超过<code class="highlighter-rouge">max_allowed_packet</code>也会出现这样的报错，定位方法是打出相关报错的语句。 用 <code class="highlighter-rouge">select * into outfile</code> 的方式导出到文件，查看文件大小是否超过 <code class="highlighter-rouge">max_allowed_packet</code>，如果超过则需要调整参数，或者优化语句。</p>
-<div class="language-shell highlighter-rouge"><pre class="highlight"><code><span class="gp">mysql&gt; </span>show global variables like <span class="s1">'max_allowed_packet'</span>;
-+--------------------+----------+
-| Variable_name      | Value    |
-+--------------------+----------+
-| max_allowed_packet | 16777216 |
-+--------------------+----------+
-1 row <span class="k">in </span><span class="nb">set</span> <span class="o">(</span>0.00 sec<span class="o">)</span>  
-
-<span class="gp">mysql&gt; </span><span class="nb">set </span>global <span class="nv">max_allowed_packet</span><span class="o">=</span>1024<span class="k">*</span>1024<span class="k">*</span>32;		<span class="c">#修改参数</span>
-Query OK, 0 rows affected <span class="o">(</span>0.00 sec<span class="o">)</span>
-
-<span class="gp">mysql&gt; </span>show global variables like <span class="s1">'max_allowed_packet'</span>;
-+--------------------+----------+
-| Variable_name      | Value    |
-+--------------------+----------+
-| max_allowed_packet | 33554432 |
-+--------------------+----------+
-1 row <span class="k">in </span><span class="nb">set</span> <span class="o">(</span>0.00 sec<span class="o">)</span>
-</code></pre>
-</div>
-
-<h3 id="reference">reference</h3>
-<p>http://cenalulu.github.io/mysql/mysql-has-gone-away/</p>
+<p>其实不论是以前还是现在，运维亦或时下比较热的SRE，它们本质的工作都是最大程度保障系统可靠、稳定、高效的运行。</p>
 
 
   </section>
@@ -347,15 +254,10 @@ Query OK, 0 rows affected <span class="o">(</span>0.00 sec<span class="o">)</spa
        <ul class="pager">
         
         <li class="previous">
-            <a href="/2017/09/oracle_maximum_number_of_processes/" data-toggle="tooltip" data-placement="top" title="Oracle 超过最大进程数">上一篇：  <span>Oracle 超过最大进程数</span>
+            <a href="/2017/09/mysql_server_has_gone_away/" data-toggle="tooltip" data-placement="top" title="MySQL server has gone away">上一篇：  <span>MySQL server has gone away</span>
             </a>
         </li>
         
-        
-        <li class="next">
-            <a href="/2017/11/the_ideal_operations/" data-toggle="tooltip" data-placement="top" title="理想中的运维">下一篇：  <span>理想中的运维</span>
-            </a>
-        </li>
         
     </ul>
 </section>
@@ -367,8 +269,8 @@ Query OK, 0 rows affected <span class="o">(</span>0.00 sec<span class="o">)</spa
     <script>
     
     var disqus_config = function () {
-        this.page.url = "http://0.0.0.0:4000/2017/09/mysql_server_has_gone_away/";
-        this.page.identifier = "/2017/09/mysql_server_has_gone_away/";
+        this.page.url = "http://0.0.0.0:4000/2017/11/the_ideal_operations/";
+        this.page.identifier = "/2017/11/the_ideal_operations/";
     };
     var disqus_shortname = 'Wowking';
     

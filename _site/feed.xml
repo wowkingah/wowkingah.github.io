@@ -5,9 +5,40 @@
     <description>I don't really know where I'm going, but I hope I go far.</description>
     <link>http://0.0.0.0:4000/</link>
     <atom:link href="http://0.0.0.0:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 21 Sep 2017 17:45:49 +0800</pubDate>
-    <lastBuildDate>Thu, 21 Sep 2017 17:45:49 +0800</lastBuildDate>
+    <pubDate>Thu, 09 Nov 2017 09:49:56 +0800</pubDate>
+    <lastBuildDate>Thu, 09 Nov 2017 09:49:56 +0800</lastBuildDate>
     <generator>Jekyll v3.5.2</generator>
+    
+      <item>
+        <title>理想中的运维</title>
+        <description>&lt;p&gt;粗浅说下个人对理想中运维的一些想法。&lt;/p&gt;
+
+&lt;p&gt;首先从字面说起，现在大家说的“运维”，顾名思义一般指“运营+维护”。而英文名不论是“Operation and Maintenance”还是“Operations”字面意思大致都是“操作+维护”。&lt;/p&gt;
+
+&lt;p&gt;其实不论是中文名的解释，还是英文名的解释，在目前看来，都还停留在传统意义“救火式”的解释上。结合个人在SNS、视频、互金以及电商等各行业的一些经验， 个人觉得理想中的运维不夸张的说，应该是“运筹帷幄”。&lt;/p&gt;
+
+&lt;p&gt;所谓运筹帷幄，借鉴当下云计算的思想，即一切能标准化、自动化、平台化与智能化。其中标准化与自动化是基础与铺垫，平台化是当下运维的趋势，至于智能化目前算是一个比较大的挑战吧。&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;ul&gt;
+    &lt;li&gt;标准化：其实没什么好说的，就把所有资源统一规范，形成一个标准。&lt;/li&gt;
+    &lt;li&gt;自动化：处于标准化与平台化之间。建立在标准化的基础上，将一些传统的手工操作全部或部分用脚本自动去实现。&lt;/li&gt;
+    &lt;li&gt;平台化：有了标准化与自动化作为基础与铺垫，将零散的功能整合，分析数据聚合，形成一套可视化、能简单操作复杂系统的平台。&lt;/li&gt;
+    &lt;li&gt;智能化：这个比较复杂，涉及到自动发现，自动愈合，自动适配，流程联动等多方面。用一言蔽之，就是能自动发现问题与自动解决问题。&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;3年前在某公司从事运维工作的时候，一个非技术领导周会上针对故障提出疑问“有没有一个小程序，当网站发生故障时，运行这个小程序，就能自动去检测与修复故障？”。从某种意义上说，这就是理想中运维。&lt;/p&gt;
+
+&lt;p&gt;其实不论是以前还是现在，运维亦或时下比较热的SRE，它们本质的工作都是最大程度保障系统可靠、稳定、高效的运行。&lt;/p&gt;
+</description>
+        <pubDate>Thu, 09 Nov 2017 00:00:00 +0800</pubDate>
+        <link>http://0.0.0.0:4000/2017/11/the_ideal_operations/</link>
+        <guid isPermaLink="true">http://0.0.0.0:4000/2017/11/the_ideal_operations/</guid>
+        
+        <category>OPS</category>
+        
+        
+      </item>
     
       <item>
         <title>MySQL server has gone away</title>
@@ -895,152 +926,6 @@ http://www.ttlsa.com/redis/redis-cluster-theoretical-knowledge&lt;/p&gt;
         <guid isPermaLink="true">http://0.0.0.0:4000/2017/04/redis_cluster_install/</guid>
         
         <category>Redis</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>Markdown常用语法</title>
-        <description>&lt;h3 id=&quot;什么是-markdown&quot;&gt;什么是 Markdown&lt;/h3&gt;
-&lt;p&gt;Markdown 是一种方便记忆、书写的纯文本标记语言，用户可以使用这些标记符号以最小的输入代价生成极富表现力的文档。&lt;/p&gt;
-
-&lt;h3 id=&quot;标题&quot;&gt;标题&lt;/h3&gt;
-&lt;p&gt;一级标题：&lt;code class=&quot;highlighter-rouge&quot;&gt;# Header 1&lt;/code&gt;&lt;br /&gt;
-二级标题：&lt;code class=&quot;highlighter-rouge&quot;&gt;## Header 2&lt;/code&gt;         &lt;br /&gt;
-三级标题：&lt;code class=&quot;highlighter-rouge&quot;&gt;### Header 3&lt;/code&gt;         &lt;br /&gt;
-四级标题：&lt;code class=&quot;highlighter-rouge&quot;&gt;#### Header 4&lt;/code&gt;         &lt;br /&gt;
-五级标题：&lt;code class=&quot;highlighter-rouge&quot;&gt;##### Header 5&lt;/code&gt;          &lt;br /&gt;
-六级标题：&lt;code class=&quot;highlighter-rouge&quot;&gt;###### Header 6&lt;/code&gt;&lt;br /&gt;
-&lt;img src=&quot;/images/posts/sa/markdown_syntax/header.jpg&quot; alt=&quot;标题&quot; /&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;字体&quot;&gt;字体&lt;/h3&gt;
-&lt;p&gt;斜体：&lt;code class=&quot;highlighter-rouge&quot;&gt;*斜体*&lt;/code&gt;&lt;br /&gt;
-粗体：&lt;code class=&quot;highlighter-rouge&quot;&gt;**粗体**&lt;/code&gt;&lt;br /&gt;
-粗斜体：&lt;code class=&quot;highlighter-rouge&quot;&gt;***粗斜体***&lt;/code&gt;&lt;br /&gt;
-删除线：&lt;code class=&quot;highlighter-rouge&quot;&gt;~~删除线~~&lt;/code&gt;&lt;br /&gt;
-&lt;img src=&quot;/images/posts/sa/markdown_syntax/font.jpg&quot; alt=&quot;字体&quot; /&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;目录&quot;&gt;目录&lt;/h3&gt;
-&lt;p&gt;在段落中填写 &lt;code class=&quot;highlighter-rouge&quot;&gt;[TOC]&lt;/code&gt; 以显示全文内容的目录结构。
-&lt;img src=&quot;/images/posts/sa/markdown_syntax/catalogue.jpg&quot; alt=&quot;目录&quot; /&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;段与行&quot;&gt;段与行&lt;/h3&gt;
-&lt;p&gt;段落：&lt;code class=&quot;highlighter-rouge&quot;&gt;段落之间空一行&lt;/code&gt;&lt;br /&gt;
-换行：&lt;code class=&quot;highlighter-rouge&quot;&gt;一行结束时输入两个空格&lt;/code&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;列表项&quot;&gt;列表项&lt;/h3&gt;
-&lt;p&gt;列表项1：&lt;code class=&quot;highlighter-rouge&quot;&gt;* 列表项1&lt;/code&gt;&lt;br /&gt;
-列表项2：&lt;code class=&quot;highlighter-rouge&quot;&gt;* 列表项2&lt;/code&gt;&lt;br /&gt;
-列表项3：&lt;code class=&quot;highlighter-rouge&quot;&gt;+ 列表项3&lt;/code&gt;&lt;br /&gt;
-列表项4：&lt;code class=&quot;highlighter-rouge&quot;&gt;+ 列表项4&lt;/code&gt;&lt;br /&gt;
-列表项5：&lt;code class=&quot;highlighter-rouge&quot;&gt;- 列表项5&lt;/code&gt;&lt;br /&gt;
-列表项6：&lt;code class=&quot;highlighter-rouge&quot;&gt;- 列表项6&lt;/code&gt;&lt;br /&gt;
-列表项7：&lt;code class=&quot;highlighter-rouge&quot;&gt;1. 列表项7&lt;/code&gt;&lt;br /&gt;
-列表项8：&lt;code class=&quot;highlighter-rouge&quot;&gt;2. 列表项8&lt;/code&gt;&lt;br /&gt;
-列表项9：&lt;code class=&quot;highlighter-rouge&quot;&gt;- [ ] 列表项9&lt;/code&gt;&lt;br /&gt;
-列表项10：&lt;code class=&quot;highlighter-rouge&quot;&gt;- [x] 列表项10&lt;/code&gt;&lt;br /&gt;
-&lt;img src=&quot;/images/posts/sa/markdown_syntax/list.jpg&quot; alt=&quot;列表项&quot; /&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;引用&quot;&gt;引用&lt;/h3&gt;
-&lt;p&gt;引用：&lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;gt; 引用内容，可结合列表项一起使用&lt;/code&gt;&lt;br /&gt;
-&lt;img src=&quot;/images/posts/sa/markdown_syntax/reference.jpg&quot; alt=&quot;引用&quot; /&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;表格&quot;&gt;表格&lt;/h3&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;| 项目 | 价格 | 数量 |
-| -------- | -----: | :----: |
-| 计算机 | 8000 | 10 |
-| 手机 | 6000 | 5 |
-| 电视 | 3000 | 1 |
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/posts/sa/markdown_syntax/table.jpg&quot; alt=&quot;表格&quot; /&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;链接与图片&quot;&gt;链接与图片&lt;/h3&gt;
-&lt;p&gt;链接：&lt;code class=&quot;highlighter-rouge&quot;&gt;[Title](URL)&lt;/code&gt;&lt;br /&gt;
-图片：&lt;code class=&quot;highlighter-rouge&quot;&gt;![](/images/image.jpg)&lt;/code&gt;&lt;br /&gt;
-&lt;img src=&quot;/images/posts/sa/markdown_syntax/link.jpg&quot; alt=&quot;链接&quot; /&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;代码高亮&quot;&gt;代码高亮&lt;/h3&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;```python
-print 'hello world~'
- ```
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/posts/sa/markdown_syntax/code.jpg&quot; alt=&quot;代码&quot; /&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;水平线&quot;&gt;水平线&lt;/h3&gt;
-&lt;p&gt;水平线：&lt;code class=&quot;highlighter-rouge&quot;&gt;---&lt;/code&gt;&lt;br /&gt;
-&lt;img src=&quot;/images/posts/sa/markdown_syntax/horizontal_rules.jpg&quot; alt=&quot;水平线&quot; /&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;注脚&quot;&gt;注脚&lt;/h3&gt;
-&lt;p&gt;使用 [^keyword] 表示注脚。
-这是一个&lt;em&gt;注脚&lt;/em&gt;&lt;sup id=&quot;fnref:footnote&quot;&gt;&lt;a href=&quot;#fn:footnote&quot; class=&quot;footnote&quot;&gt;1&lt;/a&gt;&lt;/sup&gt;的样例。&lt;/p&gt;
-
-&lt;h3 id=&quot;定义型列表&quot;&gt;定义型列表&lt;/h3&gt;
-
-&lt;dl&gt;
-  &lt;dt&gt;名词 1&lt;/dt&gt;
-  &lt;dd&gt;定义 1（左侧有一个可见的冒号和四个不可见的空格）&lt;/dd&gt;
-  &lt;dt&gt;代码块 2&lt;/dt&gt;
-  &lt;dd&gt;这是代码块的定义（左侧有一个可见的冒号和四个不可见的空格）
-
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;代码块（左侧有八个不可见的空格）
-&lt;/code&gt;&lt;/pre&gt;
-    &lt;/div&gt;
-  &lt;/dd&gt;
-&lt;/dl&gt;
-
-&lt;h3 id=&quot;html标签&quot;&gt;HTML标签&lt;/h3&gt;
-&lt;p&gt;支持在 Markdown 语法中嵌套 Html 标签，譬如，你可以用 Html 写一个纵跨两行的表格：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;table&amp;gt;
-    &amp;lt;tr&amp;gt;
-        &amp;lt;th rowspan=&quot;2&quot;&amp;gt;值班人员&amp;lt;/th&amp;gt;
-        &amp;lt;th&amp;gt;星期一&amp;lt;/th&amp;gt;
-        &amp;lt;th&amp;gt;星期二&amp;lt;/th&amp;gt;
-        &amp;lt;th&amp;gt;星期三&amp;lt;/th&amp;gt;
-    &amp;lt;/tr&amp;gt;
-    &amp;lt;tr&amp;gt;
-        &amp;lt;td&amp;gt;李强&amp;lt;/td&amp;gt;
-        &amp;lt;td&amp;gt;张明&amp;lt;/td&amp;gt;
-        &amp;lt;td&amp;gt;王平&amp;lt;/td&amp;gt;
-    &amp;lt;/tr&amp;gt;
-&amp;lt;/table&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;table&gt;
-    &lt;tr&gt;
-        &lt;th rowspan=&quot;2&quot;&gt;值班人员&lt;/th&gt;
-        &lt;th&gt;星期一&lt;/th&gt;
-        &lt;th&gt;星期二&lt;/th&gt;
-        &lt;th&gt;星期三&lt;/th&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-        &lt;td&gt;李强&lt;/td&gt;
-        &lt;td&gt;张明&lt;/td&gt;
-        &lt;td&gt;王平&lt;/td&gt;
-    &lt;/tr&gt;
-&lt;/table&gt;
-
-&lt;h3 id=&quot;reference&quot;&gt;reference&lt;/h3&gt;
-&lt;p&gt;https://www.zybuluo.com/mdeditor?url=https://www.zybuluo.com/static/editor/md-help.markdown&lt;/p&gt;
-
-&lt;div class=&quot;footnotes&quot;&gt;
-  &lt;ol&gt;
-    &lt;li id=&quot;fn:footnote&quot;&gt;
-      &lt;p&gt;这是一个 &lt;em&gt;注脚&lt;/em&gt; 的文本。&amp;nbsp;&lt;a href=&quot;#fnref:footnote&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
-    &lt;/li&gt;
-  &lt;/ol&gt;
-&lt;/div&gt;
-</description>
-        <pubDate>Sun, 23 Apr 2017 00:00:00 +0800</pubDate>
-        <link>http://0.0.0.0:4000/2017/04/markdown_syntax/</link>
-        <guid isPermaLink="true">http://0.0.0.0:4000/2017/04/markdown_syntax/</guid>
-        
-        <category>Markdown</category>
         
         
       </item>
