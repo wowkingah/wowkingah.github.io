@@ -91,7 +91,7 @@ mysql> show global status like 'com_kill';
 1 row in set (0.00 sec)
 ```  
 
-#### 原因三：Your SQL statement was too large  
+#### 原因四：Your SQL statement was too large  
 ##### 排查方法：  
 当查询的结果集超过`max_allowed_packet`也会出现这样的报错，定位方法是打出相关报错的语句。 用 `select * into outfile` 的方式导出到文件，查看文件大小是否超过 `max_allowed_packet`，如果超过则需要调整参数，或者优化语句。  
 ```shell

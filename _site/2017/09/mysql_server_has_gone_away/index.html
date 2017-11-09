@@ -252,7 +252,7 @@ Current database: <span class="k">***</span> NONE <span class="k">***</span>
 </code></pre>
 </div>
 
-<h4 id="原因三your-sql-statement-was-too-large">原因三：Your SQL statement was too large</h4>
+<h4 id="原因四your-sql-statement-was-too-large">原因四：Your SQL statement was too large</h4>
 <h5 id="排查方法-3">排查方法：</h5>
 <p>当查询的结果集超过<code class="highlighter-rouge">max_allowed_packet</code>也会出现这样的报错，定位方法是打出相关报错的语句。 用 <code class="highlighter-rouge">select * into outfile</code> 的方式导出到文件，查看文件大小是否超过 <code class="highlighter-rouge">max_allowed_packet</code>，如果超过则需要调整参数，或者优化语句。</p>
 <div class="language-shell highlighter-rouge"><pre class="highlight"><code><span class="gp">mysql&gt; </span>show global variables like <span class="s1">'max_allowed_packet'</span>;

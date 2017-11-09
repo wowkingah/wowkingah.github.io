@@ -5,8 +5,8 @@
     <description>I don't really know where I'm going, but I hope I go far.</description>
     <link>http://0.0.0.0:4000/</link>
     <atom:link href="http://0.0.0.0:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 09 Nov 2017 09:49:56 +0800</pubDate>
-    <lastBuildDate>Thu, 09 Nov 2017 09:49:56 +0800</lastBuildDate>
+    <pubDate>Thu, 09 Nov 2017 09:57:51 +0800</pubDate>
+    <lastBuildDate>Thu, 09 Nov 2017 09:57:51 +0800</lastBuildDate>
     <generator>Jekyll v3.5.2</generator>
     
       <item>
@@ -128,7 +128,7 @@ Current database: &lt;span class=&quot;k&quot;&gt;***&lt;/span&gt; NONE &lt;span
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 
-&lt;h4 id=&quot;原因三your-sql-statement-was-too-large&quot;&gt;原因三：Your SQL statement was too large&lt;/h4&gt;
+&lt;h4 id=&quot;原因四your-sql-statement-was-too-large&quot;&gt;原因四：Your SQL statement was too large&lt;/h4&gt;
 &lt;h5 id=&quot;排查方法-3&quot;&gt;排查方法：&lt;/h5&gt;
 &lt;p&gt;当查询的结果集超过&lt;code class=&quot;highlighter-rouge&quot;&gt;max_allowed_packet&lt;/code&gt;也会出现这样的报错，定位方法是打出相关报错的语句。 用 &lt;code class=&quot;highlighter-rouge&quot;&gt;select * into outfile&lt;/code&gt; 的方式导出到文件，查看文件大小是否超过 &lt;code class=&quot;highlighter-rouge&quot;&gt;max_allowed_packet&lt;/code&gt;，如果超过则需要调整参数，或者优化语句。&lt;/p&gt;
 &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;mysql&amp;gt; &lt;/span&gt;show global variables like &lt;span class=&quot;s1&quot;&gt;'max_allowed_packet'&lt;/span&gt;;
