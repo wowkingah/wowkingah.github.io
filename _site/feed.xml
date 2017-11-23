@@ -5,9 +5,105 @@
     <description>I don't really know where I'm going, but I hope I go far.</description>
     <link>http://0.0.0.0:4000/</link>
     <atom:link href="http://0.0.0.0:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 09 Nov 2017 09:57:51 +0800</pubDate>
-    <lastBuildDate>Thu, 09 Nov 2017 09:57:51 +0800</lastBuildDate>
+    <pubDate>Thu, 23 Nov 2017 10:29:51 +0800</pubDate>
+    <lastBuildDate>Thu, 23 Nov 2017 10:29:51 +0800</lastBuildDate>
     <generator>Jekyll v3.5.2</generator>
+    
+      <item>
+        <title>MySQL中VARCHAR最大长度</title>
+        <description>&lt;h3 id=&quot;简述&quot;&gt;简述&lt;/h3&gt;
+&lt;p&gt;MySQL中VARCHAR长度取值范围为0~65535，是不是意味着真的能存这么多字符串？&lt;/p&gt;
+
+&lt;h3 id=&quot;测试&quot;&gt;测试&lt;/h3&gt;
+&lt;ol&gt;
+  &lt;li&gt;t_varchar_1，超过最大行限制。失败：
+    &lt;div class=&quot;language-sql highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;mysql&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;CREATE&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;TABLE&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;t_varchar_1&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+ &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;   &lt;span class=&quot;nv&quot;&gt;`id`&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;int&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;10&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;unsigned&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+ &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;   &lt;span class=&quot;nv&quot;&gt;`name`&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;varchar&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;65535&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+ &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ENGINE&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;InnoDB&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;DEFAULT&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;CHARSET&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;latin1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;ERROR&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1118&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;42000&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;Row&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;size&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;too&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;large&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;The&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;maximum&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;row&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;size&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;the&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;used&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;table&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;type&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;not&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;counting&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;BLOBs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;is&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;65535&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;This&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;includes&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;storage&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;overhead&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;check&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;the&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;manual&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;You&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;have&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;to&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;change&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;some&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;columns&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;to&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;TEXT&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;or&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;BLOBs&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;t_varchar_2，varchar需要2字节存储长度。失败：
+    &lt;div class=&quot;language-sql highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;mysql&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;CREATE&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;TABLE&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;t_varchar_2&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+ &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;   &lt;span class=&quot;nv&quot;&gt;`name`&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;varchar&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;65535&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+ &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ENGINE&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;InnoDB&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;DEFAULT&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;CHARSET&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;latin1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;ERROR&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1118&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;42000&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;Row&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;size&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;too&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;large&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;The&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;maximum&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;row&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;size&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;the&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;used&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;table&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;type&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;not&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;counting&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;BLOBs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;is&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;65535&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;This&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;includes&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;storage&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;overhead&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;check&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;the&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;manual&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;You&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;have&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;to&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;change&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;some&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;columns&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;to&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;TEXT&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;or&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;BLOBs&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&quot;官方文档&quot;&gt;官方文档&lt;/h3&gt;
+&lt;h4 id=&quot;the-char-and-varchar-types&quot;&gt;The CHAR and VARCHAR Types&lt;/h4&gt;
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;Values in VARCHAR columns are variable-length strings. The length can be specified as a value from 0 to 65,535. The effective maximum length of a VARCHAR is subject to the maximum row size (65,535 bytes, which is shared among all columns) and the character set used. See Section C.10.4, “Limits on Table Column Count and Row Size”.&lt;/code&gt;&lt;br /&gt;
+大概意思是 &lt;code class=&quot;highlighter-rouge&quot;&gt;VARCHAR&lt;/code&gt;长度取值为0~65535，实际有效最大长度取决于最大行大小（在一个表的所有列中共享65535字节）和使用的字符集。&lt;/p&gt;
+
+&lt;h4 id=&quot;limits-on-table-column-count-and-row-size&quot;&gt;Limits on Table Column Count and Row Size&lt;/h4&gt;
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;The internal representation of a MySQL table has a maximum row size limit of 65,535 bytes, even if the storage engine is capable of supporting larger rows. BLOB and TEXT columns only contribute 9 to 12 bytes toward the row size limit because their contents are stored separately from the rest of the row.&lt;/code&gt;
+大概意思是 MySQL内部限制表的最大行大小为65535字节，&lt;code class=&quot;highlighter-rouge&quot;&gt;BLOB&lt;/code&gt;和&lt;code class=&quot;highlighter-rouge&quot;&gt;TEXT&lt;/code&gt;列仅在限制字节中占9到12个字节。&lt;/p&gt;
+
+&lt;h3 id=&quot;验证&quot;&gt;验证&lt;/h3&gt;
+&lt;ol&gt;
+  &lt;li&gt;t_varchar_3，字符集为 latin1。成功：
+    &lt;div class=&quot;language-sql highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;mysql&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;CREATE&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;TABLE&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;t_varchar_3&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+ &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;   &lt;span class=&quot;nv&quot;&gt;`name`&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;varchar&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;65532&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+ &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ENGINE&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;InnoDB&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;DEFAULT&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;CHARSET&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;latin1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;Query&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;OK&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;rows&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;affected&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;19&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sec&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;t_varchar_4，指定utf8字符集，因utf占3个字节，理论上varchar最长为(65535-2)/3=21844，先试个21845字节。失败：
+    &lt;div class=&quot;language-sql highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;mysql&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;CREATE&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;TABLE&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;t_varchar_4&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+ &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;   &lt;span class=&quot;nv&quot;&gt;`name`&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;varchar&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;21845&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+ &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ENGINE&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;InnoDB&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;DEFAULT&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;CHARSET&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;utf8&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;ERROR&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1118&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;42000&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;Row&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;size&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;too&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;large&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;The&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;maximum&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;row&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;size&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;the&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;used&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;table&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;type&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;not&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;counting&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;BLOBs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;is&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;65535&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;This&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;includes&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;storage&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;overhead&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;check&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;the&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;manual&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;You&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;have&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;to&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;change&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;some&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;columns&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;to&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;TEXT&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;or&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;BLOBs&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;t_varchar_5，字符集为 InnoDB。成功：
+    &lt;div class=&quot;language-sql highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;mysql&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;CREATE&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;TABLE&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;t_varchar_5&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+ &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;   &lt;span class=&quot;nv&quot;&gt;`name`&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;varchar&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;21844&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+ &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ENGINE&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;InnoDB&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;DEFAULT&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;CHARSET&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;utf8&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;Query&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;OK&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;rows&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;affected&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;32&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sec&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;t_varchar_6，一个表的所有列中共享65535字节。失败：
+    &lt;div class=&quot;language-sql highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;mysql&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;CREATE&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;TABLE&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;t_varchar_6&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+ &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;   &lt;span class=&quot;nv&quot;&gt;`id`&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;int&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;11&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt;
+ &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;   &lt;span class=&quot;nv&quot;&gt;`name`&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;varchar&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;21844&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+ &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ENGINE&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;InnoDB&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;DEFAULT&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;CHARSET&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;utf8&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;ERROR&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1118&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;42000&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;Row&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;size&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;too&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;large&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;The&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;maximum&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;row&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;size&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;the&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;used&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;table&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;type&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;not&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;counting&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;BLOBs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;is&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;65535&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;This&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;includes&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;storage&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;overhead&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;check&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;the&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;manual&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;You&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;have&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;to&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;change&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;some&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;columns&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;to&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;TEXT&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;or&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;BLOBs&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;t_varchar_7，成功：
+    &lt;div class=&quot;language-sql highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;mysql&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;CREATE&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;TABLE&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;t_varchar_7&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+ &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;   &lt;span class=&quot;nv&quot;&gt;`id`&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;int&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;11&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt;
+ &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;   &lt;span class=&quot;nv&quot;&gt;`name`&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;varchar&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;21842&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+ &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ENGINE&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;InnoDB&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;DEFAULT&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;CHARSET&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;utf8&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;Query&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;OK&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;rows&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;affected&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;23&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sec&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&quot;结论&quot;&gt;结论&lt;/h3&gt;
+&lt;p&gt;可见，&lt;code class=&quot;highlighter-rouge&quot;&gt;VARCHAR&lt;/code&gt;的实际长度取决于表的字符集，以及表中其它字段占用的长度有关。不过，&lt;code class=&quot;highlighter-rouge&quot;&gt;BLOB&lt;/code&gt;和&lt;code class=&quot;highlighter-rouge&quot;&gt;TEXT&lt;/code&gt;列仅在共享长度中占9到12个字节，这里没贴测试结果。&lt;/p&gt;
+
+&lt;h3 id=&quot;reference&quot;&gt;reference&lt;/h3&gt;
+&lt;p&gt;https://dev.mysql.com/doc/refman/5.6/en/column-count-limit.html&lt;/p&gt;
+</description>
+        <pubDate>Wed, 22 Nov 2017 00:00:00 +0800</pubDate>
+        <link>http://0.0.0.0:4000/2017/11/the_maximum_row_of_varchar/</link>
+        <guid isPermaLink="true">http://0.0.0.0:4000/2017/11/the_maximum_row_of_varchar/</guid>
+        
+        <category>MySQL</category>
+        
+        
+      </item>
     
       <item>
         <title>理想中的运维</title>
@@ -680,252 +776,6 @@ b.停止服务：
         <category>Mac</category>
         
         <category>VMWare</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>Redis Cluster安装部署</title>
-        <description>&lt;h3 id=&quot;简述&quot;&gt;简述&lt;/h3&gt;
-&lt;p&gt;从Redis 3.x开始，一直单机的Redis终于步入Cluster大时代。&lt;br /&gt;
-Redis从一个单纯的NoSQL内存数据库变成了分布式NoSQL数据库，CAP模型也从CP变成了AP。&lt;/p&gt;
-
-&lt;h3 id=&quot;架构&quot;&gt;架构&lt;/h3&gt;
-&lt;h4 id=&quot;架构图&quot;&gt;架构图&lt;/h4&gt;
-&lt;p&gt;&lt;img src=&quot;/images/posts/sa/redis_cluster_install/redis_cluster_architecture.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;h4 id=&quot;架构细节&quot;&gt;架构细节&lt;/h4&gt;
-&lt;blockquote&gt;
-  &lt;ul&gt;
-    &lt;li&gt;所有 redis 结点彼此互联（PING-PONG 机制），内部使用二进制协议优化传输速度和带宽（客户端与结点之间的通信还是正常的ascii协议）；&lt;/li&gt;
-    &lt;li&gt;结点的 fail 是通过集群中超过半数的结点检测失效时才生效；&lt;/li&gt;
-    &lt;li&gt;客户端与 redis 结点直连，不需要中间 proxy 层；&lt;/li&gt;
-    &lt;li&gt;客户端不需要连接集群所有结点，连接集群中任何一个可用结点即可（可用结点）；&lt;/li&gt;
-    &lt;li&gt;redis-cluster 把所有的物理结点映射到[0-16383]slot 上，cluster 负责维护 node &amp;lt;-&amp;gt; slot &amp;lt;-&amp;gt; value。&lt;/li&gt;
-  &lt;/ul&gt;
-&lt;/blockquote&gt;
-
-&lt;h4 id=&quot;选举与容错&quot;&gt;选举与容错&lt;/h4&gt;
-&lt;p&gt;&lt;img src=&quot;/images/posts/sa/redis_cluster_install/fail.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;h5 id=&quot;选举&quot;&gt;选举&lt;/h5&gt;
-&lt;blockquote&gt;
-  &lt;ul&gt;
-    &lt;li&gt;选举过程是集群中所有 master 参与，如果半数以上 master 节点与 master 节点通信超过 (cluster-node-timeout)，认为当前 master 节点挂掉；&lt;/li&gt;
-  &lt;/ul&gt;
-&lt;/blockquote&gt;
-
-&lt;h5 id=&quot;容错&quot;&gt;容错&lt;/h5&gt;
-&lt;p&gt;什么时候整个集群不可用(cluster_state:fail)？&lt;/p&gt;
-&lt;blockquote&gt;
-  &lt;ul&gt;
-    &lt;li&gt;如果集群任意 master 挂掉，且当前 master 没有 slave，集群进入 fail 状态，也可以理解成集群的 slot 映射[0-16383]不完成时进入 fail 状态。
-      &lt;blockquote&gt;
-        &lt;ul&gt;
-          &lt;li&gt;redis-3.0.0.rc1 加入 cluster-require-full-coverage 参数，默认关闭，打开集群兼容部分失败。&lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/blockquote&gt;
-    &lt;/li&gt;
-    &lt;li&gt;如果集群超过半数以上 master 挂掉，无论是否有 slave 集群进入 fail 状态。
-      &lt;blockquote&gt;
-        &lt;ul&gt;
-          &lt;li&gt;当集群不可用时，所有对集群的操作做都不可用，收到((error) CLUSTERDOWN The cluster is down) 错误。&lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/blockquote&gt;
-    &lt;/li&gt;
-  &lt;/ul&gt;
-&lt;/blockquote&gt;
-
-&lt;h3 id=&quot;redis安装&quot;&gt;Redis安装&lt;/h3&gt;
-&lt;h4 id=&quot;安装redis&quot;&gt;安装redis&lt;/h4&gt;
-&lt;p&gt;Redis&lt;a href=&quot;https://redis.io/download&quot;&gt;官网&lt;/a&gt;下载并安装最新稳定版Redis。&lt;/p&gt;
-
-&lt;h4 id=&quot;redis-cluster配置&quot;&gt;redis cluster配置&lt;/h4&gt;
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;root@Wowking-001 ~]# cat /etc/redis/6379.conf |grep -vE &lt;span class=&quot;s1&quot;&gt;'^#|^$'&lt;/span&gt;
-daemonize yes
-pidfile /var/run/redis_6379.pid
-port 6379
-tcp-backlog 511
-timeout 0
-tcp-keepalive 0
-loglevel notice
-logfile /data/logs/redis/redis_6379.log
-databases 16
-stop-writes-on-bgsave-error yes
-rdbcompression no
-rdbchecksum no
-dbfilename dump.rdb
-dir /data/redis/data/6379
-slave-serve-stale-data yes
-slave-read-only yes
-repl-diskless-sync no
-repl-diskless-sync-delay 5
-repl-disable-tcp-nodelay no
-slave-priority 100
-appendonly no
-appendfilename &lt;span class=&quot;s2&quot;&gt;&quot;appendonly.aof&quot;&lt;/span&gt;
-appendfsync everysec
-no-appendfsync-on-rewrite no
-auto-aof-rewrite-percentage 100
-auto-aof-rewrite-min-size 64mb
-aof-load-truncated yes
-lua-time-limit 5000
- cluster-enabled yes
- cluster-config-file nodes-6379.conf
- cluster-node-timeout 5000
- cluster-migration-barrier 1
- cluster-require-full-coverage no
-slowlog-log-slower-than 10000
-slowlog-max-len 128
-latency-monitor-threshold 0
-notify-keyspace-events &lt;span class=&quot;s2&quot;&gt;&quot;&quot;&lt;/span&gt;
-&lt;span class=&quot;nb&quot;&gt;hash&lt;/span&gt;-max-ziplist-entries 512
-&lt;span class=&quot;nb&quot;&gt;hash&lt;/span&gt;-max-ziplist-value 64
-list-max-ziplist-entries 512
-list-max-ziplist-value 64
-&lt;span class=&quot;nb&quot;&gt;set&lt;/span&gt;-max-intset-entries 512
-zset-max-ziplist-entries 128
-zset-max-ziplist-value 64
-hll-sparse-max-bytes 3000
-activerehashing yes
-client-output-buffer-limit normal 0 0 0
-client-output-buffer-limit slave 256mb 64mb 60
-client-output-buffer-limit pubsub 32mb 8mb 60
-hz 10
-aof-rewrite-incremental-fsync yes
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-&lt;p&gt;&lt;em&gt;tips&lt;/em&gt;
-关闭了持久化。&lt;/p&gt;
-
-&lt;h3 id=&quot;系统相关参数调整&quot;&gt;系统相关参数调整&lt;/h3&gt;
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;root@Wowking-001 ~]# cat /etc/sysctl.conf
-&lt;span class=&quot;c&quot;&gt;##Redis&lt;/span&gt;
-vm.overcommit_memory &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 1
-net.core.somaxconn &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 2048
-net.ipv4.tcp_timestamps&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1
-net.ipv4.tcp_syncookies &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 1
-net.ipv4.tcp_tw_reuse &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 1
-net.ipv4.tcp_tw_recycle &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 1
-net.ipv4.tcp_fin_timeout &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 30
-net.ipv4.tcp_keepalive_time &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 1200
-net.ipv4.tcp_max_syn_backlog &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 8192
-net.ipv4.tcp_max_tw_buckets &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 5000
-net.ipv4.tcp_keepalive_probes &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 3
-net.ipv4.tcp_keepalive_intvl &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;15
-net.ipv4.tcp_wmem &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 8192 131072 16777216
-net.ipv4.tcp_rmem &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 32768 131072 16777216
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;root@Wowking-001 ~]# sysctl -p
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;root@Wowking-001 ~]# &lt;span class=&quot;nb&quot;&gt;echo &lt;/span&gt;never &amp;gt; /sys/kernel/mm/transparent_hugepage/enabled  &lt;span class=&quot;c&quot;&gt;#禁用Linux内核特性transparent huge pages，不然日志会报WARNING&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h3 id=&quot;启动redis&quot;&gt;启动Redis&lt;/h3&gt;
-&lt;p&gt;测试使用，在本机启3个不同端口的实例。&lt;/p&gt;
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;root@Wowking-001 ~]# mkdir -p /data/logs/redis
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;root@Wowking-001 ~]# mkdir -p /data/redis/data/6&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;3,4,5&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;79
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;root@Wowking-001 ~]# redis-server /etc/redis/6379.conf
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;root@Wowking-001 ~]# redis-server /etc/redis/6479.conf
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;root@Wowking-001 ~]# redis-server /etc/redis/6579.conf
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h3 id=&quot;cluster部署&quot;&gt;cluster部署&lt;/h3&gt;
-&lt;h4 id=&quot;安装ruby及ruby的redis模块&quot;&gt;安装ruby及ruby的redis模块&lt;/h4&gt;
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;root@Wowking-001 ~]# yum -y install ruby rubygems
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;root@Wowking-001 ~]# gem install redis
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h4 id=&quot;cluster初始化&quot;&gt;cluster初始化&lt;/h4&gt;
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;root@Wowking-001 ~]# redis-trib.rb create --replicas 0 192.168.1.1:6379 192.168.1.1:6479 192.168.1.1:6579
-&lt;span class=&quot;gp&quot;&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;Creating cluster
-&lt;span class=&quot;gp&quot;&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;Performing &lt;span class=&quot;nb&quot;&gt;hash &lt;/span&gt;slots allocation on 3 nodes...
-Using 3 masters:
-192.168.1.1:6379
-192.168.1.1:6479
-192.168.1.1:6579
-M: 5d6519a85e2795f0eeb7566031eb6be47c97efbf 192.168.1.1:6379
-   slots:0-5460 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;5461 slots&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; master
-M: fc82bf9de8adba9886b0cb62ad8a99e8d4495f35 192.168.1.1:6479
-   slots:5461-10922 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;5462 slots&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; master
-M: 35586851e194755ca82e660010b930987adfde6d 192.168.1.1:6579
-   slots:10923-16383 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;5461 slots&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; master
-Can I &lt;span class=&quot;nb&quot;&gt;set &lt;/span&gt;the above configuration? &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;type&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'yes'&lt;/span&gt; to accept&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;: yes
-&lt;span class=&quot;gp&quot;&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;Nodes configuration updated
-&lt;span class=&quot;gp&quot;&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;Assign a different config epoch to each node
-&lt;span class=&quot;gp&quot;&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;Sending CLUSTER MEET messages to join the cluster
-Waiting &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;the cluster to join..
-&lt;span class=&quot;gp&quot;&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;Performing Cluster Check &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;using node 192.168.1.1:6379&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-M: 5d6519a85e2795f0eeb7566031eb6be47c97efbf 192.168.1.1:6379
-   slots:0-5460 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;5461 slots&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; master
-M: fc82bf9de8adba9886b0cb62ad8a99e8d4495f35 192.168.1.1:6479
-   slots:5461-10922 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;5462 slots&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; master
-M: 35586851e194755ca82e660010b930987adfde6d 192.168.1.1:6579
-   slots:10923-16383 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;5461 slots&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; master
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;OK] All nodes agree about slots configuration.
-&lt;span class=&quot;gp&quot;&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;Check &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;open slots...
-&lt;span class=&quot;gp&quot;&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;Check slots coverage...
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;OK] All 16384 slots covered.
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-&lt;p&gt;&lt;em&gt;tips&lt;/em&gt;&lt;/p&gt;
-&lt;blockquote&gt;
-  &lt;ul&gt;
-    &lt;li&gt;–replicas：指定复本数，这是cluster最小复本要求。推荐2个以上复本，不然没法测试failover。&lt;/li&gt;
-  &lt;/ul&gt;
-&lt;/blockquote&gt;
-
-&lt;h4 id=&quot;查看cluster状态&quot;&gt;查看cluster状态&lt;/h4&gt;
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;root@Wowking-001 ~]# redis-trib.rb check 192.168.1.1:6379
-&lt;span class=&quot;gp&quot;&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;Performing Cluster Check &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;using node 192.168.1.1:6379&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-M: 5d6519a85e2795f0eeb7566031eb6be47c97efbf 192.168.1.1:6379
-   slots:0-5460 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;5461 slots&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; master
-   0 additional replica&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;s&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-M: 35586851e194755ca82e660010b930987adfde6d 192.168.1.1:6579
-   slots:10923-16383 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;5461 slots&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; master
-   0 additional replica&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;s&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-M: fc82bf9de8adba9886b0cb62ad8a99e8d4495f35 192.168.1.1:6479
-   slots:5461-10922 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;5462 slots&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; master
-   0 additional replica&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;s&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;OK] All nodes agree about slots configuration.
-&lt;span class=&quot;gp&quot;&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;Check &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;open slots...
-&lt;span class=&quot;gp&quot;&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;Check slots coverage...
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;OK] All 16384 slots covered.
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h3 id=&quot;cluster测试&quot;&gt;cluster测试&lt;/h3&gt;
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;#任意结点写key&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;root@Wowking-001 ~]# redis-cli -p 6379
-&lt;span class=&quot;gp&quot;&gt;127.0.0.1:6379&amp;gt; &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;set &lt;/span&gt;aa 11
-OK
-&lt;span class=&quot;gp&quot;&gt;127.0.0.1:6379&amp;gt; &lt;/span&gt;get aa
-&lt;span class=&quot;s2&quot;&gt;&quot;11&quot;&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;#任意结点get&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;root@Wowking-001 ~]# redis-cli -p 6579 -c
-&lt;span class=&quot;gp&quot;&gt;127.0.0.1:6579&amp;gt; &lt;/span&gt;get aa
-&lt;span class=&quot;gp&quot;&gt;-&amp;gt; &lt;/span&gt;Redirected to slot &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;1180] located at 192.168.1.1:6379
-&lt;span class=&quot;s2&quot;&gt;&quot;11&quot;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-&lt;p&gt;&lt;em&gt;tips&lt;/em&gt;&lt;/p&gt;
-&lt;blockquote&gt;
-  &lt;ul&gt;
-    &lt;li&gt;-c：指定cluster模式。&lt;/li&gt;
-  &lt;/ul&gt;
-&lt;/blockquote&gt;
-
-&lt;h3 id=&quot;reference&quot;&gt;reference&lt;/h3&gt;
-&lt;p&gt;https://redis.io/topics/cluster-tutorial &lt;br /&gt;
-http://blog.csdn.net/dc_726/article/details/48552531 &lt;br /&gt;
-http://www.ttlsa.com/redis/redis-cluster-theoretical-knowledge&lt;/p&gt;
-
-</description>
-        <pubDate>Tue, 25 Apr 2017 00:00:00 +0800</pubDate>
-        <link>http://0.0.0.0:4000/2017/04/redis_cluster_install/</link>
-        <guid isPermaLink="true">http://0.0.0.0:4000/2017/04/redis_cluster_install/</guid>
-        
-        <category>Redis</category>
         
         
       </item>
