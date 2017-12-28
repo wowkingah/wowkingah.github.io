@@ -5,9 +5,178 @@
     <description>I don't really know where I'm going, but I hope I go far.</description>
     <link>http://0.0.0.0:4000/</link>
     <atom:link href="http://0.0.0.0:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 23 Nov 2017 10:29:51 +0800</pubDate>
-    <lastBuildDate>Thu, 23 Nov 2017 10:29:51 +0800</lastBuildDate>
+    <pubDate>Thu, 28 Dec 2017 16:27:07 +0800</pubDate>
+    <lastBuildDate>Thu, 28 Dec 2017 16:27:07 +0800</lastBuildDate>
     <generator>Jekyll v3.5.2</generator>
+    
+      <item>
+        <title>MySQL主从报错1864</title>
+        <description>&lt;h3 id=&quot;简述&quot;&gt;简述&lt;/h3&gt;
+&lt;p&gt;MySQL主从报&lt;code class=&quot;highlighter-rouge&quot;&gt;SQL thread stopped&lt;/code&gt;。&lt;/p&gt;
+
+&lt;h3 id=&quot;排查&quot;&gt;排查&lt;/h3&gt;
+&lt;p&gt;通过&lt;code class=&quot;highlighter-rouge&quot;&gt;show slave status \G&lt;/code&gt;看到报错信息：&lt;/p&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;mysql&amp;gt; &lt;/span&gt;show slave status &lt;span class=&quot;se&quot;&gt;\G&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;***************************&lt;/span&gt; 1. row &lt;span class=&quot;k&quot;&gt;***************************&lt;/span&gt;
+               Slave_IO_State: 
+                  Master_Host: 10.111.111.116
+                  Master_User: rep
+                  Master_Port: 63306
+                Connect_Retry: 60
+              Master_Log_File: mysql-bin.000047
+          Read_Master_Log_Pos: 55033977
+               Relay_Log_File: relay-bin.001205
+                Relay_Log_Pos: 341059164
+        Relay_Master_Log_File: mysql-bin.000046
+             Slave_IO_Running: No
+            Slave_SQL_Running: No
+              Replicate_Do_DB: 
+          Replicate_Ignore_DB: 
+           Replicate_Do_Table: 
+       Replicate_Ignore_Table: 
+      Replicate_Wild_Do_Table: 
+  Replicate_Wild_Ignore_Table: 
+                   Last_Errno: 1864
+                   Last_Error: Cannot schedule event Update_rows, relay-log name /data/logs/mysql/relaylogs/relay-bin.001205, position 341059387 to Worker thread because its size 17796687 exceeds 16777216 of slave_pending_jobs_size_max.
+                 Skip_Counter: 0
+          Exec_Master_Log_Pos: 861411614
+              Relay_Log_Space: 609739624
+              Until_Condition: None
+               Until_Log_File: 
+                Until_Log_Pos: 0
+           Master_SSL_Allowed: No
+           Master_SSL_CA_File: 
+           Master_SSL_CA_Path: 
+              Master_SSL_Cert: 
+            Master_SSL_Cipher: 
+               Master_SSL_Key: 
+        Seconds_Behind_Master: NULL
+Master_SSL_Verify_Server_Cert: No
+                Last_IO_Errno: 0
+                Last_IO_Error: 
+               Last_SQL_Errno: 1864
+               Last_SQL_Error: Cannot schedule event Update_rows, relay-log name /data/logs/mysql/relaylogs/relay-bin.001205, position 341059387 to Worker thread because its size 17796687 exceeds 16777216 of slave_pending_jobs_size_max.
+  Replicate_Ignore_Server_Ids: 
+             Master_Server_Id: 105216
+                  Master_UUID: ab6e920a-7751-11e6-9ceb-005056b91e33
+             Master_Info_File: /data/mysql/master.info
+                    SQL_Delay: 0
+          SQL_Remaining_Delay: NULL
+      Slave_SQL_Running_State: 
+           Master_Retry_Count: 86400
+                  Master_Bind: 
+      Last_IO_Error_Timestamp: 
+     Last_SQL_Error_Timestamp: 171228 15:45:18
+               Master_SSL_Crl: 
+           Master_SSL_Crlpath: 
+           Retrieved_Gtid_Set: ab6e920a-7751-11e6-9ceb-005056b91e33:1-47015930
+            Executed_Gtid_Set: ab6e920a-7751-11e6-9ceb-005056b91e33:1-47015324,
+bfd4cc57-7751-11e6-9ceb-005056b9488a:1-15
+                Auto_Position: 1
+1 row &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;set&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.00 sec&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;p&gt;从报错信息看，大概意思是Slave接收到的数据为&lt;code class=&quot;highlighter-rouge&quot;&gt;17796687 B&lt;/code&gt;大概为&lt;code class=&quot;highlighter-rouge&quot;&gt;17 M&lt;/code&gt;，而&lt;code class=&quot;highlighter-rouge&quot;&gt;slave_pending_jobs_size_max&lt;/code&gt;默认大小为&lt;code class=&quot;highlighter-rouge&quot;&gt;16777216&lt;/code&gt;。&lt;br /&gt;
+简单说就是Slave接收到的数据超过&lt;code class=&quot;highlighter-rouge&quot;&gt;slave_pending_jobs_size_max&lt;/code&gt;参数默认大小。&lt;/p&gt;
+
+&lt;h3 id=&quot;解决方案&quot;&gt;解决方案&lt;/h3&gt;
+&lt;ol&gt;
+  &lt;li&gt;查看&lt;code class=&quot;highlighter-rouge&quot;&gt;slave_pending_jobs_size_max&lt;/code&gt;默认大小：
+    &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;mysql&amp;gt; &lt;/span&gt;show variables like &lt;span class=&quot;s1&quot;&gt;'%slave_pending_jobs_size_max%'&lt;/span&gt;;
++-----------------------------+----------+
+| Variable_name               | Value    |
++-----------------------------+----------+
+| slave_pending_jobs_size_max | 16777216 |
++-----------------------------+----------+
+1 row &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;set&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.00 sec&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;修改&lt;code class=&quot;highlighter-rouge&quot;&gt;slave_pending_jobs_size_max&lt;/code&gt;大小：
+    &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;mysql&amp;gt; &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;set &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;slave_pending_jobs_size_max&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;16777216&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;2;
+ERROR 1229 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;HY000&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;: Variable &lt;span class=&quot;s1&quot;&gt;'slave_pending_jobs_size_max'&lt;/span&gt; is a GLOBAL variable and should be &lt;span class=&quot;nb&quot;&gt;set &lt;/span&gt;with SET GLOBAL
+&lt;span class=&quot;gp&quot;&gt;mysql&amp;gt; &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;set &lt;/span&gt;global &lt;span class=&quot;nv&quot;&gt;slave_pending_jobs_size_max&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;16777216&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;2;
+Query OK, 0 rows affected &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.00 sec&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+    &lt;p&gt;&lt;em&gt;tips: &lt;code class=&quot;highlighter-rouge&quot;&gt;slave_pending_jobs_size_max&lt;/code&gt;为全局参数。&lt;/em&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;重启slave解决：
+    &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;mysql&amp;gt; &lt;/span&gt;stop slave;
+Query OK, 0 rows affected &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.00 sec&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;gp&quot;&gt;mysql&amp;gt; &lt;/span&gt;start slave;
+Query OK, 0 rows affected, 1 warning &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.04 sec&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;gp&quot;&gt;mysql&amp;gt; &lt;/span&gt;show slave status &lt;span class=&quot;se&quot;&gt;\G&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;***************************&lt;/span&gt; 1. row &lt;span class=&quot;k&quot;&gt;***************************&lt;/span&gt;
+            Slave_IO_State: Waiting &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;master to send event
+               Master_Host: 10.111.105.216
+               Master_User: rep
+               Master_Port: 63306
+             Connect_Retry: 60
+           Master_Log_File: mysql-bin.000047
+       Read_Master_Log_Pos: 55149959
+            Relay_Log_File: relay-bin.001205
+             Relay_Log_Pos: 394464185
+     Relay_Master_Log_File: mysql-bin.000046
+          Slave_IO_Running: Yes
+         Slave_SQL_Running: Yes
+           Replicate_Do_DB: 
+       Replicate_Ignore_DB: 
+        Replicate_Do_Table: 
+    Replicate_Ignore_Table: 
+   Replicate_Wild_Do_Table: 
+  Replicate_Wild_Ignore_Table: 
+                Last_Errno: 0
+                Last_Error: 
+              Skip_Counter: 0
+       Exec_Master_Log_Pos: 914816635
+           Relay_Log_Space: 609856525
+           Until_Condition: None
+            Until_Log_File: 
+             Until_Log_Pos: 0
+        Master_SSL_Allowed: No
+        Master_SSL_CA_File: 
+        Master_SSL_CA_Path: 
+           Master_SSL_Cert: 
+         Master_SSL_Cipher: 
+            Master_SSL_Key: 
+     Seconds_Behind_Master: 490
+Master_SSL_Verify_Server_Cert: No
+             Last_IO_Errno: 0
+             Last_IO_Error: 
+            Last_SQL_Errno: 0
+            Last_SQL_Error: 
+  Replicate_Ignore_Server_Ids: 
+          Master_Server_Id: 105216
+               Master_UUID: ab6e920a-7751-11e6-9ceb-005056b91e33
+          Master_Info_File: /data/mysql/master.info
+                 SQL_Delay: 0
+       SQL_Remaining_Delay: NULL
+   Slave_SQL_Running_State: Reading event from the relay log
+        Master_Retry_Count: 86400
+               Master_Bind: 
+   Last_IO_Error_Timestamp: 
+  Last_SQL_Error_Timestamp: 
+            Master_SSL_Crl: 
+        Master_SSL_Crlpath: 
+        Retrieved_Gtid_Set: ab6e920a-7751-11e6-9ceb-005056b91e33:1-47015945
+         Executed_Gtid_Set: ab6e920a-7751-11e6-9ceb-005056b91e33:1-47015357:47015359-47015362:47015364-47015368,
+bfd4cc57-7751-11e6-9ceb-005056b9488a:1-15
+             Auto_Position: 1
+1 row &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;set&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.00 sec&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+</description>
+        <pubDate>Thu, 28 Dec 2017 00:00:00 +0800</pubDate>
+        <link>http://0.0.0.0:4000/2017/12/mysql_ms_error1864/</link>
+        <guid isPermaLink="true">http://0.0.0.0:4000/2017/12/mysql_ms_error1864/</guid>
+        
+        <category>MySQL</category>
+        
+        
+      </item>
     
       <item>
         <title>MySQL中VARCHAR最大长度</title>
@@ -680,102 +849,6 @@ skip_character_set_client_handshake
         <category>Coffee</category>
         
         <category>Life</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>VMWare安装macOS Sierra 10.12.4</title>
-        <description>&lt;h3 id=&quot;简述&quot;&gt;简述&lt;/h3&gt;
-&lt;p&gt;突然之间又想倒腾一把MacOS，懒得找驱动，于是就在VMWare下开工，听闻10.12.4发布了~_~&lt;/p&gt;
-
-&lt;h3 id=&quot;准备软件&quot;&gt;准备软件&lt;/h3&gt;
-&lt;h4 id=&quot;securable&quot;&gt;securable&lt;/h4&gt;
-&lt;p&gt;检测宿主机CPU是否支持虚拟化。
-&lt;a href=&quot;https://securable.en.softonic.com&quot;&gt;securable官网&lt;/a&gt;&lt;/p&gt;
-
-&lt;h4 id=&quot;unlocker&quot;&gt;unlocker&lt;/h4&gt;
-&lt;p&gt;VMWare 默认不支持安装 macOS 虚拟机，可通过 unlocker 来解锁。
-&lt;a href=&quot;http://pan.baidu.com/s/1c2hAjPe&quot;&gt;送你去百度云&lt;/a&gt;
-密码：r9fr&lt;/p&gt;
-
-&lt;h4 id=&quot;vmware&quot;&gt;VMWare&lt;/h4&gt;
-&lt;p&gt;VMware Workstation 12.5 Player 是VMWare Workstation的精简版，重要的是个人免费。
-&lt;a href=&quot;http://www.vmware.com/products/player/playerpro-evaluation.html&quot;&gt;VMware官网&lt;/a&gt;&lt;/p&gt;
-
-&lt;h4 id=&quot;macos&quot;&gt;MacOS&lt;/h4&gt;
-&lt;p&gt;网上清一色都是用的别人定制的虚拟硬盘，不放心，放弃。&lt;br /&gt;
-用ISO工具转换原生DMG镜像，试了好几次都成功，也放弃。&lt;br /&gt;
-懒得折腾，花了10块大洋买了个CDR(macOS 10.12.4.cdr)~_~ 
-&lt;a href=&quot;http://pan.baidu.com/s/1i4Jd3OL&quot;&gt;送你去百度云&lt;/a&gt;
-密码：i74b&lt;/p&gt;
-
-&lt;h3 id=&quot;开工&quot;&gt;开工&lt;/h3&gt;
-&lt;h4 id=&quot;1-securable&quot;&gt;1. securable&lt;/h4&gt;
-&lt;p&gt;运行securable，检测CPU是否支持虚拟化。如下图显示，若不为YES，自行解决。
-&lt;img src=&quot;/images/posts/sa/install_macos_for_vmware/securable.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;h4 id=&quot;2-vmware&quot;&gt;2. VMWare&lt;/h4&gt;
-&lt;p&gt;下载安装VMware Workstation Player，也可以用VMware Workstation，只要你开心。&lt;br /&gt;
-这时候VMWare新建虚拟机的时候，操作系统没有MAC OS类型可选，所以需要通过unlocker先解锁。&lt;/p&gt;
-
-&lt;h4 id=&quot;3-unlocker&quot;&gt;3. unlocker&lt;/h4&gt;
-&lt;p&gt;3.1. 停止vmware相关服务；&lt;/p&gt;
-&lt;blockquote&gt;
-  &lt;p&gt;a.windows下运行services.msc：
-  &lt;img src=&quot;/images/posts/sa/install_macos_for_vmware/services_1.jpg&quot; alt=&quot;&quot; /&gt;
-b.停止服务：
-  &lt;img src=&quot;/images/posts/sa/install_macos_for_vmware/services_2.jpg&quot; alt=&quot;&quot; /&gt;
-3.2. 下载unlocker并解压；
-3.3. 以管理员身份运行。
- &lt;img src=&quot;/images/posts/sa/install_macos_for_vmware/unlocker.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h4 id=&quot;4-新建虚拟机&quot;&gt;4. 新建虚拟机&lt;/h4&gt;
-&lt;p&gt;记下图二中虚拟机名称与位置，之后要使用。&lt;br /&gt;
-图一
-&lt;img src=&quot;/images/posts/sa/install_macos_for_vmware/create_vm_1.jpg&quot; alt=&quot;&quot; /&gt;
-图二
-&lt;img src=&quot;/images/posts/sa/install_macos_for_vmware/create_vm_2.jpg&quot; alt=&quot;&quot; /&gt;
-图三
-&lt;img src=&quot;/images/posts/sa/install_macos_for_vmware/create_vm_3.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;h4 id=&quot;5-启动虚拟机&quot;&gt;5. 启动虚拟机&lt;/h4&gt;
-&lt;p&gt;这时候启动虚拟机会报错，如下图：
-&lt;img src=&quot;/images/posts/sa/install_macos_for_vmware/start_vm_1.jpg&quot; alt=&quot;&quot; /&gt;
-修改虚拟机参数可解决。&lt;br /&gt;
-5.1 进入虚拟机文件夹，找到后缀为Mac OS Sierra.vmx的文件（虚拟机文件夹参照新建虚拟机图二；Mac OS Sierra为虚拟机名）：
- &lt;img src=&quot;/images/posts/sa/install_macos_for_vmware/vmx_1.jpg&quot; alt=&quot;&quot; /&gt;
-5.2 以记事本打开，在smc.present = “TRUE” 添加一行&lt;code class=&quot;highlighter-rouge&quot;&gt;smc.version = 0&lt;/code&gt;
- &lt;img src=&quot;/images/posts/sa/install_macos_for_vmware/vmx_2.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;h4 id=&quot;6-又一次启动虚拟机&quot;&gt;6. 又一次启动虚拟机&lt;/h4&gt;
-&lt;p&gt;华丽的成功了。
-&lt;img src=&quot;/images/posts/sa/install_macos_for_vmware/install_macos_1.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;h4 id=&quot;7-系统安装&quot;&gt;7. 系统安装&lt;/h4&gt;
-&lt;p&gt;7.1 实用工具 =&amp;gt; 磁盘工具
- &lt;img src=&quot;/images/posts/sa/install_macos_for_vmware/install_macos_2.jpg&quot; alt=&quot;&quot; /&gt;
-7.2 选择虚拟磁盘 =&amp;gt; 抹除
- &lt;img src=&quot;/images/posts/sa/install_macos_for_vmware/install_macos_3.jpg&quot; alt=&quot;&quot; /&gt;
- &lt;img src=&quot;/images/posts/sa/install_macos_for_vmware/install_macos_4.jpg&quot; alt=&quot;&quot; /&gt;
- &lt;img src=&quot;/images/posts/sa/install_macos_for_vmware/install_macos_5.jpg&quot; alt=&quot;&quot; /&gt;
-7.3 退出磁盘工具
- &lt;img src=&quot;/images/posts/sa/install_macos_for_vmware/install_macos_6.jpg&quot; alt=&quot;&quot; /&gt;
-7.4 选择安装磁盘，然后一路向北
- &lt;img src=&quot;/images/posts/sa/install_macos_for_vmware/install_macos_7.jpg&quot; alt=&quot;&quot; /&gt;
- &lt;img src=&quot;/images/posts/sa/install_macos_for_vmware/install_macos_8.jpg&quot; alt=&quot;&quot; /&gt;
- &lt;img src=&quot;/images/posts/sa/install_macos_for_vmware/install_macos_9.jpg&quot; alt=&quot;&quot; /&gt;
- &lt;img src=&quot;/images/posts/sa/install_macos_for_vmware/install_macos_10.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-</description>
-        <pubDate>Fri, 05 May 2017 00:00:00 +0800</pubDate>
-        <link>http://0.0.0.0:4000/2017/05/install_macos_for_vmware/</link>
-        <guid isPermaLink="true">http://0.0.0.0:4000/2017/05/install_macos_for_vmware/</guid>
-        
-        <category>Mac</category>
-        
-        <category>VMWare</category>
         
         
       </item>
