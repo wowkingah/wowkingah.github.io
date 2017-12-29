@@ -5,9 +5,62 @@
     <description>I don't really know where I'm going, but I hope I go far.</description>
     <link>http://0.0.0.0:4000/</link>
     <atom:link href="http://0.0.0.0:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 28 Dec 2017 16:27:07 +0800</pubDate>
-    <lastBuildDate>Thu, 28 Dec 2017 16:27:07 +0800</lastBuildDate>
+    <pubDate>Fri, 29 Dec 2017 14:26:46 +0800</pubDate>
+    <lastBuildDate>Fri, 29 Dec 2017 14:26:46 +0800</lastBuildDate>
     <generator>Jekyll v3.5.2</generator>
+    
+      <item>
+        <title>Navicat查询MySQL数据库BLOB字段问题</title>
+        <description>&lt;h3 id=&quot;简述&quot;&gt;简述&lt;/h3&gt;
+&lt;p&gt;BLOB是啥？&lt;br /&gt;
+MySQL对BLOB的定义：&lt;code class=&quot;highlighter-rouge&quot;&gt;A BLOB is a binary large object that can hold a variable amount of data. &lt;/code&gt;&lt;br /&gt;
+百度百科对BLOB的定义：&lt;code class=&quot;highlighter-rouge&quot;&gt;BLOB(binary large object)，二进制大对象，是一个可以存储二进制文件的容器。&lt;/code&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;模拟环境&quot;&gt;模拟环境&lt;/h3&gt;
+&lt;h4 id=&quot;建表与初始数据&quot;&gt;建表与初始数据&lt;/h4&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;mysql&amp;gt; &lt;/span&gt;CREATE TABLE &lt;span class=&quot;sb&quot;&gt;`&lt;/span&gt;t_blob&lt;span class=&quot;sb&quot;&gt;`&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;
+  &lt;span class=&quot;sb&quot;&gt;`&lt;/span&gt;id&lt;span class=&quot;sb&quot;&gt;`&lt;/span&gt; INT NOT NULL AUTO_INCREMENT,
+  &lt;span class=&quot;sb&quot;&gt;`&lt;/span&gt;info&lt;span class=&quot;sb&quot;&gt;`&lt;/span&gt; BLOB,
+  PRIMARY KEY &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;sb&quot;&gt;`&lt;/span&gt;id&lt;span class=&quot;sb&quot;&gt;`&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;ENGINE&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;InnoDB;
+&lt;span class=&quot;gp&quot;&gt;mysql&amp;gt; &lt;/span&gt;INSERT INTO t_blob&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;info&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; VALUES&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'www.google.com'&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;,&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'www.baidu.com'&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;;
+Query OK, 2 rows affected &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.03 sec&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+Records: 2  Duplicates: 0  Warnings: 0
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h3 id=&quot;问题&quot;&gt;问题&lt;/h3&gt;
+&lt;p&gt;通过&lt;code class=&quot;highlighter-rouge&quot;&gt;Navicat&lt;/code&gt;查询&lt;code class=&quot;highlighter-rouge&quot;&gt;MySQL&lt;/code&gt;数据库中&lt;code class=&quot;highlighter-rouge&quot;&gt;BLOB&lt;/code&gt;字段，返回结果异常，显示为&lt;code class=&quot;highlighter-rouge&quot;&gt;(BLOB) 14 bytes&lt;/code&gt;，如下图：&lt;br /&gt;
+&lt;img src=&quot;/images/posts/dba/select_blob_of_mysql_for_navicat/select_from_navicat_1.jpg&quot; alt=&quot;&quot; /&gt;&lt;br /&gt;
+Are you kidding me???&lt;/p&gt;
+
+&lt;h3 id=&quot;排查&quot;&gt;排查&lt;/h3&gt;
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;Navicat&lt;/code&gt;查询结果拷到文本编辑器，显示正常：&lt;br /&gt;
+&lt;img src=&quot;/images/posts/dba/select_blob_of_mysql_for_navicat/copy_to_text.jpg&quot; alt=&quot;&quot; /&gt;&lt;br /&gt;
+&lt;code class=&quot;highlighter-rouge&quot;&gt;Navicat&lt;/code&gt;以备注的方式查看，显示正常：&lt;br /&gt;
+&lt;img src=&quot;/images/posts/dba/select_blob_of_mysql_for_navicat/select_from_navicat_2.jpg&quot; alt=&quot;&quot; /&gt;&lt;br /&gt;
+&lt;code class=&quot;highlighter-rouge&quot;&gt;MySQL&lt;/code&gt;客户端查询，返回结果也是正常：&lt;br /&gt;
+&lt;img src=&quot;/images/posts/dba/select_blob_of_mysql_for_navicat/select_from_mysql_client.jpg&quot; alt=&quot;&quot; /&gt;&lt;br /&gt;
+不过，就是想通过&lt;code class=&quot;highlighter-rouge&quot;&gt;Navicat&lt;/code&gt;去查，怎么办？&lt;/p&gt;
+
+&lt;h3 id=&quot;解决方案通过函数转换&quot;&gt;解决方案：通过函数转换&lt;/h3&gt;
+&lt;h4 id=&quot;方法一cast&quot;&gt;方法一：CAST&lt;/h4&gt;
+&lt;p&gt;&lt;img src=&quot;/images/posts/dba/select_blob_of_mysql_for_navicat/select_from_navicat_3.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;方法二concat&quot;&gt;方法二：CONCAT&lt;/h4&gt;
+&lt;p&gt;&lt;img src=&quot;/images/posts/dba/select_blob_of_mysql_for_navicat/select_from_navicat_4.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+</description>
+        <pubDate>Fri, 29 Dec 2017 00:00:00 +0800</pubDate>
+        <link>http://0.0.0.0:4000/2017/12/select_blob_of_mysql_for_navicat/</link>
+        <guid isPermaLink="true">http://0.0.0.0:4000/2017/12/select_blob_of_mysql_for_navicat/</guid>
+        
+        <category>MySQL</category>
+        
+        <category>SQL</category>
+        
+        
+      </item>
     
       <item>
         <title>MySQL主从报错1864</title>
@@ -823,32 +876,6 @@ skip_character_set_client_handshake
         <guid isPermaLink="true">http://0.0.0.0:4000/2017/06/mysql_emoji/</guid>
         
         <category>MySQL</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>咖啡与生活</title>
-        <description>&lt;p&gt;世界三大饮料：可可、咖啡、茶。奇怪，怎么没有奶茶~_~&lt;br /&gt;
-可可，洋货，听闻得少。&lt;br /&gt;
-咖啡，咖啡树原产于非洲埃塞俄比亚，当年号称“黑色金子”，只有贵族才能饮用。&lt;br /&gt;
-茶，据说是天朝特有饮品，如生活用品一般，几乎在天朝每家每户中成了标配。&lt;/p&gt;
-
-&lt;p&gt;三大饮料，不知不觉中沾了其二：咖啡与茶。论时间顺序应该是茶与咖啡，毕竟大天朝的茶文化要远早于咖啡。&lt;br /&gt;
-不知道从什么时候开始，咖啡在我的饮料世界里，占据了一席之位。&lt;br /&gt;
-大概是扛砖于某SNS公司期间，在带头大哥Dominic（洋BOSS）的耳濡目染之下，慢慢开始接触。&lt;/p&gt;
-
-&lt;p&gt;此处应该有自拍。&lt;br /&gt;
-&lt;img src=&quot;/images/posts/personal/coffee_life/coffee_01.jpg&quot; alt=&quot;&quot; /&gt;
-&lt;img src=&quot;/images/posts/personal/coffee_life/coffee_02.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-</description>
-        <pubDate>Sat, 06 May 2017 00:00:00 +0800</pubDate>
-        <link>http://0.0.0.0:4000/2017/05/coffee_and_life/</link>
-        <guid isPermaLink="true">http://0.0.0.0:4000/2017/05/coffee_and_life/</guid>
-        
-        <category>Coffee</category>
-        
-        <category>Life</category>
         
         
       </item>

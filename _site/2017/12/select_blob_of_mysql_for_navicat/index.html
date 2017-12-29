@@ -6,17 +6,17 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-  <title>MySQL主从报错1864</title>
-  <meta name="description" content="简述MySQL主从报SQL thread stopped。排查通过show slave status \G看到报错信息：mysql&gt; show slave status \G*************************** 1. row ***************************     ...">
+  <title>Navicat查询MySQL数据库BLOB字段问题</title>
+  <meta name="description" content="简述BLOB是啥？MySQL对BLOB的定义：A BLOB is a binary large object that can hold a variable amount of data. 百度百科对BLOB的定义：BLOB(binary large object)，二进制大对象，是一个可以存储二进制文件的容器...">
   <meta name="author" content="Wowking">
 
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="MySQL主从报错1864">
-  <meta name="twitter:description" content="简述MySQL主从报SQL thread stopped。排查通过show slave status \G看到报错信息：mysql&gt; show slave status \G*************************** 1. row ***************************     ...">
+  <meta name="twitter:title" content="Navicat查询MySQL数据库BLOB字段问题">
+  <meta name="twitter:description" content="简述BLOB是啥？MySQL对BLOB的定义：A BLOB is a binary large object that can hold a variable amount of data. 百度百科对BLOB的定义：BLOB(binary large object)，二进制大对象，是一个可以存储二进制文件的容器...">
   
   <meta property="og:type" content="article">
-  <meta property="og:title" content="MySQL主从报错1864">
-  <meta property="og:description" content="简述MySQL主从报SQL thread stopped。排查通过show slave status \G看到报错信息：mysql&gt; show slave status \G*************************** 1. row ***************************     ...">
+  <meta property="og:title" content="Navicat查询MySQL数据库BLOB字段问题">
+  <meta property="og:description" content="简述BLOB是啥？MySQL对BLOB的定义：A BLOB is a binary large object that can hold a variable amount of data. 百度百科对BLOB的定义：BLOB(binary large object)，二进制大对象，是一个可以存储二进制文件的容器...">
   
   <link rel="icon" type="image/png" href="/images/favicon.png" />
   <link href="/images/favicon.png" rel="shortcut icon" type="image/png">
@@ -24,7 +24,7 @@
   <link rel="stylesheet" href="/css/main.css">
   <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
 
-  <link rel="canonical" href="http://0.0.0.0:4000/2017/12/mysql_ms_error1864/">
+  <link rel="canonical" href="http://0.0.0.0:4000/2017/12/select_blob_of_mysql_for_navicat/">
   <link rel="alternate" type="application/rss+xml" title="Wowking" href="http://0.0.0.0:4000/feed.xml">
   
   <meta name="google-site-verification" content="1-1ZlHoRvM0T2FqPbW2S-qLgYXN6rsn52kErlMPd_gw" />
@@ -155,10 +155,10 @@
         <div class="content-wrapper__inner">
             <article class="post-container post-container--single" itemscope itemtype="http://schema.org/BlogPosting">
   <header class="post-header">
-    <h1 class="post-title">MySQL主从报错1864</h1>
+    <h1 class="post-title">Navicat查询MySQL数据库BLOB字段问题</h1>
     <div class="post-meta">
       <img src="/images/calendar.png" width="20px"/> 
-      <time datetime="2017-12-28 00:00:00 +0800" itemprop="datePublished" class="post-meta__date date">2017-12-28</time>  
+      <time datetime="2017-12-29 00:00:00 +0800" itemprop="datePublished" class="post-meta__date date">2017-12-29</time>  
          
       <span id="busuanzi_container_page_pv"> | 阅读：<span id="busuanzi_value_page_pv"></span>次</span>
     </p>
@@ -167,162 +167,44 @@
 
   <section class="post">
     <h3 id="简述">简述</h3>
-<p>MySQL主从报<code class="highlighter-rouge">SQL thread stopped</code>。</p>
+<p>BLOB是啥？<br />
+MySQL对BLOB的定义：<code class="highlighter-rouge">A BLOB is a binary large object that can hold a variable amount of data. </code><br />
+百度百科对BLOB的定义：<code class="highlighter-rouge">BLOB(binary large object)，二进制大对象，是一个可以存储二进制文件的容器。</code></p>
 
-<h3 id="排查">排查</h3>
-<p>通过<code class="highlighter-rouge">show slave status \G</code>看到报错信息：</p>
-<div class="language-bash highlighter-rouge"><pre class="highlight"><code><span class="gp">mysql&gt; </span>show slave status <span class="se">\G</span>
-<span class="k">***************************</span> 1. row <span class="k">***************************</span>
-               Slave_IO_State: 
-                  Master_Host: 10.111.111.116
-                  Master_User: rep
-                  Master_Port: 63306
-                Connect_Retry: 60
-              Master_Log_File: mysql-bin.000047
-          Read_Master_Log_Pos: 55033977
-               Relay_Log_File: relay-bin.001205
-                Relay_Log_Pos: 341059164
-        Relay_Master_Log_File: mysql-bin.000046
-             Slave_IO_Running: No
-            Slave_SQL_Running: No
-              Replicate_Do_DB: 
-          Replicate_Ignore_DB: 
-           Replicate_Do_Table: 
-       Replicate_Ignore_Table: 
-      Replicate_Wild_Do_Table: 
-  Replicate_Wild_Ignore_Table: 
-                   Last_Errno: 1864
-                   Last_Error: Cannot schedule event Update_rows, relay-log name /data/logs/mysql/relaylogs/relay-bin.001205, position 341059387 to Worker thread because its size 17796687 exceeds 16777216 of slave_pending_jobs_size_max.
-                 Skip_Counter: 0
-          Exec_Master_Log_Pos: 861411614
-              Relay_Log_Space: 609739624
-              Until_Condition: None
-               Until_Log_File: 
-                Until_Log_Pos: 0
-           Master_SSL_Allowed: No
-           Master_SSL_CA_File: 
-           Master_SSL_CA_Path: 
-              Master_SSL_Cert: 
-            Master_SSL_Cipher: 
-               Master_SSL_Key: 
-        Seconds_Behind_Master: NULL
-Master_SSL_Verify_Server_Cert: No
-                Last_IO_Errno: 0
-                Last_IO_Error: 
-               Last_SQL_Errno: 1864
-               Last_SQL_Error: Cannot schedule event Update_rows, relay-log name /data/logs/mysql/relaylogs/relay-bin.001205, position 341059387 to Worker thread because its size 17796687 exceeds 16777216 of slave_pending_jobs_size_max.
-  Replicate_Ignore_Server_Ids: 
-             Master_Server_Id: 105216
-                  Master_UUID: ab6e920a-7751-11e6-9ceb-005056b91e33
-             Master_Info_File: /data/mysql/master.info
-                    SQL_Delay: 0
-          SQL_Remaining_Delay: NULL
-      Slave_SQL_Running_State: 
-           Master_Retry_Count: 86400
-                  Master_Bind: 
-      Last_IO_Error_Timestamp: 
-     Last_SQL_Error_Timestamp: 171228 15:45:18
-               Master_SSL_Crl: 
-           Master_SSL_Crlpath: 
-           Retrieved_Gtid_Set: ab6e920a-7751-11e6-9ceb-005056b91e33:1-47015930
-            Executed_Gtid_Set: ab6e920a-7751-11e6-9ceb-005056b91e33:1-47015324,
-bfd4cc57-7751-11e6-9ceb-005056b9488a:1-15
-                Auto_Position: 1
-1 row <span class="k">in </span><span class="nb">set</span> <span class="o">(</span>0.00 sec<span class="o">)</span>
+<h3 id="模拟环境">模拟环境</h3>
+<h4 id="建表与初始数据">建表与初始数据</h4>
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code><span class="gp">mysql&gt; </span>CREATE TABLE <span class="sb">`</span>t_blob<span class="sb">`</span> <span class="o">(</span>
+  <span class="sb">`</span>id<span class="sb">`</span> INT NOT NULL AUTO_INCREMENT,
+  <span class="sb">`</span>info<span class="sb">`</span> BLOB,
+  PRIMARY KEY <span class="o">(</span><span class="sb">`</span>id<span class="sb">`</span><span class="o">)</span>
+<span class="o">)</span> <span class="nv">ENGINE</span><span class="o">=</span>InnoDB;
+<span class="gp">mysql&gt; </span>INSERT INTO t_blob<span class="o">(</span>info<span class="o">)</span> VALUES<span class="o">(</span><span class="s1">'www.google.com'</span><span class="o">)</span>,<span class="o">(</span><span class="s1">'www.baidu.com'</span><span class="o">)</span>;
+Query OK, 2 rows affected <span class="o">(</span>0.03 sec<span class="o">)</span>
+Records: 2  Duplicates: 0  Warnings: 0
 </code></pre>
 </div>
-<p>从报错信息看，大概意思是Slave接收到的数据为<code class="highlighter-rouge">17796687 B</code>大概为<code class="highlighter-rouge">17 M</code>，而<code class="highlighter-rouge">slave_pending_jobs_size_max</code>默认大小为<code class="highlighter-rouge">16777216</code>。<br />
-简单说就是Slave接收到的数据超过<code class="highlighter-rouge">slave_pending_jobs_size_max</code>参数默认大小。</p>
 
-<h3 id="解决方案">解决方案</h3>
-<ol>
-  <li>查看<code class="highlighter-rouge">slave_pending_jobs_size_max</code>默认大小：
-    <div class="language-bash highlighter-rouge"><pre class="highlight"><code><span class="gp">mysql&gt; </span>show variables like <span class="s1">'%slave_pending_jobs_size_max%'</span>;
-+-----------------------------+----------+
-| Variable_name               | Value    |
-+-----------------------------+----------+
-| slave_pending_jobs_size_max | 16777216 |
-+-----------------------------+----------+
-1 row <span class="k">in </span><span class="nb">set</span> <span class="o">(</span>0.00 sec<span class="o">)</span>
-</code></pre>
-    </div>
-  </li>
-  <li>修改<code class="highlighter-rouge">slave_pending_jobs_size_max</code>大小：
-    <div class="language-bash highlighter-rouge"><pre class="highlight"><code><span class="gp">mysql&gt; </span><span class="nb">set </span><span class="nv">slave_pending_jobs_size_max</span><span class="o">=</span>16777216<span class="k">*</span>2;
-ERROR 1229 <span class="o">(</span>HY000<span class="o">)</span>: Variable <span class="s1">'slave_pending_jobs_size_max'</span> is a GLOBAL variable and should be <span class="nb">set </span>with SET GLOBAL
-<span class="gp">mysql&gt; </span><span class="nb">set </span>global <span class="nv">slave_pending_jobs_size_max</span><span class="o">=</span>16777216<span class="k">*</span>2;
-Query OK, 0 rows affected <span class="o">(</span>0.00 sec<span class="o">)</span>
-</code></pre>
-    </div>
-    <p><em>tips: <code class="highlighter-rouge">slave_pending_jobs_size_max</code>为全局参数。</em></p>
-  </li>
-  <li>重启slave解决：
-    <div class="language-bash highlighter-rouge"><pre class="highlight"><code><span class="gp">mysql&gt; </span>stop slave;
-Query OK, 0 rows affected <span class="o">(</span>0.00 sec<span class="o">)</span>
-<span class="gp">mysql&gt; </span>start slave;
-Query OK, 0 rows affected, 1 warning <span class="o">(</span>0.04 sec<span class="o">)</span>
-<span class="gp">mysql&gt; </span>show slave status <span class="se">\G</span>
-<span class="k">***************************</span> 1. row <span class="k">***************************</span>
-            Slave_IO_State: Waiting <span class="k">for </span>master to send event
-               Master_Host: 10.111.105.216
-               Master_User: rep
-               Master_Port: 63306
-             Connect_Retry: 60
-           Master_Log_File: mysql-bin.000047
-       Read_Master_Log_Pos: 55149959
-            Relay_Log_File: relay-bin.001205
-             Relay_Log_Pos: 394464185
-     Relay_Master_Log_File: mysql-bin.000046
-          Slave_IO_Running: Yes
-         Slave_SQL_Running: Yes
-           Replicate_Do_DB: 
-       Replicate_Ignore_DB: 
-        Replicate_Do_Table: 
-    Replicate_Ignore_Table: 
-   Replicate_Wild_Do_Table: 
-  Replicate_Wild_Ignore_Table: 
-                Last_Errno: 0
-                Last_Error: 
-              Skip_Counter: 0
-       Exec_Master_Log_Pos: 914816635
-           Relay_Log_Space: 609856525
-           Until_Condition: None
-            Until_Log_File: 
-             Until_Log_Pos: 0
-        Master_SSL_Allowed: No
-        Master_SSL_CA_File: 
-        Master_SSL_CA_Path: 
-           Master_SSL_Cert: 
-         Master_SSL_Cipher: 
-            Master_SSL_Key: 
-     Seconds_Behind_Master: 490
-Master_SSL_Verify_Server_Cert: No
-             Last_IO_Errno: 0
-             Last_IO_Error: 
-            Last_SQL_Errno: 0
-            Last_SQL_Error: 
-  Replicate_Ignore_Server_Ids: 
-          Master_Server_Id: 105216
-               Master_UUID: ab6e920a-7751-11e6-9ceb-005056b91e33
-          Master_Info_File: /data/mysql/master.info
-                 SQL_Delay: 0
-       SQL_Remaining_Delay: NULL
-   Slave_SQL_Running_State: Reading event from the relay log
-        Master_Retry_Count: 86400
-               Master_Bind: 
-   Last_IO_Error_Timestamp: 
-  Last_SQL_Error_Timestamp: 
-            Master_SSL_Crl: 
-        Master_SSL_Crlpath: 
-        Retrieved_Gtid_Set: ab6e920a-7751-11e6-9ceb-005056b91e33:1-47015945
-         Executed_Gtid_Set: ab6e920a-7751-11e6-9ceb-005056b91e33:1-47015357:47015359-47015362:47015364-47015368,
-bfd4cc57-7751-11e6-9ceb-005056b9488a:1-15
-             Auto_Position: 1
-1 row <span class="k">in </span><span class="nb">set</span> <span class="o">(</span>0.00 sec<span class="o">)</span>
-</code></pre>
-    </div>
-  </li>
-</ol>
+<h3 id="问题">问题</h3>
+<p>通过<code class="highlighter-rouge">Navicat</code>查询<code class="highlighter-rouge">MySQL</code>数据库中<code class="highlighter-rouge">BLOB</code>字段，返回结果异常，显示为<code class="highlighter-rouge">(BLOB) 14 bytes</code>，如下图：<br />
+<img src="/images/posts/dba/select_blob_of_mysql_for_navicat/select_from_navicat_1.jpg" alt="" /><br />
+Are you kidding me???</p>
+
+<h3 id="排查">排查</h3>
+<p><code class="highlighter-rouge">Navicat</code>查询结果拷到文本编辑器，显示正常：<br />
+<img src="/images/posts/dba/select_blob_of_mysql_for_navicat/copy_to_text.jpg" alt="" /><br />
+<code class="highlighter-rouge">Navicat</code>以备注的方式查看，显示正常：<br />
+<img src="/images/posts/dba/select_blob_of_mysql_for_navicat/select_from_navicat_2.jpg" alt="" /><br />
+<code class="highlighter-rouge">MySQL</code>客户端查询，返回结果也是正常：<br />
+<img src="/images/posts/dba/select_blob_of_mysql_for_navicat/select_from_mysql_client.jpg" alt="" /><br />
+不过，就是想通过<code class="highlighter-rouge">Navicat</code>去查，怎么办？</p>
+
+<h3 id="解决方案通过函数转换">解决方案：通过函数转换</h3>
+<h4 id="方法一cast">方法一：CAST</h4>
+<p><img src="/images/posts/dba/select_blob_of_mysql_for_navicat/select_from_navicat_3.jpg" alt="" /></p>
+
+<h4 id="方法二concat">方法二：CONCAT</h4>
+<p><img src="/images/posts/dba/select_blob_of_mysql_for_navicat/select_from_navicat_4.jpg" alt="" /></p>
+
 
 
   </section>
@@ -392,15 +274,10 @@ bfd4cc57-7751-11e6-9ceb-005056b9488a:1-15
        <ul class="pager">
         
         <li class="previous">
-            <a href="/2017/11/the_maximum_row_of_varchar/" data-toggle="tooltip" data-placement="top" title="MySQL中VARCHAR最大长度">上一篇：  <span>MySQL中VARCHAR最大长度</span>
+            <a href="/2017/12/mysql_ms_error1864/" data-toggle="tooltip" data-placement="top" title="MySQL主从报错1864">上一篇：  <span>MySQL主从报错1864</span>
             </a>
         </li>
         
-        
-        <li class="next">
-            <a href="/2017/12/select_blob_of_mysql_for_navicat/" data-toggle="tooltip" data-placement="top" title="Navicat查询MySQL数据库BLOB字段问题">下一篇：  <span>Navicat查询MySQL数据库BLOB字段问题</span>
-            </a>
-        </li>
         
     </ul>
 </section>
@@ -412,8 +289,8 @@ bfd4cc57-7751-11e6-9ceb-005056b9488a:1-15
     <script>
     
     var disqus_config = function () {
-        this.page.url = "http://0.0.0.0:4000/2017/12/mysql_ms_error1864/";
-        this.page.identifier = "/2017/12/mysql_ms_error1864/";
+        this.page.url = "http://0.0.0.0:4000/2017/12/select_blob_of_mysql_for_navicat/";
+        this.page.identifier = "/2017/12/select_blob_of_mysql_for_navicat/";
     };
     var disqus_shortname = 'Wowking';
     
