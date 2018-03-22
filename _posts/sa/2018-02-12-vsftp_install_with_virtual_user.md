@@ -28,12 +28,12 @@ vsftp提供三种用户认证方式：
 anonymous_enable=NO    # 不允许匿名访问
 local_enable=YES    # 允许使用本地帐户进行FTP用户登录验证
 write_enable=NO    # 不允许本地用户对FTP服务器文件具有写权限
-local_umask=022
+local_umask=027
+anon_umask=027
 anon_upload_enable=NO    # 不允许匿名用户上传文件
 anon_mkdir_write_enable=NO    # 不允许匿名用户创建目录
 dirmessage_enable=YES    # 设置欢迎语
 xferlog_enable=YES    # 启用上传/下载日志记录
-chown_uploads=YES    # 设置是否改变匿名用户上传文件（非目录）的属主
 xferlog_file=/data/logs/vsftpd/vsftpd.log    # 设置日志文件名和路径
 xferlog_std_format=YES    # 如果启用，则日志文件将会写成xferlog的标准格式
 idle_session_timeout=300    # 设置300s不对FTP服务器进行任何操作，则断开该FTP连接
@@ -49,7 +49,7 @@ listen=NO
 listen_ipv6=YES
 userlist_enable=NO    # 不启用user_list文件
 tcp_wrappers=YES    # 设置vsftpd与tcp wrapper相结合来进行主机的访问控制，vsftpd服务器会检查/etc/hosts.allow 和/etc/hosts.deny 中的设置来决定请求连接的主机，是否允许访问该FTP服务器
-use_localtime=YES
+use_localtime=NO
 pam_service_name=vsftpd    # 设置PAM使用的名称
 guest_enable=YES    # 启用虚拟用户
 guest_username=lyfftpd    # 映射虚拟用户，宿主用户
@@ -60,7 +60,8 @@ pasv_min_port=10060    # 在PASV工作模式下，数据连接可以使用的端
 pasv_max_port=10090
 accept_timeout=5    # 设置建立FTP连接的超时时间为5s
 anon_world_readable_only=NO    # 不允许匿名登入者下载
-anon_other_write_enable=NO    # 不允许匿名登入者更多于上传或者建立目录之外的权限
+anon_other_write_enable=NO    # 不允许匿名登入者更多于上传或者建立目录之外的权限  
+
 #### 创建虚拟用户，基数行为用户名，偶数行为密码。db_load生成密码文件后，该文件可删除
 [root@wowking ~]# mkdir /etc/vsftpd/vuser_conf
 [root@wowking ~]# cat > /etc/vsftpd/vuser_passwd
