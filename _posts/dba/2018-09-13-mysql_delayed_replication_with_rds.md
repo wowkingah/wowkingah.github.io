@@ -58,7 +58,7 @@ innodb_undo_directory=.
 innodb_undo_tablespaces=0
 ```
 *tips*  
-注释的参数不能添加，是`RDS`专用参数，不兼容`MySQL 5.6`  
+注释的参数是`RDS`专用参数，不兼容`MySQL 5.6`  
 
 #### 修改文件属主  
 ```shell
@@ -83,7 +83,7 @@ mysql> truncate table mysql.slave_worker_info;
 mysql> delete from mysql.db where user<>'root' and char_length(user)>0;
 mysql> delete from mysql.tables_priv where user<>'root' and char_length(user)>0;
 mysql> use mysql;
-# 导入本地 MySQL 系统表，不然 Slave 会报错
+# 导入本地 MySQL 系统表，不然 reset slave 会报错
 mysql> source /usr/share/mysql/mysql_system_tables.sql;
 mysql> flush privileges;
 ```
@@ -94,7 +94,7 @@ mysql> flush privileges;
 mysql> reset slave all;
 Query OK, 0 rows affected (0.01 sec)
 
-# 从本地恢复目录，找到 gtid_purged 信息
+# 从本地恢复目录 xtrabackup_slave_info 中找到该 gtid_purged 值
 mysql> SET GLOBAL gtid_purged='96e7dfa9-4765-11e7-a9c1-008cfaf59458:1-3290114587, b41624a4-4765-11e7-a9c2-7cd30ac4f848:1-3258227';
 ERROR 1840 (HY000): @@GLOBAL.GTID_PURGED can only be set when @@GLOBAL.GTID_EXECUTED is empty.
 # 需清理 master 日志
