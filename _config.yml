@@ -11,14 +11,18 @@ url: "https://wowkingah.github.io"
 # Comment
 comment:
      disqus: Wowking
-    # uyan: 2145085  # 友言id,登录有言官网申请
+    # gitment: xxx // 需要修改 comments.html中的client_id和client_secret
+    # uyan: 2145085  # 有言id,登录有言官网申请
 
 # Social
 social:
 #    weibo: 
     github: wowkingah
-    # twitter: 
-#    mail: 
+    # zhihu: xxx
+    # juejin: xxx
+    # jianshu: xxx
+    # twitter: xxx
+#    mail: xxx@xxx
 
 # 百度统计 
 # 使用博客模板请去掉或者更换 id 
