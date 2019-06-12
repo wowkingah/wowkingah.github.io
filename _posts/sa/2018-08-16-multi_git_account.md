@@ -2,7 +2,7 @@
 layout: post
 title: 同一台电脑上使用多个 GIT 账号
 date: 2018-08-16
-tags: GIT
+tags: Git
 ---
 
 ### 简述  
