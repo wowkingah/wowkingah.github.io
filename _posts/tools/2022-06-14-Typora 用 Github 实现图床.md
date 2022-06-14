@@ -1,4 +1,9 @@
-# **Typora 用 Github 实现图床**
+---
+layout: post
+title: Typora 用 Github 实现图床
+date: 2022-06-14
+tags: Tools 
+---
 
 # 环境
 
@@ -17,7 +22,7 @@
 
 Github - new repository
 
-![image-20220614173035486](../../images/posts/tools/2022-06-14-Typora 用 Github 实现图床.assets/image-20220614173035486.png)
+![image-20220614173035486](images/posts/tools/2022-06-14-Typora 用 Github 实现图床.assets/image-20220614173035486.png)
 
 ### 创建 Token
 
@@ -25,7 +30,7 @@ Github - Settings - Developer settings - Personal access tokens - Generate new t
 
 选择合适的 Expiration，Select scopes 指定 `repo` 后，点击 Generate token 会生成 `Token`，复制该 `Token`（只会出现一次，丢失后重新创建）。
 
-![image-20220614173505186](../../images/posts/tools/2022-06-14-Typora 用 Github 实现图床.assets/image-20220614173505186.png)
+![image-20220614173505186](images/posts/tools/2022-06-14-Typora 用 Github 实现图床.assets/image-20220614173505186.png)
 
 ## Picgo-Core
 
@@ -89,7 +94,7 @@ https://raw.githubusercontent.com/wowkingah/picture_bed/main/test.png
 
 在 GITHUB 指定 Repo 查看上传记录。
 
-![image-20220614175847403](../../images/posts/tools/2022-06-14-Typora 用 Github 实现图床.assets/image-20220614175847403.png)
+![image-20220614175847403](images/posts/tools/2022-06-14-Typora 用 Github 实现图床.assets/image-20220614175847403.png)
 
 ## Typora 测试
 
@@ -107,7 +112,7 @@ Typora - 偏好设置 - 图片 - 上传服务设定
 
 2. 可设置 插入图片时 复制图片到xx，如下图：
 
-   ![image-20220614180449018](../../images/posts/tools/2022-06-14-Typora 用 Github 实现图床.assets/image-20220614180449018.png)
+   ![image-20220614180449018](images/posts/tools/2022-06-14-Typora 用 Github 实现图床.assets/image-20220614180449018.png)
 
 ### Picgo 测试
 
@@ -117,7 +122,7 @@ Typora - 偏好设置 - 图片 - 上传服务设定
 
 ### GITHUB 查看
 
-![image-20220614180147266](../../images/posts/tools/2022-06-14-Typora 用 Github 实现图床.assets/image-20220614180147266.png)
+![image-20220614180147266](images/posts/tools/2022-06-14-Typora 用 Github 实现图床.assets/image-20220614180147266.png)
 
 # 插件
 
@@ -167,7 +172,7 @@ https://raw.githubusercontent.com/wowkingah/picture_bed/main/imgs/2022/06/14/18-
 
 ### GITHUB 查看
 
-![image-20220614181449730](../../images/posts/tools/2022-06-14-Typora 用 Github 实现图床.assets/image-20220614181449730.png)
+![image-20220614181449730](images/posts/tools/2022-06-14-Typora 用 Github 实现图床.assets/image-20220614181449730.png)
 
 ## watermark
 
