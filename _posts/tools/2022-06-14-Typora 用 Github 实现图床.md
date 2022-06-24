@@ -22,7 +22,7 @@ tags: Tools Typora
 
 Github - new repository
 
-![image-20220614173035486](/images/posts/tools/2022-06-14-Typora 用 Github 实现图床.assets/image-20220614173035486.png)
+![image-20220624224157590](/images/posts/20220624/image-20220624224157590.png)
 
 ### 创建 Token
 
@@ -30,21 +30,21 @@ Github - Settings - Developer settings - Personal access tokens - Generate new t
 
 选择合适的 Expiration，Select scopes 指定 `repo` 后，点击 Generate token 会生成 `Token`，复制该 `Token`（只会出现一次，丢失后重新创建）。
 
-![image-20220614173505186](/images/posts/tools/2022-06-14-Typora 用 Github 实现图床.assets/image-20220614173505186.png)
+![image-20220614173505186](/images/posts/20220624/image-20220614173505186-6081752.png)
 
 ## Picgo-Core
 
 ```bash
 # node
-wowking@WowkingdeMacBook-Pro ~ % brew install node
+wowking@Pro ~ % brew install node
 
 # 全局安装 picgo
-wowking@WowkingdeMacBook-Pro ~ % npm install picgo -g
+wowking@Pro ~ % npm install picgo -g
 
 # 配置 picgo，通过自动生成的方式配置 Uploader，也手动生成，详见文档。
-wowking@WowkingdeMacBook-Pro ~ % picgo set uploader
+wowking@Pro ~ % picgo set uploader
 ? Choose a(n) uploader github		# 选择 github
-? repo: wowkingah/picture_bed		# 仓库名，格式 username/reponame
+? repo: wowking/picture_bed		# 仓库名，格式 username/reponame
 ? branch: main									# github 分支
 ? token: xxxxxx									# 刚创建的 Token
 ? path:													# 非必填项，上传到 github 的目录路径
@@ -52,18 +52,18 @@ wowking@WowkingdeMacBook-Pro ~ % picgo set uploader
 [PicGo SUCCESS]: Configure config successfully!
 
 # 选择 Uploader
-wowking@WowkingdeMacBook-Pro ~ % picgo use uploader
+wowking@Pro ~ % picgo use uploader
 ? Use an uploader github
 [PicGo SUCCESS]: Configure config successfully!
 
 # 查看配置文件
-wowking@WowkingdeMacBook-Pro ~ % cat ~/.picgo/config.json
+wowking@Pro ~ % cat ~/.picgo/config.json
 {
   "picBed": {
     "uploader": "github",
     "current": "github",
     "github": {
-      "repo": "wowkingah/picture_bed",
+      "repo": "wowking/picture_bed",
       "branch": "main",
       "token": "xxxxxx",
       "path": "",
@@ -81,20 +81,20 @@ wowking@WowkingdeMacBook-Pro ~ % cat ~/.picgo/config.json
 
 ```bash
 # 图片根据自己实际情况选择
-wowking@WowkingdeMacBook-Pro ~ % picgo upload Desktop/test.png
+wowking@Pro ~ % picgo upload Desktop/test.png
 [PicGo INFO]: Before transform
 [PicGo INFO]: Transforming... Current transformer is [path]
 [PicGo INFO]: Before upload
 [PicGo INFO]: Uploading... Current uploader is [github]
 [PicGo SUCCESS]:
-https://raw.githubusercontent.com/wowkingah/picture_bed/main/test.png
+https://raw.githubusercontent.com/wowking/picture_bed/main/test.png
 ```
 
 ### GITHUB 查看
 
 在 GITHUB 指定 Repo 查看上传记录。
 
-![image-20220614175847403](/images/posts/tools/2022-06-14-Typora 用 Github 实现图床.assets/image-20220614175847403.png)
+![image-20220624224430777](/images/posts/20220624/image-20220624224430777.png)
 
 ## Typora 测试
 
@@ -112,17 +112,17 @@ Typora - 偏好设置 - 图片 - 上传服务设定
 
 2. 可设置 插入图片时 复制图片到xx，如下图：
 
-   ![image-20220614180449018](/images/posts/tools/2022-06-14-Typora 用 Github 实现图床.assets/image-20220614180449018.png)
+   ![image-20220614180449018](/images/posts/20220624/image-20220614180449018-6081890.png)
 
 ### Picgo 测试
 
 点击 验证图片上传选项，如下图：
 
-![image-20220614175921911](/images/posts/tools/2022-06-14-Typora 用 Github 实现图床.assets/image-20220614175921911.png)
+![image-20220614175921911](/images/posts/20220624/image-20220614175921911-6081913.png)
 
 ### GITHUB 查看
 
-![image-20220614180147266](/images/posts/tools/2022-06-14-Typora 用 Github 实现图床.assets/image-20220614180147266.png)
+![image-20220624224536741](/images/posts/20220624/image-20220624224536741.png)
 
 # 插件
 
@@ -134,7 +134,7 @@ Rename-file 根据指定后缀方式实现文件不重名。
 
 ```bash
 # install
-wowking@WowkingdeMacBook-Pro ~ % picgo install rename-file
+wowking@Pro ~ % picgo install rename-file
 
 added 1 package, and audited 2 packages in 2s
 
@@ -142,7 +142,7 @@ found 0 vulnerabilities
 [PicGo SUCCESS]: 插件安装成功
 
 # config，指定固定前缀为 imgs，其它参数插件自动生成
-wowking@WowkingdeMacBook-Pro ~ % sudo vim ~/.picgo/config.json
+wowking@Pro ~ % sudo vim ~/.picgo/config.json
 {
 ...
   "picgoPlugins": {
@@ -160,19 +160,19 @@ wowking@WowkingdeMacBook-Pro ~ % sudo vim ~/.picgo/config.json
 重新上传之前已经传过的图片 `test.png`
 
 ```bash
-wowking@WowkingdeMacBook-Pro ~ % picgo upload Desktop/test.png
+wowking@Pro ~ % picgo upload Desktop/test.png
 [PicGo INFO]: Before transform
 [PicGo INFO]: Transforming... Current transformer is [path]
 [PicGo INFO]: Before upload
 [PicGo INFO]: beforeUploadPlugins: rename-file running
 [PicGo INFO]: Uploading... Current uploader is [github]
 [PicGo SUCCESS]:
-https://raw.githubusercontent.com/wowkingah/picture_bed/main/imgs/2022/06/14/18-13-05-69502f080a2a73fd8006cdfd31f66b57-test-aab4cc.png
+https://raw.githubusercontent.com/wowking/picture_bed/main/imgs/2022/06/14/18-13-05-69502f080a2a73fd8006cdfd31f66b57-test-aab4cc.png
 ```
 
 ### GITHUB 查看
 
-![image-20220614181449730](/images/posts/tools/2022-06-14-Typora 用 Github 实现图床.assets/image-20220614181449730.png)
+![image-20220624224610835](/images/posts/20220624/image-20220624224610835.png)
 
 ## watermark
 
